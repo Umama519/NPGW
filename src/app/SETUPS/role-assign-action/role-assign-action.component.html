@@ -1,0 +1,127 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+</style>
+<div class="container">
+    <br />
+    <div class="page-header headingCaption">
+        User Access Role
+    </div>
+    <div class="row">
+        <br />
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b; font-weight: bold;">Role Code :</label>
+                <select id="ddl_RoleAssign" class="form-controlGridDropDown" name="ddl_RoleAssign"
+                    [(ngModel)]="selectedRoleAss" style="border-radius: 0px;" 
+                    maxlength="100" (change)="onRoleChange()">
+                    <option *ngFor="let role of RoleLov" [value]="role.roleid" 
+                        style="font-weight: bold; font-size: 11px; color: #10486b;">
+                        {{ role.roleid }}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b; font-weight: bold;">Description :</label>
+                <input ID="txt_Description" class="form-controlA" [(ngModel)]="selectedDescription"
+                    name="txt_Description" style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <span>{{ errmessage }}</span>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="page-header headingCaption">
+        Action
+    </div>
+    <div
+        style="display: flex; justify-content: center; align-items: center; height: 100vh; gap: 40px; margin-top: -20%;">
+
+        <!-- Left Box -->
+        <div style="display: flex; justify-content: center; align-items: center; gap: 40px; margin-top: 50px;">
+
+            <!-- Left Listbox -->
+            <!-- Left Listbox -->
+            <select size="10" style="width: 300px; height: 200px; border: 2px solid #10486b; 
+       font-weight: bold; color:#0e6d9d; border-radius: 5px;" [(ngModel)]="selectedValue1">
+                <option *ngFor="let role of ListBoxOne" [value]="role.actionCode"
+                    style="font-weight: bold; font-size: 11px; color: #10486b;">
+                    {{ role.descs }}
+                </option>
+            </select>
+
+            <!-- Middle Buttons Left -->
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button id="btn_MoveRight" class="newbtn" style="margin-left: 3px;" (click)="moveRight()"> &gt;
+                </button>
+                <button id="btn_MoveAllRight" class="newbtn" style="margin-left: 3px;" (click)="moveAllRight()">
+                    &gt;&gt; </button>
+                <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="submitButton()"> Submit </button>
+            </div>
+
+            <!-- Middle Buttons Right -->
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button id="btn_Delete" class="newbtn" style=" margin-left: 3px;"
+                    (click)="deleteOne()"> Delete </button>
+                <button id="btn_DeleteAll" class="newbtn" style="margin-left: 3px;" (click)="deleteAll()"> Delete All
+                </button>
+                <button id="btn_Clear" class="newbtn" style="margin-left: 3px;" (click)="clearAll()"> Clear </button>
+            </div>
+
+            <!-- Right Listbox -->
+           <select size="10"
+        style="width: 300px; height: 200px; border: 2px solid #10486b; 
+               font-weight: bold; color:#10486b; border-radius: 5px;"
+        [(ngModel)]="selectedValue2">
+
+  <option *ngFor="let role of ListBoxTwo"
+          [value]="role.actionCode"
+          style="font-weight: bold; font-size: 11px; color: #10486b;">
+    {{ role.descs }}
+  </option>
+</select>
+
+
+
+
+        </div>
+
+
+    </div>

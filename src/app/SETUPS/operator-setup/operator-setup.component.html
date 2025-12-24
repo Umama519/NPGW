@@ -1,0 +1,302 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" *ngIf="showAddButton" (click)="AddButton()">
+                <i class="bi bi-plus-circle"></i> Add New
+            </button>
+ 
+            <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" *ngIf="showSubmitButton"
+                (click)="submitButton()" [disabled]="emailError !== ''">
+                <i class="bi bi-check-circle"></i> Submit
+            </button>
+            <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" *ngIf="showResetButton"
+                (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+
+        </div>
+    </div>
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Operator ID :</label>
+                <div style="display: flex; align-items: center;">
+
+                    <input ID="txt_Operatorid" class="form-controlM" [(ngModel)]="selectedOperatorID"
+                        name="txt_Operatorid" style="border-radius: 0px;" MaxLength="3" inputmode="numeric"
+                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+                    <button id="btn_Search" class="searchInputStyle" (click)="searchButton()">
+                        <i class="bi bi-search srcicon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Operator Name :</label>
+                <input id="txt_Operatorname" class="form-controlM" name="txt_Operatorname" disabled
+                    [(ngModel)]="selectedOperatorName" style="border-radius: 0px;" maxlength="30" pattern="[A-Za-z\s]*"
+                    oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" />
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Operator Title :</label>
+                <input ID="txt_Title" class="form-controlM" name="txt_Title" [(ngModel)]="selectedTitle" disabled
+                    style="border-radius: 0px;" maxlength="30" pattern="[A-Za-z\s]*"
+                    oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" />
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Operator Type :</label>
+                <!-- Operator Type LOV -->
+                <app-global-lov [items]="msgTypes" inputClass="lov-inputM" displayField="name" valueField="code" [(ngModel)]="selectedMsgType"
+                    [disabled]="lovDisabled">
+                </app-global-lov>
+
+
+
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">NRN # :</label>
+                <input ID="txt_NRN" class="form-controlM" name="txt_NRN" [(ngModel)]="selectedNRN" disabled
+                    style="border-radius: 0px;" MaxLength="5" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">System Owner :</label><br>
+                <input ID="chb_Owner" type="checkbox" name="chb_Owner" [(ngModel)]="selectedOwner" disabled />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">WS UserID :</label>
+                <input ID="txt_UserId" class="form-controlM" name="txt_UserId" [(ngModel)]="selectedUserID" disabled
+                    style="border-radius: 0px;" MaxLength="15" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">WS Password :</label>
+                <input ID="txt_Password" class="form-controlM" name="txt_Password" [(ngModel)]="selectedPassword"
+                    disabled style="border-radius: 0px;" MaxLength="15" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">SOAP PROTOCOL :</label>              
+                <app-global-lov [(ngModel)]="selectedSOAP" [items]="SOAP" displayField="descrip" valueField="dynval1"
+                    [disabled]="isSOAPLovDisabled" (selected)="onSOAPSelected($event)">
+                </app-global-lov>
+
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2"> 
+            <div class="form-group">
+                <label class="labelcss">DATA FORMAT :</label>
+                <!-- <select ID="ddl_Format" class="form-controlGridDropDown" name="ddl_Format"
+                    [(ngModel)]="selectedDataFormat" disabled style="border-radius: 0px;" MaxLength="100">
+                    <option *ngFor="let Data of DATAFORMAT" [value]="Data.dynval1"
+                        style="font-weight: bold; font-size: 11px; color: #10486b;">
+                        {{ Data.descrip }}
+                    </option>
+                </select> -->
+                <app-global-lov [(ngModel)]="selectedDataFormat" [items]="DATAFORMAT" displayField="descrip"
+                    valueField="dynval1" [disabled]="isFormatLovDisabled" (selected)="onFormatSelected($event)">
+                </app-global-lov>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Phone # :</label>
+                <input ID="txt_Phone1" class="form-controlM" name="txt_Phone1" [(ngModel)]="selectedPhone" disabled
+                    inputmode="numeric" pattern="[0-9]*" maxlength="11" style="border-radius: 0px;" disabled
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Fax # :</label>
+                <input ID="txt_Fax" class="form-controlA" name="txt_Fax" [(ngModel)]="selectedFax" disabled
+                    inputmode="numeric" pattern="[0-9]*" maxlength="11" style="border-radius: 0px;"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">E-mail :</label>
+                <input ID="txt_Email" class="form-controlM" name="txt_Email" [(ngModel)]="selectedEmail" disabled
+                    (ngModelChange)="onEmailChange($event)" (keypress)="validateEmailInput($event)" type="text"
+                    maxlength="100" style="border-radius: 0px;" />
+
+                <p style="color:red; min-height: 12px; line-height: 12px; margin: 0; display: block;">
+                    {{ emailError || '' }}
+                </p>
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Status :</label>
+                <!-- <input ID="txt_Name" class="form-controlA" name="txt_Name" [(ngModel)]="selectedDname" disabled
+                    style="border-radius: 0px;" MaxLength="100" /> -->
+                <app-global-lov [items]="statusTypes"  inputClass="lov-inputM" displayField="name" valueField="code" [(ngModel)]="selectedStatus"
+                    [disabled]="lovDisabled">
+                </app-global-lov>
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss">URL :</label>
+                <input ID="txt_Url" class="form-controlM" name="txt_Url" [(ngModel)]="selectedURL" disabled
+                    style="border-radius: 0px;" MaxLength="50" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-6 col-sm-6">
+            <div class="form-group">
+                <label class="labelcss">Address # 1 :</label>
+                <input ID="txt_Address1" class="form-controlM" name="txt_Address1" [(ngModel)]="selectedAddress1"
+                    disabled style="border-radius: 0px;" MaxLength="100" />
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div class="form-group">
+                <label class="labelcss">Web Service Link PR Site :</label>
+                <input ID="txt_Link_PR" class="form-controlM" name="txt_Link_PR" [(ngModel)]="selectedLinkPR" disabled
+                    style="border-radius: 0px;" MaxLength="50" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-6 col-sm-6">
+            <div class="form-group">
+                <label class="labelcss">Address # 2 :</label>
+                <input ID="txt_Address2" class="form-controlM" name="txt_Address2" [(ngModel)]="selectedAddress2"
+                    disabled style="border-radius: 0px;" MaxLength="50" />
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-6">
+            <div class="form-group">
+                <label class="labelcss">Web Service Link DR Site :</label>
+                <input ID="txt_Link_DR" class="form-controlM" name="txt_Link_DR" [(ngModel)]="selectedLinkDR" disabled
+                    style="border-radius: 0px;" MaxLength="50" />
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div>
+                    <table class="tableA table-condensed GridViewStyle">
+                        <thead>
+                            <tr class="HeaderStyleA">
+                                <th class="tdCenter">Operator ID</th>
+                                <th class="back">Operator Name</th>
+                                <th class="back">Operator Title</th>
+                                <th class="back">Operator Type</th>
+                                <th class="back">NRN #</th>
+                                <th class="back">System Owner</th>
+                                <th class="back">Phone #</th>
+                                <th class="back">Fax #</th>
+                                <th class="back">URL</th>
+                                <th class="back">STATUS</th>
+                                <th class="back">USER ID</th>
+                                <th class="back">Password</th>
+                                <th class="back">Defined By</th>
+                                <th class="back">Defined Date</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr (click)="edit(row)" class="RowStyleA" *ngFor="let row of operatorGet; let i = index"
+                                [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                                [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                                <td class="tdCenter">{{ row.operator_id }}</td>
+                                <td class="tdLeft">{{ row.operator_name }}</td>
+                                <td class="tdCenter">{{ row.title }}</td>
+                                <td class="tdCenter">{{ row.operator_type }}</td>
+                                <td class="tdCenter">{{ row.nrn }}</td>
+                                <td class="tdCenter">{{ row.owner }}</td>
+                                <td class="tdCenter">{{ row.phn1 }}</td>
+                                <td class="tdCenter">{{ row.fax }}</td>
+                                <td class="tdCenter">{{ row.url }}</td>
+                                <td class="tdCenter">{{ row.status }}</td>
+                                <td class="tdCenter">{{ row.wS_USERID }}</td>
+                                <td class="tdCenter">{{ row.wS_PASSWORD }}</td>
+                                <td class="tdCenter">{{ row.tuid }}</td>
+                                <td class="tdCenter">{{ row.tdate }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

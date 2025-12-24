@@ -1,0 +1,152 @@
+<nav class="navbar navbar-expand-lg custom-navbar fixed-top px-0 py-0">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="navbar-brand d-flex align-items-center" href="#">
+      <img src="Images/PortME.jpg" alt="Logo" class="img-fluid img" (click)="HomeFun()" />
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="showSuccessPopup" class="Succ">
+      <div [ngClass]="{
+      'error-messageC': isErrorPopup,
+      'Success-message': !isErrorPopup
+    }" class="err" >
+        <i *ngIf="isErrorPopup" class="bi bi-exclamation-triangle-fill layerr"></i>
+        <i *ngIf="!isErrorPopup" class="bi bi-check2-circle layerr" alt="Success"></i>
+        <!-- Force larger font on span -->
+        <span class="popup">
+          {{ popupMessage }}
+        </span>
+      </div>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end" id="mynavbar">
+      <ul class="navbar-nav d-flex align-items-center text-center text-md-start">
+        <!-- Home -->
+        <!-- <li class="nav-item mx-1">
+          <a class="nav-link" (click)="HomeFun()" (mouseenter)="setHovered('HOME')"
+            [class.active]="hoveredHeader==='HOME'">HOME</a>
+        </li> -->
+        <!-- Dynamic Menu -->
+        <li class="nav-item mx-1" style="cursor: pointer;" *ngFor="let item of bsItems"
+          (mouseenter)="onMouseEnter(item)" (mouseleave)="onMouseLeave(item)">
+          <a class="nav-link g1-parent" (click)="onHeaderClick($event,item)"
+            [class.active]="hoveredHeader===item.title || item.isOpen">
+            {{item.title}}
+          </a>
+          <!-- Child Dropdown -->
+          <ul *ngIf="item.isOpen && item.children?.length" class="dropdown-menu mega-dropdown-menu">
+            <ng-container *ngFor="let child of item.children; let i = index">
+              <li class="dropdown-item" (click)="onChildClick($event,child,item)">
+                <a>{{child.title}}</a>
+              </li>
+              <!-- SubChildren -->
+              <ul *ngIf="child.subChildren?.length" class="dropdown-submenu mega-dropdown-menu">
+                <li *ngFor="let sub of child.subChildren" class="dropdown-item"
+                  (click)="onSubChild($event,sub,item,child)">
+                  <a>{{sub.title}}</a>
+                </li>
+              </ul>
+            </ng-container>
+          </ul>
+        </li>
+        <!-- Logout -->
+        <li class="nav-item mx-2 logout-item" (click)="btnLog()">
+          <a class="nav-link d-flex align-items-center gap-2" (mouseenter)="setHovered('LOGOUT')"
+            [class.active]="hoveredHeader==='LOGOUT'">
+            <i class="bi bi-box-arrow-right fs-4"></i>
+          </a>
+        </li>
+        <!-- Language -->
+        <!-- <div class="dropdown-container position-relative">
+          <button (click)="toggleDropdowna()" (mouseenter)="setHovered('GLOBE')"
+            [class.active]="hoveredHeader==='GLOBE'" class="globe-btn d-flex align-items-center justify-content-center">
+            <i class="fas fa-globe" style="font-size: 22px; vertical-align: middle;"></i>
+          </button>
+
+          <ul *ngIf="dropdownOpen" class="language-dropdown list-unstyled shadow">
+            <li *ngFor="let lang of languages" (click)="selectLanguage(lang.code)">
+              {{ lang.name }}
+            </li>
+          </ul>
+        </div> -->
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- User Info -->
+<div class="container-fluid con">
+  <div class="row align-items-center justify-content-between">
+    <div class="col text-end">
+      <div class="d-flex flex-wrap justify-content-end align-items-center gap-2">
+        <span>
+          <i style="color: #1992d6;" class="bi bi-person-circle loguser"></i>
+          {{ loginUser }}
+        </span>
+        <span><img src="Images/role.png" style="height:16px;width:20px;"> {{roleMessage}}</span>
+        <!-- <label>{{ lastLogging?.replace(',', '') }}</label> -->
+        <label style="font-size: 10px;">{{ lastLogging}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="object &&  
+           object.toUpperCase() !== 'HOME' && 
+           object.toUpperCase() !== 'FOLLOW UP' &&
+           currentUrl !== '/app-public-followup-aspx' &&
+           currentUrl !== '/app-lsmsre-message' &&
+           currentUrl !== '/app-npr-invoice' &&           
+           currentUrl !== '/app-public-nprequestupdate-aspx' &&           
+           currentUrl !== '/app-cares-error'" style="margin-left: 1300px; ">
+  <h3 class="Mymenu" style="font-size: 11px;" (click)="addQuickLink(object, currentUrl, object)">
+    <img src="Images/add.png" class="addimg">
+    Add To My Menu
+  </h3>
+</div>
+<div class="page-header headingCaption"
+  *ngIf="object && object.toLowerCase() !== 'home'  && currentUrl !== '/app-lsmsre-message' &&     currentUrl !== '/app-public-useraccessrole-aspx' && currentUrl !== '/app-npr-invoice' && currentUrl !== '/app-cares-error'  && currentUrl !== '/app-public-pinpot-aspx' && currentUrl !== '/app-public-nprequest-aspx' && currentUrl !== '/app-public-nprequestupdate-aspx' && currentUrl !== '/app-public-actionresponsesetup-aspx' &&  currentUrl !== '/app-public-followup-aspx' "
+  style="margin-top: -1px; width: 1374px; margin-left: 31px;">
+  <span [innerHTML]="formatObject(object)"></span>
+</div>
+<!-- Breadcrumb -->
+<div class="addQuick">
+  <div class="addQuickD">
+    <!-- Left side me object -->
+    <!-- <div *ngIf="object && object.toLowerCase() !== 'home'" style="color:#1b66b5; font-size:12px">
+      {{ object }}
+    </div> -->
+    <!-- <div *ngIf="object && object.toLowerCase() !== 'home'  && currentUrl !== '/app-lsmsre-message' && currentUrl !== '/app-cares-error' "  style="color:#126ccb;">
+      <span [innerHTML]="formatObject(object)"></span>
+    </div> -->
+
+
+    <!-- Right side me Quick Link (HOME par nahi dikhayega) -->
+
+
+  </div>
+</div>
+<div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" aria-hidden="true" *ngIf="showModal">
+  <div class="modal-dialogA" role="document">
+    <div class="modal-contentA" height="10px">
+      <div class="modal-headerA">
+        <h5 class="modal-titleA" style="margin-top: -4%; font-size: 17px">
+        </h5>
+      </div>
+      <div class="modal-bodyA">
+        <p>For security purposes, your session has expired. Please re-authenticate to continue.</p>
+      </div>
+      <div class="modal-footerA">
+        <button type="button" style="border-radius: 0px;" class="btn btn-danger" (click)="CheckNewSession()">
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+<footer class="footer-bottom">
+  <div class="footer-content lay-footer">
+    © Copyright Computer Research Pvt Ltd, All Rights Reserved.
+  </div>
+</footer>

@@ -1,0 +1,87 @@
+<div class="lov-container" (click)="$event.stopPropagation()">
+  <!-- Click wrapper div pe hi lagao, input pe nahi -->
+  <div class="lov-input-wrapper" (click)="openDropdown()">
+    <input
+      type="text"
+      [(ngModel)]="controlValue"
+      [class]="inputClass"
+      readonly      
+      [disabled]="disabled"      
+      (keydown)="handleInputKey($event)"
+      #lovInput
+    />
+    <span class="lov-arrow">&#9662;</span>
+  </div>
+
+  <div class="lov-dropdown" *ngIf="show && !disabled">
+    <input
+      *ngIf="showSearchBox"
+      #searchBox
+      type="text"      
+      [(ngModel)]="search"
+      class="lov-search"
+      placeholder="Search"
+      (keydown)="onSearchKeyDown($event)"
+      (mousedown)="preventBlur()"
+      (blur)="onSearchBlur()"
+    />
+
+    <div
+      class="lov-items"
+      #scrollContainer
+      *ngIf="show"
+      [style.max-height]="dropdownMaxHeight"
+      style="overflow-y:auto;"
+    >
+      <div
+        class="lov-option"
+        *ngFor="let item of filteredItems(); let i = index"
+        (mousedown)="onOptionMouseDown($event)"
+        (click)="choose(item)"
+        [ngClass]="{ 'lov-option-active': i === highlightIndex }"
+      >
+        {{ item[displayField] }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="lov-container" (click)="$event.stopPropagation()">
+
+  <div class="lov-input-wrapper" (click)="open()">
+    <input
+      type="text"
+      [(ngModel)]="controlValue"
+      [class]="inputClass"
+      readonly      
+      [disabled]="disabled"      
+      (keydown)="handleInputKey($event)"
+    />
+    
+    <span class="lov-arrow">&#9662;</span>
+  </div>
+
+  <div class="lov-dropdown" *ngIf="show && !disabled">
+
+    <input
+      #searchBox
+      type="text"      
+      [(ngModel)]="search"
+      class="lov-search"
+      placeholder="Search"
+      (keydown)="onSearchKeyDown($event)"
+    />
+    
+    <div class="lov-items">
+      <div
+        class="lov-option"
+        *ngFor="let item of filteredItems(); let i = index"
+        (click)="choose(item)"
+        [ngClass]="{ 'lov-option-active': i === highlightIndex }"
+      >
+        {{ item[displayField] }}
+      </div>
+    </div>
+
+  </div>
+</div> -->

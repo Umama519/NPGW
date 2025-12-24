@@ -1,0 +1,294 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+
+    /* Set font color for the entire table */
+    .p-datatable td {
+        color: #d5cece;
+        /* Default font color for the entire table */
+    }
+
+    /* Set font color for the header */
+    .p-datatable th {
+        color: #0056b3;
+        /* Change header text color */
+    }
+
+    /* Set font color for specific rows */
+    .p-datatable tr:hover {
+        color: white;
+        background-color: #007bff;
+        /* Change background color on hover */
+    }
+
+    /* Specific style for a column (e.g., 'Role Name' column) */
+    .p-datatable td.role-name-column {
+        color: rgb(195, 200, 195);
+        /* Change the color for the 'Role Name' column */
+    }
+
+    .page-header {
+        padding-bottom: 2px;
+        margin: 10px -10px 5px -3PX;
+        /*margin: 10px 0 6px;*/
+        /*border-bottom: 1px solid #10486b;*/
+    }
+
+    .headingCaption {
+        color: rgb(0, 51, 102);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        height: 27px;
+        vertical-align: middle;
+        background-size: 101%;
+        background-color: rgba(192, 192, 192, 0.55);
+        /*#f7d0a9; /*background-color: rgba(192, 192, 192, 0.55);*/
+        /*#e2e2e2;*/
+        /*font-weight: bold;
+    padding-top: 2px;*/
+        padding-bottom: 2px;
+        padding-left: 5px;
+        border-color: #ccc;
+        border-style: solid;
+        border-width: 0px;
+        border-radius: 0px;
+        border-left-color: #10486B;
+        border-left-width: 3px;
+        /*border-bottom:thin;*/
+        /*border-bottom-style:none;*/
+        padding-top: 4px;
+        margin-right: 10px;
+        margin-left: 5px;
+        width: 1484%;
+        font-weight: 600;
+    }
+
+    .divTable {
+        display: table;
+        width: 95.7%;
+        margin-left: 16px;
+    }
+
+    .divTableRow {
+        display: table-row;
+    }
+
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+    }
+.form-section {
+        border: 1px solid #dee2e6;
+        padding: 15px;
+
+        margin-bottom: 20px;
+
+    }
+    .divTableCell,
+    .divTableHead {
+        border: 1px solid #999999;
+        display: table-cell;
+        padding: 3px 10px;
+    }
+
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+        font-weight: bold;
+    }
+
+    .divTableFoot {
+        background-color: #EEE;
+        display: table-footer-group;
+        font-weight: bold;
+    }
+
+    .divTableBody {
+        display: table-row-group;
+    }
+</style>
+
+<div class="container">
+
+  <!-- Popup -->
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+        'error-message': isErrorPopup,
+        'Success-message': !isErrorPopup
+      }">
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill"></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+    </div>
+  </div>
+  <br>
+  <div class="form-section container-fluid px-2 py-2" style="margin-left: 8px; width: 107%;">
+  <div class="row" style="margin-left: -4px;">
+    <div class="col-lg-2 col-sm-2">
+       <label style="color: #10486b; font-weight: bold;">667 Status</label>
+      <select class="form-controlGridDropDown" [(ngModel)]="filter.status">
+        <option value="ALL">ALL</option>
+        <option value="Received">Received</option>
+        <option value="Not Received">Not Received</option>
+      </select>
+    </div>
+
+    <div class="col-lg-2 col-sm-2">
+      <label style="color: #10486b; font-weight: bold;">Donor</label>
+      <select class="form-controlGridDropDown" [(ngModel)]="filter.donor">
+        <option value="ALL">ALL</option>
+        <option *ngFor="let d of donors" [value]="d.code">{{ d.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-2 col-sm-2">
+       <label style="color: #10486b; font-weight: bold;">BVS Status :</label>
+      <select class="form-controlGridDropDown" [(ngModel)]="filter.bvs">
+        <option value="ALL">ALL</option>
+        <option value="BVS">BVS</option>
+        <option value="Non BVS">Non BVS</option>
+      </select>
+    </div>
+
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label style="color: #10486b; font-weight: bold;">Fetch Rows :</label>
+        <input id="txtRowNum" class="form-controlA" name="txtRowNum" type="number"
+          [(ngModel)]="filter.rownum" style="border-radius: 0px;" maxlength="4" />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3 mt-3">
+        <button class="newbtn" style="margin-left: 3px;" (click)="reset()">Reset</button>
+      <button class="newbtn" style="margin-left: 3px;" (click)="fetch()">Fetch Data</button>
+      </div>
+    
+  </div>
+  <!-- Upload Section -->
+  <div class="row" style="margin-left: -4px;">
+    <div class="col-md-2">
+       <label style="color: #10486b; font-weight: bold;">Mobile</label>
+      <input class="form-controlA" [(ngModel)]="filter.mobile" placeholder="0300xxxxxxx" />
+    </div>
+
+    <div class="col-md-3">
+       <label style="color: #10486b; font-weight: bold;">Path</label>
+      <input type="file" (change)="onFileSelected($event)" class="form-control form-control-sm"  />
+    </div>
+<div class="col-md-3">
+
+</div>
+    <div class="col-lg-3 col-sm-3 mt-3">
+      <button class="newbtn" style="margin-left: 3px;" (click)="uploadFile()">Upload</button>
+      <button class="newbtn" style="margin-left: 3px;" (click)="fetchUploaded()">Fetch Data</button>
+      
+    </div>
+    </div>
+    <div class="row" style="margin-left: -4px;">
+      <div class="col-lg-2 col-sm-2 mt-2"></div>
+      <div class="col-lg-3 col-sm-3 mt-3"></div>
+      <div class="col-lg-3 col-sm-3 mt-3"></div>
+     <!-- Process & Export Buttons -->
+  <div *ngIf="showProcessBtn || showSaveBtn" class="col-lg-3 col-sm-3 mt-3">
+    <button class="newbtn" style="margin-left: 3px;" (click)="processSelected()" [disabled]="!hasSelection()">Process</button>
+    <button class="newbtn" style="margin-left: 3px;" (click)="exportExcel()" >Save to Excel</button>
+  </div>
+  </div>
+</div>
+  <!-- Excel Format Info -->
+  <div *ngIf="showFileFormat" class="d-flex justify-content-center mb-3 mt-3">
+    <fieldset style="width: 500px; height: 60px; border:1px solid #999; border-radius:4px;">
+      <legend style="color:#003399; font-weight:500;">Excel File Format</legend>
+      <table width="100%">
+        <tr>
+          <td style="background-color:#DDDDDD; width:130px;">MOBILE NUMBER</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #999;">3XXXXXXXXX</td>
+        </tr>
+      </table>
+    </fieldset>
+  </div>
+<br>
+  <!-- Data Table -->
+  <div id="divdata" *ngIf="showDivData" style="padding-left:5px;">
+    <div class="d-flex align-items-center mb-2">
+      <label class="me-2 fw-bold">Select From:</label>
+      <input type="number" class="form-control form-control-sm w-auto me-2" [(ngModel)]="messageFrom" />
+      <label class="me-2 fw-bold">To:</label>
+      <input type="number" class="form-control form-control-sm w-auto me-2" [(ngModel)]="messageTo" />
+      <button class="newbtn" (click)="selectRange()">Select</button>
+    </div>
+    <div id="tableG" class="row line-w" style="margin-left: -4px;">
+        <div class="col-md-12">
+            <div class="table-responsive">
+    <div style="overflow:auto; height:330px; width:995px;">
+      <table class="tableA table-condensed GridViewStyle">
+        <thead >
+          <tr class="HeaderStyleA">
+            <th class="tdCenter">Select</th>
+            <th class="tdCenter">S.No</th>
+            <th class="tdCenter">Sales ID</th>
+            <th class="tdCenter">Mobile</th>
+            <th class="tdCenter">Name</th>
+            <th class="tdCenter">New NIC</th>
+            <th class="tdCenter">Old NIC</th>
+            <th class="tdCenter">Passport</th>
+            <th class="tdCenter">IMSI</th>
+            <th class="tdCenter">Donor</th>
+            <th class="tdCenter">667 Data</th>
+            <th class="tdCenter">BVS Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="RowStyleA" *ngFor="let r of records; let i = index">
+            <td class="text-center">
+              <input type="checkbox" [(ngModel)]="r.__selected" />
+              <input type="hidden" [value]="r.MessageID" />
+            </td>
+            <td class="text-center">{{ getDisplayValue(i + 1) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.mst_id) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.MOBILE) }}</td>
+            <td class="text-start">{{ getDisplayValue(r.NAME) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.NEWNIC) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.OLDNIC) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.PASPORT) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.ICCID) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.DONOR) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.data_667) }}</td>
+            <td class="text-center">{{ getDisplayValue(r.BVSTAG) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Record Count -->
+  <div class="mt-2 fw-bold">
+    <span *ngIf="records?.length">Total Records: {{ records.length }}</span>
+  </div>
+
+

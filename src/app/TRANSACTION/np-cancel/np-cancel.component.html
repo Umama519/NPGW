@@ -1,0 +1,176 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+    .headingCaption .main-heading {
+        position: absolute;
+        left: 5px;
+        /* Move to the left side */
+        color: #10486b;
+    }
+
+    .headingCaption .separator {
+        margin: 0 125px;
+        font-size: 18px;
+        color: #666;
+    }
+
+    .headingCaption .sub-heading {
+        color: #10486b;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+                    <button ID="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="onSubmit()">
+                <i class="bi bi-check-circle"></i> Submit
+            </button>
+             <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+         </div>
+   </div>
+        <br>
+        <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">ONO Name :</label>
+                <input class="form-controlA" name="ononame" [(ngModel)]="model.onoName" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Date :</label>
+                <input id="txt_date" class="form-controlA" name="date" [(ngModel)]="model.date" disabled />
+            </div>
+        </div>
+         <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">NPR Date :</label>
+                <input class="form-controlA" name="nprDate" [(ngModel)]="model.nprDate" disabled />
+            </div>
+        </div>
+       
+       
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+         <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Mobile # :</label>
+                <input class="form-controlA" name="modbile" [(ngModel)]="model.modbile" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Name/Company Name :</label>
+                <input class="form-controlA" name="regName" [(ngModel)]="model.regName" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">NIC # :</label>
+                <input class="form-controlA" name="onic" [(ngModel)]="model.onic" disabled />
+            </div>
+        </div>
+         <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">CNIC # :</label>
+                <input class="form-controlA" name="cnic" [(ngModel)]="model.cnic" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Passport # :</label>              
+                <input class="form-controlA" name="passport" [(ngModel)]="model.passport" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">User Name :</label>
+                <input class="form-controlA" name="user" [(ngModel)]="model.user" disabled />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="page-header headingCaption">
+        Information About PP/CSO
+    </div>
+     <!-- <div class="row">
+      <div class="headingCaption">
+        <span >Information About PP/CSO</span>
+    </div> -->
+    
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        
+       
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">PP ID :</label>
+                <input class="form-controlA" name="PPID" [(ngModel)]="model.PPID"  />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">PP Name :</label>
+                <input class="form-controlA" name="PPName" [(ngModel)]="model.PPName" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Contact # :</label>
+                <input class="form-controlA" name="Contact" [(ngModel)]="model.Contact" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">CSO Name :</label>
+                <input class="form-controlA" name="CSOName" [(ngModel)]="model.CSOName"  />
+            </div>
+        </div>
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        
+       
+        
+    </div>
+    <br>
+</div>

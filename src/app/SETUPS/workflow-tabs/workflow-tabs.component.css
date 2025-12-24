@@ -1,0 +1,54 @@
+/*.table-container {
+  padding: 15px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+
+  .table th {
+    color: #FFFFFF;
+    background-color: #10486b;
+  }
+*/
+/* ===== TAB GROUP ===== */
+::ng-deep .mat-tab-group {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* ===== TAB LABELS ===== */
+::ng-deep .mat-tab-label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #555 !important;
+  padding: 12px 20px !important;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+/* Active tab */
+::ng-deep .mat-tab-label.mat-tab-label-active {
+  color: #ffffff !important;
+  background: #4a90e2 !important;
+  border-radius: 8px;
+}
+
+/* Hover effect */
+::ng-deep .mat-tab-label:hover {
+  background: #e3e7eb !important;
+  border-radius: 8px;
+}
+
+/* Hide ink bar */
+::ng-deep .mat-ink-bar {
+  display: none !important;
+}

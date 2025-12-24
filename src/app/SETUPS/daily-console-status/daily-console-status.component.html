@@ -1,0 +1,130 @@
+<style>
+    /* Set font color for the entire table */
+    .p-datatable td {
+        color: #d5cece;
+        /* Default font color for the entire table */
+    }
+
+    /* Set font color for the header */
+    .p-datatable th {
+        color: #0056b3;
+        /* Change header text color */
+    }
+
+    /* Set font color for specific rows */
+    .p-datatable tr:hover {
+        color: white;
+        background-color: #007bff;
+        /* Change background color on hover */
+    }
+
+    /* Specific style for a column (e.g., 'Role Name' column) */
+    .p-datatable td.role-name-column {
+        color: rgb(195, 200, 195);
+        /* Change the color for the 'Role Name' column */
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div class="row" style="margin-left: -4px; align-items: end;">
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b; font-weight: bold;">Form Date :</label>
+                <input id="FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b; font-weight: bold;">To Date :</label>
+                <input id="ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b;">Port ID :</label>
+                <input id="PortID" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="PortID">
+
+
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b;">Mobile :</label>
+                <input id="Mobile" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="Mobile">
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2 d-flex" style="gap: 5px;">
+            <button id="btn_Submit" class="newbtn" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+    </div>
+
+
+</div>
+<div id="loader" style="display:none;">
+    <div class="loader-overlay">
+        <!-- Loader Overlay -->
+        <div class="loader-overlay">
+            <div class="loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<br>
+<div class="row line-w" style="margin-left: 6px; " id="table" *ngIf="RejectGet.length > 0">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <div style="max-height: 400px;  border: 1px solid #ddd; width: 97.5%;">
+                <table class="tableA table-condensed GridViewStyle">
+                    <thead>
+                        <tr class="HeaderStyleA">                            
+                            <th class="tdLeft">Recipient</th>
+                            <th class="tdCenter">Donor</th>
+                            <th class="tdCenter">Cell#</th>
+                            <th class="tdCenter">Port ID</th>
+                            <th class="tdCenter">Activity</th>
+                            <th class="tdCenter">Type</th>
+                            <th class="tdCenter">Assign To</th>
+                            <th class="tdCenter">Message TimeStamp</th>                                                        
+                            <th class="tdCenter">Due Date</th>
+                            <th class="tdCenter">Completion Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="RowStyleA" *ngFor="let row of RejectGet; let i = index"
+                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">                        
+                            <td style="width: 100px;" class="tdRight">{{ row.recipient }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.donor }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.cell }}</td>                            
+                            <td style="width: 120px;" class="tdCenter">{{ row.portid }}</td>
+                            <td style="width: 300px;" class="tdCenter">{{ row.activity }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.sendReceived }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.assigN_TO }}</td>
+                            <td style="width: 150px;" class="tdCenter">{{ row.arrivaldate }}</td>                            
+                            <td style="width: 150px;" class="tdCenter">{{ row.dueDate }}</td>
+                            <td style="width: 150px;" class="tdCenter">{{ row.completion }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

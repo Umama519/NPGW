@@ -1,0 +1,329 @@
+<div class="container">
+  <div class="row">
+    <br />
+  </div>
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+      'error-message': isErrorPopup,
+      'Success-message': !isErrorPopup
+    }">
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
+    </div>
+  </div>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">WorkFlow # :</label>
+        <input id="txtWF" type="text" [(ngModel)]="selectedWFN" class="form-controlA" autocomplete="off">
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">WorkFlow Status :</label>
+        <app-global-lov [items]="WFStatus" displayField="name" valueField="code" [(ngModel)]="selectedWFStat"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">WorkFlow Type :</label>
+        <app-global-lov [items]="ddlWFType" displayField="name" valueField="code" [(ngModel)]="selectedWFType"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Valid Form :</label>
+        <input id="txtVaildFrom" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="selectedValidFrom">
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Valid To :</label>
+        <input id="txtVaildTo" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="selectedValidTo">
+      </div>
+    </div>
+    <br>
+    <div class="col-lg-3 col-sm-3">
+      <button ID="btn_DeleteM" class="newbtn" style="margin-top: 20px; margin-left: 20%" (click)="DeleteMaster()">
+        <i class="bi bi-trash"></i> Delete Master
+      </button>
+
+      <button ID="btn_Reset" class="newbtn" style="margin-left: 1%;" (click)="ResetButton()">
+        <i class="bi bi-arrow-left"></i> Back WorkFlow
+      </button>
+    </div>
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    ACTION(S)
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label class="labelcss">Action :</label>
+        <app-global-lov [items]="actions" displayField="descrip" valueField="aact" (ngModelChange)="ActionCode($event)" [(ngModel)]="selectedActionCode"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Action Assign To:</label>
+        <app-global-lov [items]="ddlAssignTo" [(ngModel)]="assignTo" (change)="onAssignToChange()" displayField="name" valueField="code" [(ngModel)]="selectedAssignTo"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label *ngIf="assignTo === 'U'" class="labelcss">User ID:</label>
+        <app-global-lov [items]="users" *ngIf="assignTo === 'U'" id="ddluserid" (ngModelChange)="onLovChange()" displayField="USERID" valueField="USERID" [(ngModel)]="selectedUserID"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+
+        <label *ngIf="assignTo === 'G'" class="labelcss">Group ID:</label>
+        <app-global-lov [items]="groups" *ngIf="assignTo === 'G'" id="ddlgroupid" (ngModelChange)="onLovChange()" displayField="UGRPID" valueField="UGRPID" [(ngModel)]="selectedGroupID"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+
+    <!-- <div class="col-lg-2 col-sm-3">
+      <div class="form-group">
+        <label *ngIf="assignTo === 'U'" class="labelcss">User Name:</label>
+        <input id="txtUserName" type="text" *ngIf="assignTo === 'U'" [(ngModel)]="selectedUserName" class="form-controlA" autocomplete="off">
+
+        <label *ngIf="assignTo === 'G'" class="labelcss">Group Name:</label>
+        <input id="txtGroupName" type="text" *ngIf="assignTo === 'G'" [(ngModel)]="selectedGroupName" class="form-controlA" autocomplete="off">
+      </div>
+    </div> -->
+
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Message Send To:</label>
+        <app-global-lov [items]="MessageSendTo" id="ddl_MessageSendTo" displayField="name" valueField="code" [(ngModel)]="selectedMessageSend"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+  <div class="page-header headingCaption">
+    RESPONSE & NEXT ACTION
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="isgridview">
+    <!--  -->
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Response</th>
+                <th class="tdCenter">Next Action</th>
+                <th class="tdCenter">Current Timer Status</th>
+                <th class="tdCenter">Type</th>
+                <th class="tdCenter">Message ID</th>
+                <th class="tdCenter">WorkFlow Status</th>
+                <th class="tdCenter">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of gridDat; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td class="tdCenter">{{ row.RESPONSEID || '' }}</td>
+                <td class="tdCenter">{{ row.ACTIONDESC  }}</td>
+                <td class="tdCenter">{{ row.STAT || '' }}</td>
+                <td class="tdCenter">{{ row.SENDRECE || '' }}</td>
+                <td class="tdCenter">{{ row.MESSEGEDESC || '' }}</td>
+                <td class="tdCenter">{{ row.WORKFLOWSTAT || 'N' }}</td>
+                <td class="tdCenter">
+                  <input type="checkbox" title="Select Row"
+                         [checked]="selectedRow === row"
+                         (change)="onRowSelect($event, row)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-12 col-sm-12">
+      <button ID="btn_Add1" class="newbtn" style=" margin-left: 81.5%" (click)="AddResponse()">
+        <i class="bi bi-plus-circle"></i> Add Responses
+      </button>
+      <button ID="btn_Search" class="newbtn" style="margin-left: 3px;" (click)="deleteSelectedRow()">
+        <i class="bi bi-trash"></i> Delete Detail
+      </button>
+    </div>
+  </div>
+  <br />
+  <div *ngIf="isaddresponse">
+    <div class="row line-w" style="margin-left: -4px;">
+      <div class="col-lg-1 col-sm-1">
+        <div class="form-group">
+          <label class="labelcss">Response # :</label>
+          <app-global-lov [items]="responses" id="ddlResponseCode" (selected)="onResponseSelected($event)" displayField="RDSCR" valueField="RESPONSE" [(ngModel)]="selectedResponseCode"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-3">
+        <div class="form-group">
+          <label class="labelcss">Next Action :</label>
+          <app-global-lov [items]="actions" id="ddlNextActionCode" (selected)="onActionSelected($event)" displayField="descrip" valueField="aact" [(ngModel)]="selectedAddActionCode"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-1 col-sm-1">
+        <div class="form-group">
+          <label class="labelcss">Current Status :</label>
+          <app-global-lov [items]="CurrentWFStatus" id="ddlCurrentWFStatus" displayField="name" valueField="code" [(ngModel)]="selectedCurrentWFStatus"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">Message Type :</label>
+          <app-global-lov [items]="MessageType" id="ddlMessageType" displayField="name" valueField="code" [(ngModel)]="selectedMessageType"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">Message ID :</label>
+          <app-global-lov [items]="messageid" id="ddlMessageID" (selected)="onMessageSelected($event)" displayField="MSG" valueField="MSGID" [(ngModel)]="selectedMessageID"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-1 col-sm-1">
+        <div class="form-group">
+          <label class="labelcss">Stop :</label>
+          <app-global-lov [items]="WFStop" id="chkbxWFStop" displayField="name" valueField="code" [(ngModel)]="selectedWFStop"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <button ID="btn_Submit" class="newbtn" style="margin-top: 20px; margin-left: 41%" (click)="AddButton1()">
+          <i class="bi bi-plus-circle"></i> Add
+        </button>
+      </div>
+    </div>
+    <br />
+    <div class="row line-w" style="margin-left: -4px; " id="table">
+    </div>
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    TIMERS & ALARMS ( EXTERNAL / INTERNAL )
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label id="ddlExternalTimerID" class="labelcss">External Timer:</label>
+        <app-global-lov [items]="externalTimers" id="ddlExternalTimerID" (selected)="onTimer()" displayField="DESCRIP" valueField="TIMID" [(ngModel)]="selectedExternalTimer"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+        <label class="labelcss">Unit:</label>
+        <span id="lblExternalUnit" style="font-weight: normal; font-size: 13px;">
+          {{ externalunit }}
+        </span>
+        &nbsp;&nbsp;&nbsp;
+        <label class="labelcss">Value:</label>
+        <span id="lblExternalValue" style="font-weight: normal; font-size: 13px;">
+          {{ externalvalue }}
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">External Alarm:</label>
+        <app-global-lov [items]="externalAlarms" id="ddlExternalAlarmID" displayField="DESCRIP" valueField="ALARM" [(ngModel)]="selectedExternalAlarm"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label id="ddlExternalTimerID" class="labelcss">Internal Timer:</label>
+        <app-global-lov [items]="internalTimers" id="ddlInternalTimerID" (selected)="onTimer1()" displayField="DESCRIP" valueField="TIMID" [(ngModel)]="selectedInternalTimer"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+        <label class="labelcss">Unit:</label>
+        <span id="lblInternalUnit" style="font-weight: normal; font-size: 13px;">
+          {{ internalunit }}
+        </span>
+        &nbsp;&nbsp;&nbsp;
+        <label class="labelcss">Value:</label>
+        <span id="lblInternalValue" style="font-weight: normal; font-size: 13px;">
+          {{ internalvalue }}
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Internal Alarm:</label>
+        <app-global-lov [items]="internalAlarms" id="ddlInternalAlarmID" displayField="DESCRIP" valueField="ALARM" [(ngModel)]="selectedInternalAlarm"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <button ID="btn_Submit" class="newbtn" style="margin-top: 20px; margin-left: 41%" (click)="submitButton()">
+        <i class="bi bi-check-circle"></i> Submit
+      </button>
+    </div>
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 10px " id="table">
+  <!--*ngIf="isgridview"-->
+  <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th *ngFor="let col of getColumns(gridData[0])">{{ col }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of gridData; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td *ngFor="let col of getColumns(row); let i = index">
+
+                  <ng-container *ngIf="i === 0; else normalCell">
+                    <a (click)="goToForm(row[col])" class="link" style=" cursor: pointer">
+                      {{ formatCell(row[col]) }}
+                    </a>
+                  </ng-container>
+                  <ng-template #normalCell>
+                    {{ formatCell(row[col]) }}
+                  </ng-template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

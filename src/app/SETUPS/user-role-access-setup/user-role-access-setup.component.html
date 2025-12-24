@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" *ngIf="showAddButton" (click)="AddButton()">
+                <i class="bi bi-plus-circle"></i> Add New
+            </button>
+
+            <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" *ngIf="showSubmitButton"
+                (click)="submitButton()">
+                <i class="bi bi-check-circle"></i> Submit
+            </button>
+            <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" *ngIf="showResetButton"
+                (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+    </div>
+    <br>
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Role Code :</label>
+
+                <!-- Initially hidden textbox -->
+                <div style="display: flex; align-items: center;">
+                <input *ngIf="isAddButtonClicked" id="txt_RoleCode" class="form-controlA" name="txt_RoleCode"
+                    [(ngModel)]="selectedRoleCode" style="border-radius: 0px; width: 162px;" MaxLength="100"    />
+             
+                    <app-global-lov *ngIf="isAddButtNotClicked" [items]="ddl_RoleCode" ID="ddl_RoleCode"
+                        displayField="rlcd" valueField="rlcd" [(ngModel)]="selectedRoleCode" [disabled]="RolelovDisabled" (ngModelChange)="onRoleCodeChange($event)">
+                        [disabled]="!ddl_RoleCode || ddl_RoleCode.length === 0">
+                    </app-global-lov>
+                    <button id="btn_Search" class="searchInputStyle" (click)="searchButton()">
+                        <i class="bi bi-search srcicon"></i>
+
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Role Name :</label>
+                <input ID="txt_RoleName" class="form-controlA" name="txt_RoleName" [(ngModel)]="selectedRoleName"
+                    disabled style="border-radius: 0px;" MaxLength="100" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Role Description :</label>
+                <input ID="txt_RoleDesc" class="form-controlA" name="txt_RoleDesc" [(ngModel)]="selectedRoleDesc" disabled
+                    style="border-radius: 0px;" MaxLength="100" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row " style="width: 110%; margin-left: -3px;">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div style="max-height: 450px;  border: 1px solid #ddd;">
+                    <!-- department.component.html -->
+                    <table class="tableA table-condensed GridViewStyle">
+                        <thead>
+                            <tr class="HeaderStyleA">
+                                <th class="tdCenter">Menu Code</th>
+                                <th class="back">Menu Name</th>
+                                <th class="back">Option Allowed</th>
+                                <th class="back">Update Allowed</th>
+                                <th class="back">Delete Allowed</th>
+                                <th class="back">Query Allowed</th>
+                                <th class="back">Add Allowed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="RowStyleA" *ngFor="let row of operatorGet; let i = index"
+                                [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                                [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'"
+                                [style.backgroundColor]="row.grouptype === 'G1' && !row.url_link ? '#d0e6f7' : 'transparent'">
+                                <td class="tdCenter">{{ row.menucd }}</td>
+                                <!-- <td class="tdLeft" [style.fontSize.px]="row.grouptype === 'G1' ? 15 : 13">{{ row.title }}</td> -->
+                                <td class="tdLeft" [style.fontSize.px]="row.grouptype === 'G1' ? 15 : 13"
+                                    [style.fontWeight]="row.grouptype === 'G1' ? 'bold' : 'normal'"
+                                    [style.textAlign]="'left'">
+                                    {{ row.title }}
+                                </td>
+                                <td class="tdCenter">
+                                    <input type="checkbox" id="opt_allowed" [(ngModel)]="row.optionallowed"
+                                        (click)="errorCheckChanged($event, i)" [hidden]="isRestricted(row)" />
+                                </td>
+                                <td class="tdCenter">
+                                    <input type="checkbox" id="upt_allowed" [(ngModel)]="row.updateallowed"
+                                        [hidden]="isRestricted(row)" />
+                                </td>
+                                <td class="tdCenter">
+                                    <input type="checkbox" id="dlt_allowed" [(ngModel)]="row.deleteallowed"
+                                        [hidden]="isRestricted(row)" />
+                                </td>
+                                <td class="tdCenter">
+                                    <input type="checkbox" id="qry_allowed" [(ngModel)]="row.queryallowed"
+                                        [hidden]="isRestricted(row)" />
+                                </td>
+                                <td class="tdCenter">
+                                    <input type="checkbox" id="add_allowed" [(ngModel)]="row.addallowed"
+                                        [hidden]="isRestricted(row)" />
+                                </td>
+                                <td class="tdCenter">
+                                    <input type="hidden" [value]="row.grouptype" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

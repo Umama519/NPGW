@@ -1,0 +1,189 @@
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <!-- <div class="page-header headingCaption">
+        Selected Criteria
+    </div> -->
+    <!-- <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-12 col-sm-12">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+    </div> -->
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <br />
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" >Form Date :</label>
+                <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" >To Date :</label>
+                <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
+            </div>
+        </div>
+        <!-- <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="labelcss">Report Run From :</label><br>
+
+                <span class="excel-span">
+                    <input id="rhb_Live" checked value="L" type="radio" name="reportType"
+                    class="excel" />
+                    <label class="labelcss">Live</label>
+                </span>
+
+                <span class="excel-span">
+                    <input id="rhb_History" value="H" type="radio" name="reportType"
+                    class="excel" />
+                    <label class="labelcss">History</label>
+                </span>
+
+                <span class="excel-span">
+                    <input id="rhb_Both" value="B" type="radio" name="reportType"
+                    class="excel" />
+                    <label class="labelcss">Both</label>
+                </span>
+            </div>
+        </div> -->
+        <div class="col-lg-1 col-sm-1">
+            <div class="form-group">
+                <label class="labelcss">Report Run From :</label>
+                <app-global-lov [items]="Report" displayField="name" valueField="code" [(ngModel)]="selectedReport"
+                    [disabled]="lovDisabled">
+                </app-global-lov>
+            </div>
+        </div>
+        <div class="col-lg-1 col-sm-1">
+            <div class="form-group">
+                <label class="labelcss">Extract Output :</label>
+                <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
+                    [disabled]="lovDisabled">
+                </app-global-lov>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-3">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+        <!-- <div class="col-lg-2 col-sm-2">
+            <div class="form-group" style="margin-left: 6px; margin-top: 10px;">
+                <label class="labelcss">Extract Output :</label><br>
+
+                <span class="excel-span">
+                    <input id="rhb_Screen" checked value="S" type="radio" name="extractOutput"
+                    class="excel" />
+                    <label class="labelcss">On Screen</label>
+                </span>
+
+                <span  class="excel-span">
+                    <input id="rhb_File" value="F" type="radio" name="extractOutput"
+                    class="excel" />
+                    <label class="labelcss">On File</label>
+                </span> 
+            </div>
+        </div> -->
+    </div>    
+    <br><br>
+    <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="IWPorting.length > 0">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div>
+                <table class="tableA table-condensed GridViewStyle">
+                    <thead>
+                        <tr class="HeaderStyleA">
+                            <th class="tdCenter">Recipient</th>
+                            <th class="tdCenter">WARID</th>
+                            <th class="tdCenter">UFONE</th>                            
+                            <th class="tdCenter">TELENOR</th>
+                            <th class="tdCenter">MOBILINK</th>
+                            <th class="tdCenter">ZONG</th>
+                            <th class="tdCenter">INSTA</th>
+                            <th class="tdCenter">GRAND TOTAL</th>
+                            <th class="tdCenter">NET GAIN/LOSS</th>
+                            <th class="tdCenter">PIN %</th>
+                            <th class="tdCenter">NET GAIN/LOSS %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="RowStyleA" *ngFor="let row of IWPorting; let i = index"
+                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                            <td class="tdCenter">{{ row.recepient }}</td>
+                            <td class="tdCenter">{{ row.warid }}</td>
+                            <td class="tdCenter">{{ row.ufone }}</td>
+                            <td class="tdCenter">{{ row.telenor }}</td>
+                            <td class="tdCenter">{{ row.mobilink }}</td>
+                            <td class="tdCenter">{{ row.zong }}</td>
+                            <td class="tdCenter">{{ row.insta }}</td>
+                            <td class="tdCenter">{{ row.Total }}</td>
+                            <td class="tdCenter" [ngClass]="{'red-text': row.NetGL < 0, 'green-text': row.NetGL >= 0}">{{ row.NetGL  ||  0}}</td>
+                            <td class="tdCenter">{{ row.Pin_P || '0%' }}</td>
+                            <td class="tdCenter" [ngClass]="{'red-text': row.NetGL_P < '0%', 'green-text': row.NetGL_P >= '0%'}">{{ row.NetGL_P  || '0%'  }}</td>
+                        </tr>
+                    </tbody>
+                        <tfoot>
+                            <tr class="HeaderStyleA">
+                                <td class="tdCenter">Grand Total</td>
+                                <td class="tdCenter">{{ warid }}</td>
+                                <td class="tdCenter">{{ ufone }}</td>
+                                <td class="tdCenter">{{ telenor }}</td>
+                                <td class="tdCenter">{{ mobilink }}</td>
+                                <td class="tdCenter">{{ zong }}</td>
+                                <td class="tdCenter">{{ insta }}</td>
+                                <td class="tdCenter">{{ HTotal }}</td>
+                                <td colspan="3"></td>
+                            </tr>
+                            <tr class="HeaderStyleA">
+                                <td class="tdCenter">PORT OUT(%)</td>
+                                <td class="tdCenter">{{ getPercent(warid, HTotal) }}</td>
+                                <td class="tdCenter">{{ getPercent(ufone, HTotal) }}</td>
+                                <td class="tdCenter">{{ getPercent(telenor, HTotal) }}</td>
+                                <td class="tdCenter">{{ getPercent(mobilink, HTotal) }}</td>
+                                <td class="tdCenter">{{ getPercent(zong, HTotal) }}</td>
+                                <td class="tdCenter">{{ getPercent(insta, HTotal) }}</td>
+                                <td colspan="4"></td>
+                            </tr>
+                        </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="div_excel" style="display: flex; justify-content: center; gap: 50px; padding: 30px;">
+        <div style="width: 400px; height: 300px; text-align: center;">
+            <canvas id="operatorPieChart1" style="width: 100%; height: 80%;"></canvas>
+        </div>
+        <div style="width: 400px; height: 300px; text-align: center;">
+            <canvas id="operatorPieChart2" style="width: 100%; height: 80%;"></canvas>
+        </div>
+    </div>
+    <div *ngIf="div_excel" style="display: flex; justify-content: center; gap: 50px; padding: 30px;">
+        <div style="width: 450px; height: 400px;">
+            <canvas id="operatorPieChart3" style="width: 100%; height: 80%;"></canvas>
+        </div>
+        <div style="width: 450px; height: 400px;">
+            <canvas id="operatorPieChart4" style="width: 100%; height: 80%;"></canvas>
+        </div>
+    </div>
+</div>

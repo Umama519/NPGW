@@ -1,0 +1,336 @@
+<div class="container-fluid" style="margin-left: -7px;  margin-top: -2%;">
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+        'error-message': isErrorPopup,
+        'Success-message': !isErrorPopup
+      }">
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill"></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+    </div>
+  </div>
+  <br>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="scrollable-form">
+      <div class="row">
+        <div class="headingCaption" style="width: 101%;">
+          <span>NPR Information</span>
+        </div>
+        <BR>
+      </div>
+      <div class="row">
+        <label *ngIf="lblICCIDMessage" class="fw-bold text-danger d-block" style="width: 536px;">
+          {{ lblICCIDMessage }}
+        </label>
+        <label *ngIf="lblMessage" class="fw-bold text-danger d-block" style="width: 536px;">
+          {{ lblMessage }}
+        </label>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 form-group">
+          <label class="form-label">Owner Operator :</label>
+          <app-global-lov [items]="lookups.operators" displayField="OPERATOR_NAME" valueField="OPERATORID"
+            [(ngModel)]="model.OMO" style="width: 107%;" inputClass="lov-inputM" [disabled]="lovDisabled"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onOmoChange($event)">
+          </app-global-lov>
+        </div>
+        <div class="col-md-1 form-group" style="width: 194px;">
+          <label class="form-label" style="margin-left: -3px;">Mobile No: </label>
+          <input class="form-controlA" name="prefix" [(ngModel)]="model.prefix" readonly
+            style="margin-right:-69px; min-width: 10px;" />
+        </div>
+        <div class="col-md-1 form-group" style="margin-left: 15px; width: 133px;">
+          <input class="form-controlM" name="mobile" [(ngModel)]="model.mobile" (blur)="onMobileChange()" required
+            minlength="7" maxlength="8" [readonly]="mode==='UPDATE'" />
+        </div>
+        <div class="col-md-4 form-group" style="margin-left: -3px; width: 345px;">
+          <label class="form-label">Customer Type :</label>
+          <app-global-lov #customerLov [items]="customertype" displayField="name" valueField="code"
+            [(ngModel)]="model.customertype" style="width: 104%;" [disabled]="lovDisabled">
+          </app-global-lov>
+
+        </div>
+        <div class="col-md-2 form-group" style="margin-left: -3px; width: 344px;">
+          <label class="form-label">Base Location : </label>
+          <input class="form-controlA" name="BaseLocation" [(ngModel)]="model.location" [readonly]="true" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 form-group">
+          <label class="form-label">Donor Operator :</label>
+          <app-global-lov [items]="lookups.dmos" inputClass="lov-inputM" displayField="OPERATOR_NAME"
+            valueField="OPERATORID" [(ngModel)]="model.dmos" style="width: 107%;" [disabled]="lovDisabled"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onDmoChange($event)">
+          </app-global-lov>
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Current Product Type :</label>
+          <app-global-lov #CurrentLov [items]="currentProductType" displayField="name" valueField="code"
+            [(ngModel)]="model.currentProductType" style="width: 100%;" [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Old IMSI/ICCID :</label>
+          <input class="form-controlM" name="oldIccid" [(ngModel)]="model.oldICCID" maxlength="19" />
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="headingCaption">
+          <span>Personal Information</span>
+        </div>
+        <br>
+      </div>
+      <div class="row">
+        <div class="col-md-3 form-group">
+          <label class="form-label">Register Name : </label>
+          <input class="form-controlM" name="registerName" [(ngModel)]="model.registerName"
+            (ngModelChange)="copyRegisterNameToUserName()" required maxlength="100" />
+        </div>
+
+        <div class="col-md-3 form-group">
+          <label class="form-label">User Name : </label>
+          <input class="form-controlM" name="userName" style="width: 97%;" [(ngModel)]="model.userName" required maxlength="100" />
+        </div>
+
+        <div class="col-md-3 form-group">
+          <label class="form-label">ID Category :</label>
+          <app-global-lov #CNICLov [items]="selectNIC" inputClass="lov-inputM" displayField="name" valueField="code"
+            [(ngModel)]="model.selectNIC" style="width: 107%;" [disabled]="lovDisabled"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onSelectNIC()">
+          </app-global-lov>
+
+        </div>
+        <div class="col-md-3 form-group" *ngIf="model.selectNIC==='C'">
+          <label class="form-label">CNIC : </label>
+          <input class="form-controlM" name="cnic" [(ngModel)]="model.cnic" required minlength="13" maxlength="13"
+            pattern="\\d{13}" />
+        </div>
+        <div class="col-md-3 form-group" *ngIf="model.selectNIC==='N'">
+          <label class="form-label">Old NIC : </label>
+          <input class="form-controlM" name="oldNic" [(ngModel)]="model.oldNIC" required minlength="11" maxlength="11"
+            pattern="\\d{11}" />
+        </div>
+        <div class="col-md-3 form-group" *ngIf="model.selectNIC==='P'">
+          <label class="form-label">Passport : </label>
+          <input class="form-controlM" name="passport" [(ngModel)]="model.passport" required minlength="12"
+            maxlength="15" />
+        </div>
+        <div class="col-md-3 form-group" *ngIf="model.selectNIC==='O'">
+          <label class="form-label">Other ID : </label>
+          <input class="form-controlM" name="otherId" [(ngModel)]="model.otherID" required maxlength="15" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 form-group">
+          <label class="form-label">Address 1 : </label>
+          <input class="form-controlM" name="address1" [(ngModel)]="model.address1" required maxlength="50" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Address 2 :</label>
+          <input class="form-controlA" name="address2" [(ngModel)]="model.address2" maxlength="50" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Address 3 :</label>
+          <input class="form-controlA" name="address3" style="width: 104%;" [(ngModel)]="model.address3" maxlength="50" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">City : </label>
+          <input class="form-controlM" name="city" [(ngModel)]="model.city" required maxlength="20"
+            style="min-width: 80px;" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 form-group">
+          <label class="form-label">Tel (Res) :</label>
+          <input class="form-controlA" style="width: 104%;" name="telRes" [(ngModel)]="model.telRes" maxlength="15" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Date Of Birth :</label>
+          <input id="dob" class="fnt form-controlA" autocomplete="off" name="dob" [(ngModel)]="dob" maxlength="15" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Email :</label>
+          <input class="form-controlA" name="email" style="width: 104%;" [(ngModel)]="model.email"
+            pattern="\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Postal Code :</label>
+          <input class="form-controlA" name="postalcode" style="width: 104%;" [(ngModel)]="model.postalcode" maxlength="6" />
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="headingCaption">
+          <span>Product Information</span>
+        </div>
+        <br>
+      </div>
+      <div class="row">
+        <div class="col-md-3 form-group">
+          <label class="form-label">New IMSI/ICCID : </label>
+          <input class="form-controlM" width="99%" name="newIccid" [(ngModel)]="model.newICCID" required maxlength="19"
+            minlength="1" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">New Product Type :</label>
+          <app-global-lov [items]="lookups.newProductType" displayField="PROD_DESC" valueField="PROD_CODE"
+            [(ngModel)]="model.newProductType" style="width: 107%;" [disabled]="lovDisabled"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onNewProductTypeChange()">
+          </app-global-lov>
+
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Tariff Plan :</label>
+
+          <app-global-lov #tariffLov [items]="lookups.tariffPlans" displayField="DSCR11344" valueField="TARIFF11344"
+            [(ngModel)]="model.tariffPlans" style="width: 107%;" [disabled]="isTariffDisabled"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onTariffPlanChange()">
+          </app-global-lov>
+        </div>
+        <div class="col-md-2 form-group">
+          <label class="form-label">Access ID :</label>
+          <app-global-lov #accessLov [items]="lookups.accessIds" displayField="ACCNAME" valueField="ACCID"
+            [(ngModel)]="model.accessId" [disabled]="isAccessIdDisabled" [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="onAccessIdChange($event)" style="min-width: 185px; margin-left: 72px;">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-3 form-group">
+          <label class="form-label">Contact Person 1 :</label>
+          <input class="form-controlA" style="width: 104%;" name="associate1" [(ngModel)]="model.associate1"
+            maxlength="11" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Contact Person 2</label>
+          <input class="form-controlA" name="associate2" style="width: 103%;" [(ngModel)]="model.associate2" maxlength="11" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">Franchisee ID : </label>
+          <input class="form-controlM" style="width: 100%;" name="franchiseId" [(ngModel)]="model.franchiseId"
+            maxlength="10" [disabled]="isFranchiseDisabled" required (change)="onFranchiseIdChange()" />
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="form-label">CSR ID :</label>
+
+          <app-global-lov [items]="lookups.csrs" displayField="USER_NAME" valueField="USER_CD" [(ngModel)]="model.csrs"
+            [disabled]="lovCSRDisabled" style="width: 105%;" [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="onCsrChange($event)">
+          </app-global-lov>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 form-group" style="margin-left: 100px;">
+          <div class="form-group row" *ngIf="showWaiverFields">
+            <div class="col-md-3 text-right">
+              <label class="form-label" style="font-weight: bold;">
+                {{ lblWaiverCode || 'Waiver Code' }}
+              </label>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="waiverCode" [(ngModel)]="model.waiverCode" tabindex="27">
+                <option *ngFor="let w of lookups.waiverCodes" [value]="w.value">
+                  {{ w.text }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="mode === 'UPDATE'">
+        <div class="col-md-12">
+          <label>Rejection Description</label>
+          <textarea class="form-control" name="rejection" [(ngModel)]="model.rejection" rows="2"></textarea>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="headingCaption">
+          <span>Port-In Charges</span>
+        </div>
+      </div>
+      <br>
+      <!-- Port-in charges (calculated) -->
+      <div class="row">
+        <div class="col-md-2 form-group" style="margin-left: 370px;">
+          <label class="form-label">Port Fee :</label>
+          <input class="form-controlA" name="portFee" [(ngModel)]="model.portFee" readonly />
+        </div>
+        <div class="col-md-1" style="margin-bottom: 20px;">
+          <label class="labelcss">Waiver % :</label>
+          <app-global-lov [items]="lookups.Waiver" displayField="WAIVERCODE" valueField="WAIVERCODE"
+            [(ngModel)]="model.waiverCode" style="width: 105%;" [disabled]="lovDisabled"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onDdWavierChange($event)">
+          </app-global-lov>
+        </div>
+        <div class="col-md-1">
+          <label style="color: #10486b;">Amount :</label>
+          <input class="form-controlA" name="portFeeAmount" [(ngModel)]="model.portFeeAmount" readonly />
+        </div>
+        <div class="col-md-2 form-group">
+          <label class="form-label">With Handset :</label>
+          <div class="col-md-3 form-group" style="margin-left: -160px;">
+            <input type="radio" name="withHandset" (change)="onWithHSClick()" [checked]="!isWithHS" [value]="false"
+              style="margin-left: 5px;" />
+            No
+            <input type="radio" name="withHandset" (change)="onWithoutHSClick()" [checked]="isWithHS" [value]="true"
+              style="margin-left: 5px;" />
+            Yes
+          </div>
+        </div>
+        <div class="col-md-2 form-group">
+          <label class="form-label" style="margin-left: -30px;">IMEI :</label>
+          <input class="form-controlA" name="imei" [(ngModel)]="model.imei" maxlength="20" [disabled]="isImeiDisabled"
+            style="min-width: 189px;margin-left:98px" />
+        </div>
+      </div>
+      <div class="row" style="margin-top: -35px;">
+        <div class="col-md-2 form-group" style="margin-left: 370px;">
+          <label class="form-label">Handset Charges :</label>
+          <input *ngIf="isWithHS" class="form-controlA" name="handsetCharges" [(ngModel)]="model.handsetCharges"
+            readonly />
+        </div>
+
+        <div class="col-md-1" style="margin-left: 114px;margin-bottom: 22px;"><label></label><input
+            class="form-controlA" name="hcAmount" [(ngModel)]="model.hcAmount" readonly /></div>
+      </div>
+
+      <div class="row" *ngIf="uiState.securityDeposit" style="margin-top: -35px;">
+        <div class="col-md-2 form-group" style="margin-left: 370px;">
+          <label class="form-label">Security Deposit :</label>
+          <input class="form-controlA" name="securityDeposit" [(ngModel)]="model.securityDeposit" readonly />
+        </div>
+        <div class="col-md-1" style="margin-bottom: 20px;"><label></label>
+          <input class="form-controlA" name="wsd" [(ngModel)]="model.wsd" (change)="calc()" readonly />
+        </div>
+        <div class="col-md-1"><label></label><input class="form-controlA" name="sdAmount" [(ngModel)]="model.sdAmount"
+            readonly /></div>
+      </div>
+      <div class="row" *ngIf="uiState.lineRent" style="margin-top: -35px;">
+        <div class="col-md-2 form-group" style="margin-left: 370px;">
+          <label class="form-label">Line Rent :</label><input class="form-controlA" name="lineRent"
+            [(ngModel)]="model.lineRent" readonly />
+        </div>
+        <div class="col-md-1" style="margin-bottom: 20px;"><label></label><input class="form-controlA" name="wlr"
+            [(ngModel)]="model.wlr" (change)="calc()" readonly /></div>
+        <div class="col-md-1"><label></label><input class="form-controlA" name="lrAmount" [(ngModel)]="model.lrAmount"
+            readonly /></div>
+      </div>
+      <div class="row" style="margin-top: -22px;">
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2 form-group" style="margin-left: 370px;">
+          <label class="form-label">Total :</label>
+          <input class="form-controlA" name="total" style="width: 90px;" [(ngModel)]="model.total" readonly />
+        </div>
+        <div class="col-md-2 form-group">
+          <button class="newbtn btn-primary" type="submit" >{{mode === 'UPDATE' ? 'Update' : 'Submit'}}</button>
+          <button class="newbtn btn-secondary ms-2" type="button" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

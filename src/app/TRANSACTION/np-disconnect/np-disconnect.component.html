@@ -1,0 +1,163 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+    .form-label_ {
+    /* font-weight: bold; */
+    font-size: 14px;
+  
+    text-align: left;
+    padding-right: 10px;
+    padding-bottom: 8px;
+    width: 250px;
+    font-family: Calibri;
+    color: #10486b; 
+
+      padding-top: 12px;
+      white-space: nowrap; 
+      margin: -4px;
+      
+  }
+
+  .form-group_ {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+  }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+    </div>
+    <div class="row line-w" style="margin-left: -1px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group_">
+                <label class="form-label_">Mobile No :</label>
+                <div style="display: flex; align-items: center;">
+          <input class="form-controlA" [(ngModel)]="model.mobile" MaxLength="11" inputmode="numeric"
+                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Enter mobile number" style="border-radius: 0px; width: 250px;"/>
+                   <div style="width: 30px;"></div>
+                    <button id="btn_Search" class="newbtn" (click)="onSearchClick()">
+                        <i class="bi bi-check-circle"></i> Fetch
+                    </button>
+                    <button ID="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="onSubmitClick()">
+                <i class="bi bi-check-circle"></i> Submit
+            </button>
+             <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+                </div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">ONO Name :</label>
+                <input class="form-controlA" name="ononame" [(ngModel)]="model.onoName" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Date :</label>
+                <input class="form-controlA" name="date" [(ngModel)]="model.date" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Mobile # :</label>
+                <input class="form-controlA" name="modbile" [(ngModel)]="model.modbile" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">NPR Date :</label>
+                <input class="form-controlA" name="nprDate" [(ngModel)]="model.nprDate" disabled />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">NIC # :</label>
+                <input class="form-controlA" name="onic" [(ngModel)]="model.onic" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Name/Company Name :</label>
+                <input class="form-controlA" name="regName" [(ngModel)]="model.regName" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Passport # :</label>              
+                <input class="form-controlA" name="passport" [(ngModel)]="model.passport" disabled />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">User Name :</label>
+                <input class="form-controlA" name="user" [(ngModel)]="model.user" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">CNIC # :</label>
+                <input class="form-controlA" name="cnic" [(ngModel)]="model.cnic" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Product Type :</label>
+                <input class="form-controlA" name="productType" [(ngModel)]="model.productType" disabled />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Other # :</label>
+                <input class="form-controlA" name="other" [(ngModel)]="model.other" disabled />
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

@@ -1,0 +1,346 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+
+    /* Set font color for the entire table */
+    .p-datatable td {
+        color: #d5cece;
+        /* Default font color for the entire table */
+    }
+
+    /* Set font color for the header */
+    .p-datatable th {
+        color: #0056b3;
+        /* Change header text color */
+    }
+
+    /* Set font color for specific rows */
+    .p-datatable tr:hover {
+        color: white;
+        background-color: #007bff;
+        /* Change background color on hover */
+    }
+
+    /* Specific style for a column (e.g., 'Role Name' column) */
+    .p-datatable td.role-name-column {
+        color: rgb(195, 200, 195);
+        /* Change the color for the 'Role Name' column */
+    }
+
+    .page-header {
+        padding-bottom: 2px;
+        margin: 10px -10px 5px -3PX;
+        /*margin: 10px 0 6px;*/
+        /*border-bottom: 1px solid #10486b;*/
+    }
+
+    .headingCaption {
+        color: rgb(0, 51, 102);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        height: 27px;
+        vertical-align: middle;
+        background-size: 101%;
+        background-color: rgba(192, 192, 192, 0.55);
+        /*#f7d0a9; /*background-color: rgba(192, 192, 192, 0.55);*/
+        /*#e2e2e2;*/
+        /*font-weight: bold;
+    padding-top: 2px;*/
+        padding-bottom: 2px;
+        padding-left: 5px;
+        border-color: #ccc;
+        border-style: solid;
+        border-width: 0px;
+        border-radius: 0px;
+        border-left-color: #10486B;
+        border-left-width: 3px;
+        /*border-bottom:thin;*/
+        /*border-bottom-style:none;*/
+        padding-top: 4px;
+        margin-right: 10px;
+        margin-left: 5px;
+        width: 1484%;
+        font-weight: 600;
+    }
+
+    .divTable {
+        display: table;
+        width: 95.7%;
+        margin-left: 16px;
+    }
+
+    .divTableRow {
+        display: table-row;
+    }
+
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+    }
+
+    .divTableCell,
+    .divTableHead {
+        border: 1px solid #999999;
+        display: table-cell;
+        padding: 3px 10px;
+    }
+
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+        font-weight: bold;
+    }
+
+    .divTableFoot {
+        background-color: #EEE;
+        display: table-footer-group;
+        font-weight: bold;
+    }
+
+    .divTableBody {
+        display: table-row-group;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="AddButton()">
+                <i class="bi bi-plus-circle"></i> Add
+            </button>
+
+            <button ID="btn_Submit" class="newbtndisable" style="margin-left: 3px;" (click)="submitButton()">
+                <i class="bi bi-check-circle"></i> Submit
+            </button>
+
+            <button ID="btn_Search" class="newbtn" style="margin-left: 3px;" (click)="searchButton()">
+                <i class="bi bi-search"></i> Search
+            </button>
+
+            <button id="btn_Process" class="newbtn" style="margin-left: 7px;" (click)="Processbtn()">
+                <i class="bi bi-arrow-repeat"></i> Process
+            </button>
+
+            <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+    </div>
+
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-1 col-sm-1">
+            <div class="form-group">
+                <label class="labelcss" style="color: #10486b; font-weight: bold;">Used Upload :</label>
+                <br>
+                <input type="checkbox" ID="txt_Chk" name="txt_Chk" (change)="toggleTable($event)" />
+
+
+
+                <div class="row" *ngIf="isChecked" id="fileFormatDiv">
+                    <div class="col-lg-12 col-sm-12" id="div_Format">
+                        <div class="page-header headingCaption">
+                            <label ID="lbl_Format">File Format</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex gap-4 p-3 align-items-center">
+
+                            <!-- Total Records -->
+                            <div class="d-flex align-items-center" style="font-size: 12px; white-space: nowrap;">
+                                <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">Total
+                                    Records:</label>
+                                <input type="text" id="totalRecords" class="form-control form-control-sm text-center" readonly 
+                                style="border-radius: 0px; border-color: rgb(78, 76, 76); width: 40px;height:10px; font-size: 12px;">
+
+                            </div>
+
+                            <!-- Invalid Records -->
+                            <div class="d-flex align-items-center" style="font-size: 12px; white-space: nowrap;">
+                                <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">Invalid
+                                    Records:</label>
+                                <input type="text" id="InvalidRecords" class="form-control text-center" readonly
+                                style="border-radius: 0px; border-color: rgb(78, 76, 76);width: 40px; height: 25px; color: red; font-size: 12px;">
+                            </div>
+
+                            <!-- Process Records -->
+                            <div class="d-flex align-items-center" style="font-size: 12px; white-space: nowrap;">
+                                <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">Process
+                                    Records:</label>
+                                <input id="ProcessRecord" type="text" class="form-control text-center" readonly
+                                    style="border-radius: 0px; border-color: rgb(78, 76, 76); width: 40px; height: 25px; color: green; font-size: 12px;">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="container mt-0" id="FileFormat">
+                        <div class="row">
+                            <!-- Mobile/PortID and Example Row Combined with Border -->
+                            <div style="border: #999999; " id="FileFormat" runat="server" visible="false">
+                                <div class="divTableRow" style="margin-left:6px; width: 100px;">
+                                    <div class="divTableHeading">
+                                        <div class="divTableRow">
+                                            <div class="divTableHead">ID</div>
+                                            <div class="divTableHead">Location</div>
+                                            <div class="divTableHead">Participant</div>
+                                            <div class="divTableHead">Number Serial From</div>
+                                            <div class="divTableHead">Number Serial To</div>
+                                        </div>
+                                    </div>
+                                    <div class="divTableBody">
+                                        <div class="divTableRow">
+                                            <div class="divTableCell">XX</div>
+                                            <div class="divTableCell">XXXXXX</div>
+                                            <div class="divTableCell">XXXXXX</div>
+                                            <div class="divTableCell">XXXXXX</div>
+                                            <div class="divTableCell">XXXXXX</div>
+                                        </div>
+                                        <!-- Repeat .divTableRow for more rows -->
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1 col-sm-1">
+            <div class="form-group">
+                <label id="lbl_ID" class="labelcss" style="color: #10486b; font-weight: bold;">ID :</label>
+                <input id="txt_ID" type="text" [maxLength]="2" class="form-controlA" [(ngModel)]="SelectedID">
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label id="lbl_Loc" class="labelcss" style="color: #10486b; font-weight: bold;">Location :</label>
+                <input id="txt_Location" type="text" class="form-controlA" [(ngModel)]="selectedLoc">
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label id="lbl_Parti" class="labelcss" style="color: #10486b; font-weight: bold;">Participaint :</label>
+                <!-- <input id="txt_cdType" type="text" class="form-controlA" [(ngModel)]="selectedCdtyp"> -->
+                <select ID="ddl_Participaint" class="form-controlGridDropDown" name="ddl_Type"
+                    [(ngModel)]="selectedParti" style="border-radius: 0px;" MaxLength="100">
+                    <option *ngFor="let name of participantNames" [value]="name"
+                        style="font-weight: bold; font-size: 11px; color: #10486b;">
+                        {{ name }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label id="lblNumFrm" class="labelcss" style="color: #10486b; font-weight: bold;">Number Serial From
+                    :</label>
+                <input id="txt_NumberSerialFrom" type="text" class="form-controlA" [(ngModel)]="selectedNumFrm">
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label id="lblNumTo" class="labelcss" style="color: #10486b; font-weight: bold;">Number Serial To
+                    :</label>
+                <input id="txt_NumberSerialTo" type="text" class="form-controlA" [(ngModel)]="selectedNumTo">
+                <input type="file" class="form-control-file" id="fileInput" *ngIf="isChecked"
+                    style="font-size: 12px; height: 25px; margin-top: 15px; margin-left: -380%;"
+                    (change)="onFileChange($event)" />
+
+
+
+                <button id="btn_Upload" class="newbtn" style="margin-left: -450px;
+                display: block;
+                margin-top: -17%;" (click)="upload()" *ngIf="isChecked">
+                    <i class="bi bi-upload"></i> Upload
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <br>
+    <div id="tableG" class="row line-w" style="margin-left: -4px;">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div style="max-height: 400px;  border: 1px solid #ddd;">
+                    <table class="tableA table-condensed GridViewStyle">
+                        <thead>
+                            <tr class="HeaderStyleA">
+
+                                <th class="tdLeft">Loc ID</th>
+                                <th class="tdCenter">Loc Name</th>
+                                <th class="tdCenter">Participant </th>
+                                <th class="tdCenter">Number Serial From</th>
+                                <th class="tdCenter">Number Serial To</th>
+                                <th *ngIf="!isPostRemarks" class="tdCenter">Remarks</th>
+                                <th *ngIf="!isPostRequest" class="tdCenter">Define By</th>
+                                <th *ngIf="!isPostRequest" class="tdCenter">Define Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr (click)="edit(row)" class="RowStyleA" *ngFor="let row of NumGet; let i = index"
+                                [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                                [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                                <td style="text-align: center; width: 100px;" class="tdLeft">{{ row.loC_ID }}</td>
+                                <td class="tdCenter">{{ row.loC_NAME }}</td>
+                                <td class="tdCenter">{{ row.participant }}</td>
+                                <td class="tdCenter">{{ row.nuM_FROM }}</td>
+                                <td class="tdCenter">{{ row.nuM_TO}}</td>
+                                <td *ngIf="!isPostRemarks" class="tdCenter"
+                                    [ngStyle]="{'color': row.isPostRemarks?.startsWith('R') ? 'green' : 'red'}">
+                                    {{ row.isPostRemarks }}
+                                </td>
+
+                                <td *ngIf="!isPostRequest" class="tdCenter">{{ row.definE_BY}}</td>
+                                <td *ngIf="!isPostRequest" class="tdCenter">{{ row.definE_DATE}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

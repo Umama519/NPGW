@@ -1,0 +1,212 @@
+<div class="container">
+  <div class="row">
+    <br />
+  </div>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-12 col-sm-12">
+      <button ID="btn_add" class="newbtn" *ngIf="showAddButton" (click)="AddButton()">
+        <i class="bi bi-plus-circle"></i> Add
+      </button>
+
+      <button ID="btn_Submit" class="newbtn" *ngIf="showSubmitButton" (click)="submitButton()">
+        <i class="bi bi-check-circle"></i> Submit
+      </button>
+
+      <!--<button ID="btn_Search" class="newbtn" style="margin-left: 3px;" (click)="searchButton()">
+        <i class="bi bi-search"></i> Search
+      </button>-->
+      <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" *ngIf="showResetButton" (click)="ResetButton()">
+        <i class="bi bi-arrow-clockwise"></i> Reset
+      </button>
+    </div>
+  </div>
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
+    </div>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label class="labelcss">User Group Name :</label>
+        <div style="display: flex; align-items: center;">
+          <input id="txt_GroupName" type="text" autocomplete="off" class="form-controlA"
+                 [(ngModel)]="selectedGroupName">
+          <button id="btn_Search" class="searchInputStyle" (click)="searchButton()">
+            <i class="bi bi-search srcicon"></i>
+
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label class="labelcss">User Group Description :</label>
+        <input ID="txt_GroupDescription" class="form-controlA" name="txt_GroupDescription"
+               [(ngModel)]="selectedGroupDescription" disabled MaxLength="100" />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <div class="form-group">
+          <label class="labelcss">Active :</label><br>
+          <input ID="chb_Active" type="checkbox" name="chb_Active" [(ngModel)]="selectedActive" disabled />
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    User ID Selection
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label class="labelcss" >User ID :</label>
+        <!--<select id="ddl_UserID" [(ngModel)]="selectedUserID" class="form-controlA" name="ddl_UserID" disabled
+                style="padding: 2px; border-radius: 2px; font-size: 12px; width: 100%; font-family: Arial, sans-serif; border-color: rgb(202, 202, 202);">
+          <option value="">Select</option>
+          <option *ngFor="let user of UserID" [value]="user">{{ user }}</option>
+        </select>-->
+        <app-global-lov [items]="UserID" displayField="userid" valueField="userid" [(ngModel)]="selectedUserID"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-4">
+      <div class="form-group">
+        <label class="labelcss">User Name :</label>
+        <input ID="txt_UserName" class="form-controlA" name="txt_UserName"
+               [(ngModel)]="selectedUserID" disabled />
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label class="labelcss">Region :</label>
+        <!--<select id="ddl_Region" class="form-controlA" name="ddl_Region" disabled [(ngModel)]="selectedRegion"
+                style="padding: 2px; border-radius: 2px; font-size: 12px; width: 100%; font-family: Arial, sans-serif; border-color: rgb(202, 202, 202);">
+          <option *ngFor="let name of Regions" [value]="name">{{ name }}</option>
+        </select>-->
+        <app-global-lov [items]="Regions" displayField="region" valueField="region" [(ngModel)]="selectedRegion"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2" *ngIf="isaddbutton">
+      <button ID="btn_add1" class="newbtn" style="margin-left: 7px; margin-top: 20px;" (click)="AddButton1()">
+        <i class="bi bi-plus-circle"></i> Add
+      </button>
+    </div>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">User ID</th>
+                <th class="back">User Name</th>
+                <th class="back">Region</th>
+                <th class="back">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of gridDat; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter">{{ row.userID }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.name }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.region }}</td>
+                <td style="width: 100px;" class="tdCenter">
+                  <a title="Delete" (click)="confirmDelete1(row, i)">
+                    <svg class="custom-crossA" viewBox="0 0 100 100">
+                      <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15" stroke-linecap="round" />
+                    </svg>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">User Group ID</th>
+                <th class="back">Name</th>
+                <th class="back">Status</th>
+                <th class="back">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr (click)="edit(row)" class="RowStyleA" *ngFor="let row of operatorGet; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter">{{ row.userGroupID }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.name }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.status }}</td>
+                <td style="width: 100px;" class="tdCenter">
+                  <!-- <a title="Delete" (click)="deleteRecord(row.userGroupID)">
+                      <svg class="custom-crossA" viewBox="0 0 100 100">
+                          <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15"
+                              stroke-linecap="round" />
+                      </svg>
+                  </a> -->
+                  <a (click)="confirmDelete(row.userGroupID)" class="text-primary">
+                    <svg class="custom-crossA" viewBox="0 0 100 100">
+                      <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15"
+                            stroke-linecap="round" />
+                    </svg>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" aria-hidden="true"
+               *ngIf="showModal">
+            <div class="modal-dialogA" role="document">
+              <div class="modal-contentA">
+                <div class="modal-headerA">
+                  <h5 class="modal-titleA" style="margin-top: -4%; font-size: 17px">
+                    Confirm Deletion
+                  </h5>
+                </div>
+                <div class="modal-bodyA">
+                  <p>Are you sure you want to delete this record?</p>
+                </div>
+                <div class="modal-footerA" *ngFor="let row of operatorGet;">
+                  <button type="button" style="border-radius: 0px;" class="btn btn-secondary"
+                          (click)="closeModal()">
+                    No
+                  </button>
+                  <button type="button" style="border-radius: 0px;" class="btn btn-danger"
+                          (click)="deleteRecord(row.userGroupID)">
+                    Yes, Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

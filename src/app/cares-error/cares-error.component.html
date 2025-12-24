@@ -1,0 +1,306 @@
+<!-- Message Maintenance Modal -->
+<style>
+    .topl {
+        margin-top: 1px;
+    }
+</style>
+<div class="popup-overlay">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="font-size:13px;">
+            <div style="width: 850px;  margin-left: 0px;" class="page-header headingCaption">
+                Message Maintenance
+            </div>
+
+            <div *ngIf="showSuccessPopup">
+                <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+                    <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+                    <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+                    <span>{{ popupMessage }}</span>
+                    <span>{{ errmessage }}</span>
+                </div>
+            </div>
+            <div class="modal-body p-3">
+                <div class="text-danger fw-bold mb-2" style="font-size:13px;"></div>
+
+                <!-- FIRST SECTION -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-1 align-items-center top2">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">MSISDN :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="msisdn"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Operator
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-controlAA-sm" [(ngModel)]="operatorID"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Customer Name
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-controlAA-sm" [(ngModel)]="custname"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label
+                                class="labelcss col-5 text-start pe-1 d-flex justify-content-start">NIC/CNIC/Passport#
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="nic" readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">NIC/CNIC/Passport
+                                Type :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="nictype"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Gender :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="gender"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Package ID
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="packageid"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Access ID
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="accesslevel"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Corporate Person
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="corpperson"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">VASSTR :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="vasstr"
+                                    readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">IMSI :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="imsi" readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Franchise ID
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="franchisE_CODE"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Payment Mode
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="paymentmode"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Waiver Code
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="waivercode"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Waiver Amount
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="waiveramount"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Extra Deposit
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="extradeposit"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Advance Bill
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="advancebill"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Special Number
+                                Amount :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="specialnumamount"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">VAS Amount
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="vasamount"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Credit Amount
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="creditamount"
+                                    readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECOND SECTION -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Cheque Number
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="chequenumber"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Cheque Date
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="chequedate"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">BANK Name
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="bankname"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">MODEOTHERDESC
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="modeotherdesc"
+                                    readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Discount Amount
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="discountamount"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">PROVTAX :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="provtax"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Porting Charges
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="portingcharges"
+                                    readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-1 align-items-center">
+                            <label class="labelcss col-5 text-start pe-1 d-flex justify-content-start">Total Paid
+                                :</label>
+                            <div class="col-7">
+                                <input type="text" class="form-controlA form-control-sm" [(ngModel)]="totalpaid"
+                                    readonly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2 align-items-center">
+                    <label class="labelcss col-2 text-start pe-1">Error Message :</label>
+                    <div class="col-9" style="width: 79%; margin-left: 36px;">
+                        <input type="text" class="form-controlA form-control-sm" [(ngModel)]="err_MSG" readonly />
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-end py-2">
+                    <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="submitbutton()">
+                        <i class="bi bi-check-circle"></i> Submit
+                    </button>
+                    <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="close()">
+                        <i class="bi bi-check-circle"></i> Close
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>

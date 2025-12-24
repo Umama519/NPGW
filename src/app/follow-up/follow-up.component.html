@@ -1,0 +1,217 @@
+<style>
+    .section-header {
+        background-color: #e9ecef;
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .info-label {
+        font-weight: 300;
+    }
+
+    .form-section {
+        border: 1px solid #dee2e6;
+        padding: 15px;
+
+        margin-bottom: 20px;
+
+    }
+
+    .btn-custom {
+        width: 120px;
+        font-weight: 600;
+        border-radius: 5px;
+    }
+
+    .info-label {
+        min-width: 120px;
+        font-family: sans-serif;
+        /* sab labels same width me rahenge */
+
+        color: #003366;
+    }
+
+    .info-value {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;        
+        color: #495057;
+        font-family: sans-serif; 
+        font-size: 12px;
+        min-width: 150px;
+        height: 24px;
+        line-height: 16px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        word-break: break-word;
+        overflow: hidden;
+    }
+</style>
+
+<div class="container mt-1 mb-5">
+    <div class="page-header headingCaption">
+        NPR INFORMATION
+    </div>
+    <!-- NPR Information -->
+    <div class="form-section container-fluid px-2 py-2" style="margin-left: 8px; width: 108%;">
+        <div class="row mb-2">
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Base Location :</span>
+                <span class="info-value form-controlA">{{ selectedRegion }}</span>
+            </div>
+
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Mobile # :</span>
+                <span class="info-value form-controlA">{{ selectedMobile }}</span>
+            </div>
+
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">ONO Name :</span>
+                <span class="info-value form-controlA">{{ selectedOno}}</span>
+            </div>
+
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Date :</span>
+                <span class="info-value form-controlA">{{ selectedActDt}}</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">IMSI # :</span>
+                <span class="info-value form-controlA">{{ selectedImsi}}</span>
+            </div>
+
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Connection Type :</span>
+                <span class="info-value form-controlA">{{ selectedAccountType}}</span>
+            </div>
+
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">NIC/CNIC/Passport :</span>
+                <span class="info-value form-controlA">{{ selectedCnic}}</span>
+            </div>
+
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Port ID :</span>
+                <span class="info-value form-controlA">{{ selectedPortID }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">DNO Name :</span>
+                <span class="info-value form-controlA">{{ selectedDonor }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <span>{{ errmessage }}</span>
+        </div>
+    </div>
+    <!-- Last Action -->
+    <div class="page-header headingCaption">
+        Last Action
+    </div>
+    <div class="form-section" style="margin-left: 8px; width: 108%;">
+        <div class="row mb-2">
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Activity:</span>
+                <span class="info-value form-controlA">{{ selectedActNo }}</span>
+            </div>
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Status:</span>
+                <span class="info-value form-controlA">{{ selectedStat }}</span>
+            </div> 
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">User From:</span>
+                <span class="info-value form-controlA">{{ selectedUserid}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Job Done By:</span>
+                <span class="info-value form-controlA">{{ selectedUname }}</span>
+            </div>
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Date & Time:</span>
+                <span class="info-value form-controlA">{{ selectedTdate }}</span>
+            </div>
+            <div class="col-md-3 col-6 d-flex">
+                <span class="info-label">Last Action:</span>
+                <span class="info-value form-controlA">{{ selectedLastAction }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- NPR Validation -->
+    <div class="page-header headingCaption">
+        <span class="main-heading" style="margin-left: 0px;">NPR Validation</span>
+        <span  style="margin-left: 560px;"></span>
+        <span class=" headingCaptionA page-header"> Special Comments or Reason</span>
+    </div>
+    <div class="form-section" style="margin-left: 8px; width: 108%;">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="labelcss">NPR Due Date & Time:</label>
+                <input type="text" id="txt_NPRDueDT" autocomplete="off" class="form-controlA">
+            </div>
+            <div class="col-md-3">
+                <label class="labelcss">Response:</label>
+                <app-global-lov id="ddl_Response" [(ngModel)]="Response" [disabled]="lovRespDisabled" [items]="ResponseData"
+                    (ngModelChange)="onRespChange($event)" displayField="rdscr" valueField="rdscr">
+                </app-global-lov>
+            </div>
+
+            <div class="col-md-6">
+                <label class="labelcss">Reason:</label>
+                <!-- <select id="ddl_Reason" class="form-controlGridDropDown" [(ngModel)]="SelectedReason"
+                    (change)="onReasonChange($event)">
+                    <option *ngFor="let reason of ReasonData" [value]="reason.rejcd"
+                        style="border-radius: 0px; font-weight: bold; font-size: 11px; color: #10486b;">
+                        {{ reason.rejcd }}
+                    </option>
+                </select> -->
+                  <app-global-lov id="ddl_Reason" [(ngModel)]="SelectedReason" [disabled]="lovRespDisabled" [items]="ReasonData"
+                    (ngModelChange)="onReasonChange($event)" displayField="rejcd" valueField="rejcd">
+                </app-global-lov>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="labelcss">(Message) Comments:</label>
+                <textarea id="txt_Comment1" class="form-controlT" rows="8" maxlength="50"></textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="labelcss">Comments:</label>
+                <div class="form-group">
+                    <textarea id="txt_Comment2" name="txt_Comment2"  disabled class="form-controlTD" rows="8" maxlength="50"
+                        [(ngModel)]="CommentText" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end gap-2" style="margin-left: 8px; width: 108%;">
+        <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="Back()">
+            <i class="bi bi-arrow-left"></i> Back
+
+        </button>
+        <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="Submit()">
+            <i class="bi bi-check-circle"></i> Submit
+        </button>
+    </div>
+
+</div>

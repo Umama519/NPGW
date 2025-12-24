@@ -1,0 +1,433 @@
+<style>
+  .calendar-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    color: #10486b;
+  }
+
+
+  /* Sticky header for ALARM row */
+  .alarm-table tr:first-child td {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+  }
+
+  /* Scroll container */
+  .alarm-table-container {
+    margin-top: -15px;
+    display: block;
+    font-family: 'Clibri', sans-serif;
+    border: 1px solid #ccc;
+    /* Debug ke liye */
+
+  }
+
+  /* Table styling */
+  .alarm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+
+  .alarm-table td {
+    padding: 4px 8px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .cell-label {
+    font-weight: 600;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+  }
+
+  .cell-control {
+    display: flex;
+    align-items: center;
+  }
+
+  .alarm-row {
+    display: flex;
+    border: 1px solid #d8d8d8;
+    cursor: pointer;
+    margin-bottom: 2px;
+  }
+
+  .alarm-cell {
+    padding: 3px;
+    border-right: 1px solid #d8d8d8;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-with-icon {
+    position: relative;
+  }
+
+  .calendar-icon {
+    position: absolute;
+    right: 8px;
+    top: 7px;
+  }
+
+  .center-cell {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 9px;
+  }
+
+  .alarm-row td {
+    border: 1px solid #ccc;
+  }
+
+  .tblG {
+    text-align: center;
+  }
+
+  .SvExl {
+    white-space: nowrap;
+    font-size: 16px;
+    color: #0c853b;
+    font-family: Calibri;
+    margin-left: 25px;
+    cursor: pointer;
+  }
+
+  .SvExl:hover {
+    color: #007bff;
+    /* text becomes white */
+  }
+</style>
+
+<div class="container" style="margin-top: 5px; margin-left: 29px; width: 96.5%;">
+
+
+  <div class="row "
+    style="margin-left: -2%; background-color: rgb(247,247,247); border-bottom: solid 1.1px #CCCCCC; border-top: solid 1.1px #CCCCCC; width: 112.5%;  padding-bottom: 1px; font-size: 12px;">
+    <div style=" margin-top: 15px;position: relative;
+  overflow: visible !important; ">
+      <div>
+        <table
+          style="margin-left: 0%; background-color: rgb(247,247,247); width: 99%; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+          <div class="form-row">
+
+            <!-- From Date -->
+            <div class="labelcss">From Date</div>
+            <div class="cell-control">
+              <div class="input-with-icon">
+                <input id="FromDate" [(ngModel)]="formData.fromDate" class="form-controlA" autocomplete="off"
+                  style="width:210px;" />
+                <i class="fas fa-calendar-alt calendar-icon"></i>
+              </div>
+            </div>
+            <div class="labelcss" style="margin-left:20px;">To Date</div>
+            <div class="cell-control">
+              <div class="input-with-icon">
+                <input id="ToDate" [(ngModel)]="formData.toDate" class="form-controlA" autocomplete="off"
+                  style="width:210px;" />
+                <i class="fas fa-calendar-alt calendar-icon"></i>
+              </div>
+            </div>
+            <div class="labelcss" style="margin-left:20px;">Recipient ID</div>
+            <div class="cell-control" style="width:115px;">
+              <app-global-lov [(ngModel)]="formData.recipient" [items]="participantNames" displayField="name"
+                valueField="name" [disabled]="isDonorLovDisabled">
+              </app-global-lov>
+            </div>
+            <div class="labelcss" style="margin-left:20px;">Donor ID</div>
+            <div class="cell-control" style="width:115px;">
+              <app-global-lov [(ngModel)]="formData.donor" [items]="participantNames" displayField="name"
+                valueField="name" [disabled]="isDonorLovDisabled">
+              </app-global-lov>
+            </div>
+
+          </div>
+          <div class="form-row" style="margin-top: -5px;">
+
+            <div class="labelcss">Mobile</div>
+            <div class="cell-control">
+              <input id="Mob" [(ngModel)]="formData.mobile" class="form-controlA"
+                style="width:210px; margin-left: 19px;" />
+            </div>
+
+            <div class="labelcss" style="margin-left:21px;">Port ID</div>
+            <div class="cell-control" style="width:210px; margin-left: 3px;">
+              <input id="PortID" [(ngModel)]="formData.portID" class="form-controlA" maxlength="19" />
+            </div>
+
+            <div class="labelcss" style="margin-left:21px; white-space:nowrap;">
+              Error
+            </div>
+
+            <div class="cell-control" style="width:40px;">
+              <input type="checkbox" id="chk" (click)="checkbox()" style="margin-left:37px;">
+            </div>
+
+            <div class="cell-control" style="width:103px;">
+              <app-global-lov id="ddl_Error" [(ngModel)]="ErrChk" [disabled]="lovDisabled" [items]="msgTypes"
+                *ngIf="Visible" displayField="name" valueField="code" style="margin-left:5px; width:  110px">
+              </app-global-lov>
+            </div>
+
+          </div>
+
+          <div class="form-row" style="margin-top: -8px;">
+            <div class="labelcss" style="margin-left:-0px; white-space:nowrap;">
+              Action(s)
+            </div>
+            <td colspan="5">
+              <div style="display: flex; align-items: center; width: 100%; gap: 10px;">
+                <app-global-lov #actionLov [(ngModel)]="selectedDescs" [items]="filteredActions" displayField="descs"
+                  valueField="action" [disabled]="isActionLovDisabled"
+                  style="flex: 1; min-width: 503px; margin-left: 8px;">
+                </app-global-lov>
+                <span class="SvExl" (click)="SaveToExl()" style="margin-left: 30px;">
+                  Save To Excel
+                  <i class="bi bi-file-earmark-excel" style="font-size: 15px;"></i>
+                </span>
+                <button id="btn_Submit" class="newbtn btnCon" style="margin-left: 25px;" (click)="GetGrid()">
+                  <i class="bi bi-arrow-repeat"></i> Fetch
+                </button>
+                <button id="btn_Reset" class="newbtn btnCon" (click)="Reset()">
+                  <i class="bi bi-arrow-clockwise"></i> Reset
+                </button>
+              </div>
+            </td>
+          </div>
+          <ng-template #popupContainer></ng-template>
+          <td style="width:300px; vertical-align: top; padding-left:0; margin-top: -12px">
+            <div style="height: 100px; overflow-y: auto; display: block; margin-top: -12px ">
+              <table class="alarm-table" style=" width: 100%;">
+                <tr>
+                  <td colspan="5" style="font-family: Calibri; font-weight: 500; background-color: transparent;
+           position: relative;  padding: 4px 0;" class="tblG">
+                    <span style="color: red;">ALARM!</span>
+                    Last refresh: {{ lastRefresh | date:'short' }}
+                  </td>
+
+                </tr>
+
+                <tr *ngFor="let alarm of alarms; let i = index" (click)="LinkButton(alarm)"
+                  style="cursor: pointer; pointer-events: auto; font-family: Calibri;">
+
+                  <td class="center-cell" style="border: 1px solid #d8d8d8; text-align: center;">
+                    {{ alarm.cnt }}
+                  </td>
+
+                  <td class="center-cell" [ngStyle]="{
+                  'text-align': 'left', 
+                  'color': (alarm.almty === 'E' || alarm.almty === 'D') ? 'red' : 'inherit',
+                  'border': '1px solid #ccc'
+                }">
+                    {{ alarm.descrip }}
+                  </td>
+
+                  <td class="center-cell" style="border: 1px solid #d8d8d8; text-align: center;">
+                    {{ alarm.almdue | date:'short' }}
+                  </td>
+
+                </tr>
+
+              </table>
+            </div>
+          </td>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="loader" style="display: none;">
+    <div class="loader-overlay">
+      <div class="loader">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="
+    width: 1424px;
+    margin-left: -60px;
+    margin-top: 0%;
+    height: 510px;
+    overflow: hidden;
+  ">
+    <div class="col-md-12" *ngIf="div_grid">
+      <!-- Single Scrollable Container -->
+      <div class="table-responsive" style="max-height: 510px; overflow-y: auto;">
+        <!-- Main Table -->
+        <table *ngIf="isvisibe" class="tableA table-condensed GridViewStyle">
+          <thead>
+            <tr class="HeaderStyleA RowStyleAG">
+              <th style="width: 30px;" class="tblG"></th>
+              <th style="width:60px;" class="tblG">Activity#</th>
+              <th style="width:180px;" class="tblG">Message TimeStamp</th>
+              <th style="width:100px;" class="tblG">Mobile</th>
+              <th style="width:80px;" class="tblG">Recipient</th>
+              <th style="width:80px;" class="tblG">Donor</th>
+              <th style="width:250px;" class="tblG">Message Description</th>
+              <th style="width:150px;" class="tblG">Port ID</th>
+              <th style="width:60px; " class="tblG">Route ID</th>
+              <th style="width:250px;" class="tblG">Error Notification</th>
+              <th style="width:180px;" class="tblG">NP Due Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <ng-container *ngFor="let row of pagedData; let i = index">
+              <tr class="RowStyleA RowStyleAG" [ngStyle]="{
+      'background-color':
+        row.message_Description === 'NP Activated Status'
+          ? '#d6f5d6'
+          : row.message_Description?.toLowerCase().includes('error')
+          ? '#f8d7da'
+          : '#F7F7F7',
+      'color': '#000000'
+}">
+                <td (click)="Plus(i, row)" style="
+      cursor:pointer;
+      font-size:15px;
+      color:#0066cc;
+      text-shadow: 0px 0px 3px #8cc9ff;
+    ">
+                  <i class="bi" [ngClass]="expandedRows[i] ? 'bi-dash' : 'bi-plus'"></i>
+                </td>
+
+
+
+                <!-- <td (click)="Plus(i, row)"
+    style="color:#007bff; font-weight:600; cursor:pointer; font-size:20px; line-height:20px;">
+  {{ expandedRows[i] ? '-' : '+' }}
+</td> -->
+
+                <td (click)="edit(row)"
+                  style="color: #007bff; font-weight:600; text-decoration: underline; cursor: pointer" class="tdLeft">{{
+                  row.activityO }}</td>
+                <td class="tdLeft">{{ row.message }}</td>
+                <td class="tdLeft">{{ row.mobile }}</td>
+                <td class="tdLeft">{{ row.recipient }}</td>
+                <td class="tdLeft">{{ row.donor }}</td>
+                <td class="tdLeft">{{ row.message_Description }}</td>
+                <td class="tdLeft">{{ row.port_ID }}</td>
+                <td class="tdLeft">{{ row.routeID }}</td>
+                <td class="tdLeft">{{ row.data_667 }}</td>
+                <td class="tdLeft">{{ row.due_Date }}</td>
+              </tr>
+
+              <!-- Expanded Rows -->
+              <tr *ngIf="expandedRows[i]">
+                <td colspan="13" style="padding: 0;">
+                  <div style="max-height: 300px; overflow-y: auto;">
+                    <table class="tableA table-condensed GridViewStyle RowStyleAG">
+                      <thead>
+                        <tr class="HeaderStyleA">
+                          <th class="tblG">Activity#</th>
+                          <th class="tblG">Message TimeStamp</th>
+                          <th class="tblG">Message Code</th>
+                          <th class="tblG">Port ID</th>
+                          <th class="tblG">Send/Receive</th>
+                          <th class="tblG">Job Done By</th>
+                          <th class="tblG">Due Date</th>
+                          <th class="tblG">Completion Date</th>
+                          <th class="tblG">Response</th>
+                          <th class="tblG">Soap Message</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let row of ConDet; let i = index" class="RowStyleA  "
+                          style="background-color: #e8f0f9;">
+                          <td class="tdLeft">{{ row.activitY_NO }}</td>
+                          <td class="tdLeft">{{ row.arrivaldate }}</td>
+                          <td class="tdLeft">{{ row.activity }}</td>
+                          <td class="tdLeft">{{ row.portid }}</td>
+                          <td class="tdLeft">{{ row.sendreceived }}</td>
+                          <td class="tdLeft">{{ row.joB_DONE_BY }}</td>
+                          <td class="tdLeft">{{ row.duedate }}</td>
+                          <td class="tdLeft">{{ row.commpitiondate }}</td>
+                          <td class="tdLeft">{{ row.rejectcode }}</td>
+                          <td class="tdLeft">
+                            <span style="color: #007bff; cursor: pointer; font-weight: 700;"
+                              (click)="openXmlPopup(row.xml)">View XML</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+
+          <tfoot>
+            <tr class="HeaderStyleA">
+              <td colspan="2" style="text-align: right;">
+                <div>Total Records:</div>
+              </td>
+              <td colspan="11" style="text-align: left;">
+                <span style="margin-left: 5px;">{{ GridData.length }}</span>
+              </td>
+            </tr>
+
+          </tfoot>
+        </table>
+        <div style="margin-top: -25px;" *ngIf="totalPages > 1 && showPagination"
+          class="d-flex justify-content-center py-3 flex-wrap gap-1">
+
+          <!-- FIRST WINDOW (Jump to page 1) -->
+          <button *ngIf="windowStart > 1" class="custom-page-btn" (click)="goToFirstWindow()">⏮</button>
+
+          <!-- PREVIOUS WINDOW -->
+          <button *ngIf="windowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+
+          <!-- PAGE NUMBERS -->
+          <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+            [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+            {{ page }}
+          </button>
+
+          <!-- NEXT WINDOW -->
+          <button *ngIf="windowStart + windowSize - 1 < totalPages" class="custom-page-btn"
+            (click)="showNextWindow()">»</button>
+
+          <!-- LAST WINDOW (Jump to last page) -->
+          <button *ngIf="windowStart + windowSize - 1 < totalPages" class="custom-page-btn"
+            (click)="goToLastWindow()">⏭</button>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>
+<div *ngIf="showSuccessPopup">
+  <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+    <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+    <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+    <span>{{ popupMessage }}</span>
+    <!-- <span>{{ errmessage }}</span> -->
+  </div>
+</div>

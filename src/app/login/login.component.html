@@ -1,0 +1,71 @@
+<style>
+  #lbl_cc {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .port-sim-img {
+    height: 450px;
+    border-radius: 10px;
+    padding: 5px;
+  }
+</style>
+
+<form (ngSubmit)="onLogin()">
+
+  <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="row w-100 d-flex justify-content-center align-items-center">
+      <div class="col-lg-6 col-md-7 col-sm-10 p-4 bg-white rounded d-flex flex-column align-items-center form-animate">
+        <div class="mb-4">
+          <img src="Images/PortME.jpg" class="img-fluid" alt="Logo" />
+        </div>
+        <div class="form-floating mb-3 w-100">
+          <input [(ngModel)]="userObj.Userid" name="userId" class="form-controlL form-controlA form-control"
+            id="txtUserid" autocomplete="off" placeholder="UserID" />
+          <label for="txtUserid" style="font-size: 14px;">User ID</label>
+        </div>
+        <div class="form-floating mb-3 w-100 position-relative">
+          <input [(ngModel)]="userObj.Password" name="password" [type]="showPassword ? 'text' : 'password'"
+            id="txtPassword" autocomplete="off" placeholder="Password" class="form-control form-controlA Font" />
+          <label for="txtPassword" style="font-size: 14px;">Password</label>
+          <!-- Eye icon -->
+          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="showPassword = !showPassword"
+            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+          </i>
+        </div>
+        <div *ngIf="errmessage" class="error-message-container">
+          <div>
+            <label class="error-messageCP">{{ errmessage }}</label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between w-100 mt-2">
+          <div class="col-6 btn-spacing">
+            <button type="submit" id="btn_Login" class=" btn-custom w-100 btn-lg">
+              <i class="bi bi-box-arrow-in-right"></i> LOGIN
+            </button>
+          </div>
+          <div class="col-6 btn-spacing">
+            <button type="button" id="Btn_Reset" class="btn-custom w-100 btn-lg" (click)="onReset()">
+                <i class="bi bi-arrow-clockwise"></i> RESET</button>
+          </div>
+        </div>
+
+        <div class="mt-3 w-100 text-start">
+          <a class="link-primary" style="font-size: 15px; text-decoration: none; cursor: pointer;"
+            (click)="ChangePassword()">Password Change?</a>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-10 text-center mt-4 mt-md-0">
+        <img src="Images/PortSim.png" class=" port-sim-img" alt="Logo" />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="lbl_cc" class="borderC text-center mt-3">
+    <span>© Copyright Computer Research Pvt Ltd, All Rights Reserved</span>
+  </div>
+
+</form>

@@ -1,0 +1,261 @@
+<style>
+  /* ==== General Layout ==== */
+  .invoice-wrapper {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #ffffff;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 25px 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+  }
+
+  .invoice-header h2 {
+    color: #003366;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .invoice-section {
+    margin-bottom: 25px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px 20px;
+    background-color: #f9fbfd;
+  }
+
+  .section-title {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.55) 0%, rgba(192, 192, 192, 0.55) 100%);
+    color: rgb(0, 51, 102);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px 1fr;
+    row-gap: 10px;
+    column-gap: 10px;
+    font-size: 14px;
+  }
+
+  .info-label {
+    color: #003366;
+    font-weight: 600;
+    text-align: right;
+    padding-right: 8px;
+  }
+
+  .info-value {
+    font-weight: 500;
+    color: #222;
+    background: #fff;
+    border-radius: 5px;
+    padding: 3px 6px;
+    border: 1px solid #e4e4e4;
+  }
+
+  /* ==== Inner Table for Charges ==== */
+  .charges-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .charges-table th {
+    background: #003366;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .charges-table td {
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  .charges-table tr:last-child td {
+    font-weight: 600;
+    color: #003366;
+  }
+
+  .print-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .btn-print {
+    background-color: #003366;
+    color: white;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .btn-print:hover {
+    background-color: #005599;
+  }
+</style>
+
+<div class="invoice-wrapper" *ngIf="!loading">
+  <div class="invoice-header">
+    <h2>Port-In Invoice</h2>
+    <div><strong>Invoice No:</strong> {{ model.lblinvoiceNo }}</div>
+  </div>
+
+  <!-- === Section 1: Operator Info === -->
+  <div class="invoice-section">
+    <div class="section-title">Operator Information</div>
+    <div class="info-grid">
+      <div class="info-label">ONO:</div>
+      <div class="info-value">{{ model.lblONO }}</div>
+      <div class="info-label">DNO:</div>
+      <div class="info-value">{{ model.lblDNO }}</div>
+
+      <div class="info-label">Mobile #:</div>
+      <div class="info-value">{{ model.lblMobile }}</div>
+      <div class="info-label">OLD IMSI #:</div>
+      <div class="info-value">{{ model.lblOLDICCID }}</div>
+
+      <div class="info-label">Base Location:</div>
+      <div class="info-value">{{ model.lblBaseLoc }}</div>
+      <div class="info-label">Current Product:</div>
+      <div class="info-value">{{ model.lblCurrentProduct }}</div>
+    </div>
+  </div>
+
+  <!-- === Section 2: Personal Info === -->
+  <div class="invoice-section">
+    <div class="section-title">Personal Information</div>
+    <div class="info-grid">
+      <div class="info-label">Register Name:</div>
+      <div class="info-value">{{ model.lblRegisterName }}</div>
+      <div class="info-label">NIC:</div>
+      <div class="info-value">{{ model.lblNIC }}</div>
+
+      <div class="info-label">User Name:</div>
+      <div class="info-value">{{ model.lblUserName }}</div>
+      <div class="info-label">CNIC:</div>
+      <div class="info-value">{{ model.lblCNIC }}</div>
+
+      <div class="info-label">Email:</div>
+      <div class="info-value">{{ model.lblEmail }}</div>
+      <div class="info-label">Passport #:</div>
+      <div class="info-value">{{ model.lblPassport }}</div>
+
+      <div class="info-label">Address 1:</div>
+      <div class="info-value">{{ model.lblAddres1 }}</div>
+      <div class="info-label">Tel (Res):</div>
+      <div class="info-value">{{ model.lblTelres }}</div>
+
+      <div class="info-label">Address 2:</div>
+      <div class="info-value">{{ model.lblAddres2 }}</div>
+      <div class="info-label">Tel (Off):</div>
+      <div class="info-value">{{ model.lblTeloff }}</div>
+
+      <div class="info-label">Other ID:</div>
+      <div class="info-value">{{ model.lblOther }}</div>
+      <div class="info-label">Ext #:</div>
+      <div class="info-value">{{ model.lblExt }}</div>
+    </div>
+  </div>
+
+  <!-- === Section 3: Product Info === -->
+  <div class="invoice-section">
+    <div class="section-title">Product Information</div>
+    <div class="info-grid">
+      <div class="info-label">Base Location:</div>
+      <div class="info-value">{{ model.lblBaseLocationNew }}</div>
+      <div class="info-label">New Product:</div>
+      <div class="info-value">{{ model.lblNewProductType }}</div>
+
+      <div class="info-label">New IMSI #:</div>
+      <div class="info-value">{{ model.lblNewICCID }}</div>
+      <div class="info-label">Franchisee:</div>
+      <div class="info-value">{{ model.LblFranchisee }}</div>
+
+      <div class="info-label">Tariff Plan:</div>
+      <div class="info-value">{{ model.lblTariff }}</div>
+      <div class="info-label">Associated #:</div>
+      <div class="info-value">{{ model.lblAssociate1 }}</div>
+
+      <div class="info-label">Access ID:</div>
+      <div class="info-value">{{ model.lblAccessID }}</div>
+      <div class="info-label">Wavier Code:</div>
+      <div class="info-value">{{ model.LblWavierCode }}</div>
+    </div>
+  </div>
+
+  <!-- === Section 4: Port-in Charges === -->
+  <div class="invoice-section">
+    <div class="section-title">Port-In Charges</div>
+    <table class="charges-table">
+      <thead>
+        <tr>
+          <th>Charge Type</th>
+          <th>Fee</th>
+          <th>Waiver</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Port-in Fee</td>
+          <td>{{ model.lblportinfee }}</td>
+          <td>{{ model.lblWPIF }}</td>
+          <td>{{ model.lblPIFAmount }}</td>
+        </tr>
+        <tr>
+          <td>Handset Charges</td>
+          <td>{{ model.lblHSCharges }}</td>
+          <td>{{ model.lblWHS }}</td>
+          <td>{{ model.lblHSAmount }}</td>
+        </tr>
+        <tr>
+          <td>Security Deposit</td>
+          <td>{{ model.lblSecurityDeposit }}</td>
+          <td>{{ model.lblWSD }}</td>
+          <td>{{ model.lblWSDAmount }}</td>
+        </tr>
+        <tr>
+          <td>Line Rent</td>
+          <td>{{ model.lblLinerent }}</td>
+          <td>{{ model.lblWLR }}</td>
+          <td>{{ model.lblWLRAmount }}</td>
+        </tr>
+        <tr>
+          <td><strong>Total Amount</strong></td>
+          <td colspan="2"></td>
+          <td><strong>{{ model.lblTotalAmount }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- === Print Button === -->
+  <div class="print-btn">
+    <button class="btn-print" (click)="printPage()">🖨 Print Invoice</button>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">Loading...</div>

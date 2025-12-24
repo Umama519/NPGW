@@ -1,0 +1,405 @@
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <br />
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+        </div>
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" >Mobile Number :</label>
+                <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
+            </div>
+        </div> 
+        <div class="col-lg-6 col-sm-6">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Print()">
+                <i class="bi bi-arrow-repeat"></i> Print
+            </button>
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-repeat"></i> Reset
+            </button>
+        </div>
+    </div>           
+    <br>    
+    <div class="page-header headingCaption">
+        NPR Information
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                ONO :
+                <span class="label-text">{{lblONO}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <!-- <label class="label-css">Mobile : {{lblMobile}}</label> -->
+                <label class="label-css">
+                Mobile :
+                <span class="label-text">{{lblMobile}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css" >Base Location : 
+                <span class="label-text">{{lblBaseLocation}}</span>    
+            </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                DNO :
+                <span class="label-text">{{lblDNO}}</span>
+                </label>
+            </div>
+        </div> 
+         <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Old Product Type :
+                <span class="label-text">{{lblProduct}}</span>
+                </label>
+            </div>
+        </div> 
+         <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                OLD IMSI#/ICCID :
+                <span class="label-text">{{lblOldImsi}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <br>
+    <div class="page-header headingCaption">
+        Personal Information
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Register Name :
+                <span class="label-text">{{lblRegname}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Address 1 :
+                <span class="label-text">{{lblAddres1}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Tel # (Res) :
+                <span class="label-text">{{lblTellRes}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                User Name :
+                <span class="label-text">{{lblUserName}}</span>
+                </label>
+            </div>
+        </div> 
+         <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Address 2 :
+                <span class="label-text">{{lblAddres2}}</span>
+                </label>
+            </div>
+        </div> 
+         <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Tel # (Off) :
+                <span class="label-text">{{lblTellOff}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Email :
+                <span class="label-text">{{lblEmail}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Address 3 :
+                <span class="label-text">{{lblAddres3}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Ext # :
+                <span class="label-text">{{lblExt}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Select ID Category :
+                <span class="label-text">{{lblSelectID}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Address 4 :
+                <span class="label-text">{{lblAddres4}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                FAX # :
+                <span class="label-text">{{lblFax}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                CNIC : Other ID :
+                <span class="label-text">{{lblCnic}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                City :
+                <span class="label-text">{{lblCity}}</span>
+                </label>
+            </div>
+        </div>
+    </div>    
+    <br>
+    <div class="page-header headingCaption">
+        Product Information
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Base Location :
+                <span class="label-text">{{lblBaseLocation}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                New Product Type :
+                <span class="label-text">{{lblNewProduct}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Associated # 1 :
+                <span class="label-text">{{lblAssociate1}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                New IMSI#/ ICCID# :
+                <span class="label-text">{{lblNewImsi}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Tariff Plan :
+                <span class="label-text">{{lblTariff}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Associated # 2 :
+                <span class="label-text">{{lblAssociate2}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Franchisee ID :
+                <span class="label-text">{{lblFranchise}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Access ID :
+                <span class="label-text">{{lblAccess}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                With Handset :
+                <span class="label-text">{{lblHandSet}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                CSR ID :
+                <span class="label-text">{{lblCSR}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <br>
+    <div class="page-header headingCaption">
+        Port-In Charges
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="label-css">
+                Port-In Fee :
+                <span class="label-text"></span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="label-css">
+                Charges :
+                <span class="label-text">{{lblPortFee}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="label-css">
+                Waiver :
+                <span class="label-text">{{lblWPIF}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="label-css">
+                Amount :
+                <span class="label-text">{{lblPIFAmount}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="label-css">
+                Security Deposit :
+                <span class="label-text">{{lblSecurityDeposit}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <span class="label-text">{{lblWSD}}</span>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <span class="label-text">{{lblWSDAmount}}</span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="label-css">
+                Line Rent :	
+                <span class="label-text">{{lblLinerent}}</span>
+                </label>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <span class="label-text">{{lblWLR}}</span>
+            </div>
+        </div> 
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <span class="label-text">{{lblWLRAmount}}</span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="label-css">
+                Total Amount :
+                <span class="label-text">{{lblTotalAmount}}</span>
+                </label>
+            </div>
+        </div> 
+    </div>
+    <br>
+</div>

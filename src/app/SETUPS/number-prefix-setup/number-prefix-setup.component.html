@@ -1,0 +1,243 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <div class="row" style="margin-left: -13px;">
+        <div class="col-lg-12 col-sm-12">
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;"   *ngIf="showAddButton" (click)="AddButton()" >
+                <i class="bi bi-plus-circle"></i> Add New
+            </button>
+
+            <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" *ngIf="showSubmitButton" (click)="submitButton()">
+                <i class="bi bi-check-circle"></i> Submit
+            </button>            
+            <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" *ngIf="showResetButton" (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+
+        </div>
+    </div>
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <span>{{ errmessage }}</span>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-2 col-sm-2">
+  <div class="form-group">
+  <label class="labelcss"  >Dial Code :</label>
+
+  <div style="display: flex; align-items: center;">
+    <input 
+      id="txt_DialCode" 
+      class="form-controlA" 
+      [(ngModel)]="selectedDialCode" 
+      name="txt_DialCode"
+      maxlength="10"
+      style="flex: 1; border-radius: 0px;" 
+    />
+
+    <button id="btn_Search" 
+            class="searchInputStyle"    (click)="searchButton()"   >
+     <i class="bi bi-search srcicon"></i>
+
+    </button>
+  </div>
+</div>
+
+  
+</div>
+
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss"  >City ID :</label>
+                <input ID="txt_CityID" class="form-controlA" name="txt_CityID" [(ngModel)]="selectedCityID" disabled
+                    MaxLength="10" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss"  >City Name :</label>
+                <input ID="txt_CityName" class="form-controlA" name="txt_CityName" [(ngModel)]="selectedCityName" disabled
+                    MaxLength="100" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss"  >IMSI Prefix :</label>
+                <input ID="txt_IMSI" class="form-controlA" name="txt_IMSI" [(ngModel)]="selectedCityIMSIPrefix" disabled
+                    MaxLength="2" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss"  >MNP HLR :</label>
+                <input ID="txt_MNP" class="form-controlA" name="txt_MNP" [(ngModel)]="selectedCityMNPHLR" disabled
+                    MaxLength="20" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss"  >Bussiness Unit :</label>
+                <input ID="txt_Buissunit" class="form-controlA" name="txt_Buissunit" [(ngModel)]="selectedBussinessUnit" disabled
+                    MaxLength="30" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- Displaying a button to trigger the Excel export functionality -->
+    
+        <!-- <a (click)="exportToExcel('DEPARTMENT_SETUP')" mat-raised-button color="primary" 
+         >
+         <img height="30px" width="30px"   src="/Images/SaveToExcel.png" alt="Edit">
+    </a> -->
+
+        <!-- Optionally, display a progress bar while export is happening -->
+        <!-- <mat-progress-bar *ngIf="isExporting" mode="indeterminate"></mat-progress-bar> -->    
+
+
+    <div class="row " style="width: 109%; margin-left: -3px;">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div>
+                    <!-- <div
+                        style="display: flex; justify-content: flex-end; font-size: 11px; font-weight: 700; gap: 6px; margin-bottom: 10px;">                    
+                        <span style="cursor: pointer; font-weight: 700;">
+                            <i class="fas fa-save fs-6" style="margin-right: 5px;"></i>
+                        </span>                    
+
+
+                    </div> -->
+                    <!-- department.component.html -->
+                    <table class="tableA table-condensed GridViewStyle">
+                        <thead>
+                            <tr class="HeaderStyleA">
+                                <th class="tdCenter back">Dial Code</th>
+                                <th class="back">City ID</th>
+                                <th class="back">City Name</th>
+                                <th class="back">IMSI Prefix</th>
+                                <th class="back">MNP HLR</th>
+                                <th class="back">Bussiness Unit ID</th>
+                                <th class="back">USER ID</th>
+                                <th class="back">USER DATE</th>
+                                <th class="back">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr (click)="edit(row)"  class="RowStyleA" *ngFor="let row of NumberPrefixGet; let i = index"
+                                [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                                [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                                <td> {{ row.dialcode }}</td>
+                                <td class="tdLeft">{{ row.cityid }}</td>
+                                <td> {{ row.cityname }}</td>
+                                <td> {{ row.imsiprefix }}</td>
+                                <td> {{ row.mnphlr }}</td>
+                                <td> {{ row.bussinessunit }}</td>
+                                <td>{{ row.defBy }}</td>
+                                <td>{{ row.defDate }}</td>
+                                <td>
+                                      <a (click)="confirmDelete(row.dialcode)">
+                                        <svg class="custom-crossA" viewBox="0 0 100 100">
+                                            <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15"
+                                                stroke-linecap="round" />
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                                
+                    <div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" aria-hidden="true"
+                        *ngIf="showModal">
+                        <div class="modal-dialogA" role="document">
+                            <div class="modal-contentA">
+                                <div class="modal-headerA">
+                                    <h5 class="modal-titleA" style="margin-top: -4%; font-size: 17px">Confirm Deletion
+                                    </h5>
+                                </div>
+                                <div class="modal-bodyA">
+                                    <p>Are you sure you want to delete this record?</p>
+                                </div>
+                                <div class="modal-footerA">
+                                    <button type="button" style="border-radius: 0px;" class="btn btn-secondary"
+                                        (click)="closeModal()">No</button>
+                                    <button type="button" style="border-radius: 0px;" class="btn btn-danger"
+                                      (click)="deleteRecord()">
+                                        Yes, Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="row" >
+        <div class="col-md-12 col-lg-12">
+            <div class="panel-default">
+                <div class="panel-body">
+
+                    <div id="div_Excel"  class="row" >
+                        <div class="pull-right" style="margin-right: 25px">
+                            <a ID="lbk_Log"  style="color: #10486b; font-size: 12px;"
+                                Font-Bold="true">View Log
+                            </a>&nbsp;&nbsp;&nbsp;
+                            <label ID="lbl_text" Font-Bold="true"
+                            style="color: #10486b; font-size: 13px;">Save to :</label>
+                            <a ID="imgbtn_Export" style="color: #10486b; font-size: 12px;"
+                                
+                                >Excel</a>
+                            <label ID="Label12" style="color: #10486b; font-size: 12px;">|</label>
+                            <a ID="imgbtn_CSV" style="color: #10486b; font-size: 12px;"
+                                
+                                >CSV</a>
+                            <label ID="Label13" Font-Bold="true" Font-Size="19PX; font-size: 12px;"
+                            style="color: #10486b">|</label>
+                            <a ID="imgbtn_PDF" style="color: #10486b; font-size: 12px;">PDF
+                            </a>
+
+                        </div>
+                    </div>
+  
+
+                </div>
+            </div>
+        </div>
+    </div> -->

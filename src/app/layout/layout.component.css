@@ -1,0 +1,995 @@
+  /* General Styling */
+  .img{
+    width: 200px; 
+    height: 50px; 
+    margin-left: 15px;
+    cursor: pointer
+  }
+
+.logout-item .nav-link {
+  color: #10486b;
+  font-family: 'Calibri', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.logout-item .nav-link:hover {
+  background-color: #f0f4f8;
+  color: #0a3d62;
+  text-decoration: none;
+}
+
+.logout-item .logout-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.logout-item .nav-link.active {
+  background-color: #e6f2ff;
+  color: #0a3d62;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  left: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+
+
+.custom-navbar {
+  height: 60px;
+  border-bottom: 1px solid #cccccc;
+  background-color: #ffffff;
+  font-family: Calibri, sans-serif;
+  font-weight: 600;
+  z-index: 1000; /* to stay on top */
+
+  /* Stronger and clearer shadow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  padding-top: 60px; /* adjust page content to not hide behind navbar */
+}
+.nav-item .nav-link {
+  position: relative;
+  display: inline-block;
+  padding: 10px 15px;   /* normal spacing */
+  color: #10486b !important;
+  font-family: calibri;
+  font-weight: 800;
+  font-size: large;
+  transition: all 0.0s ease;
+  z-index: 1; /* text always upar rahe */
+}
+
+/* Background effect by default transparent */
+.nav-item .nav-link::before {
+  content: "";
+  position: absolute;
+  top: -10px;     /* upar extra space */
+  bottom: -10px;  /* neeche extra space */
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  border-radius: 0px;
+  transition: background-color 0.0s ease;
+  z-index: -1; /* peeche rahe */
+}
+
+/* Hover ya Active pe background show */
+.nav-item .nav-link:hover::before,
+.nav-item .nav-link.active::before {
+  background-color: #10486b;
+}
+/* ✅ Subchild spacing aur alignment fix */ 
+@media (max-width: 991px) {
+  /* Subchild list container thoda tight */
+  .dropdown-submenu.mega-dropdown-menu {
+    margin-left: 15px !important; /* child se thoda right shift */
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* Subchild list items ka spacing kam */
+  .dropdown-submenu.mega-dropdown-menu li.dropdown-item {
+    padding: 4px 6px !important; /* vertical spacing reduce */
+    margin: 0 !important;
+  }
+
+  /* Subchild anchor style */
+  .dropdown-submenu.mega-dropdown-menu li.dropdown-item a {
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    color: #10486b !important;
+    display: block;
+  }
+
+  /* Hover effect thoda subtle rakho */
+  .dropdown-submenu.mega-dropdown-menu li.dropdown-item a:hover {
+    background-color: #f1f1f1 !important;
+    color: #097ef7 !important;
+    border-radius: 4px;
+  }
+
+  /* Subchild group ke andar divider jaisa look */
+  .dropdown-submenu.mega-dropdown-menu li.dropdown-item:not(:last-child) {
+    border-bottom: 1px solid #eee !important;
+  }
+}
+
+/* Text color hover/active pe white ho jaye */
+.nav-item .nav-link:hover,
+.nav-item .nav-link.active {
+  color: white !important;
+}
+
+
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column !important; /* dropdowns vertical */
+    align-items: flex-start !important; /* left align */
+  }
+
+  .navbar-nav .nav-item {
+    width: 100%;
+  }
+
+  .navbar-nav .nav-link {
+    text-align: left;
+    width: 100%;
+  }
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background-color: #10486b !important;
+    padding: 10px;
+    border-radius: 4px; 
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .mega-dropdown-menu {
+    display: none !important;
+    position: relative;
+    box-shadow: none;
+    border: none;
+    background: none;
+  }
+
+  .nav-item:hover .mega-dropdown-menu {
+    display: block !important;
+  }
+}
+.mega-dropdown-menu {
+  display: none;
+}
+
+.mega-dropdown-menu.show {
+  display: block;
+}
+  .dropdown-submenu {
+    
+    margin-left: 15px !important;
+  }
+
+
+}
+/* Default (PC/Desktop) view ke liye */
+.container {
+  margin-left: 0;
+}
+
+/* Mobile view ke liye */
+@media (max-width: 768px) {
+  .container {
+    margin-left: -26px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .newbtn,
+  .newbtndisable {
+    margin-left: 6px !important;
+  }
+
+  .row {
+    margin-left: 0px !important;
+  }
+}
+.navbar-toggler-icon {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.textS{
+  font-size: 14px; 
+  margin-left: 69%; 
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+@media (min-width: 992px) {
+  .navbar {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+}
+.textd {
+  font-family: Calibri;
+  font-size: 13px;
+  font-weight: 500;
+  color: #10486b;
+}
+
+.textU {
+  font-weight: bold;
+  color: #007bff;
+  
+}
+
+.textL {
+  font-family: Calibri, sans-serif;
+  font-size: 13px;
+  color: #333;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.navbar {
+  /* background-color: #0f3f5d; */
+  padding: 10px 30px;
+   padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: static;
+  /* Change static to relative */  
+}
+
+.nav-link {
+  color: #e9e1df;
+  text-decoration: none;
+  padding: 10px 15px;
+  font-size: 12px;
+  display: block;
+
+}
+
+.nav-linkH {
+  color: #e9e1df;
+  text-decoration: none;
+  padding: 10px 7px;
+  font-size: 12px;
+  display: block;  /* General Styling */
+
+
+.bs-hover:hover .dropdown-menu {
+  display: flex;
+}
+.logout-item .nav-link {
+  color: #10486b;
+  font-family: 'Calibri', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.logout-item .nav-link:hover {
+  background-color: #f0f4f8;
+  color: #0a3d62;
+  text-decoration: none;
+}
+
+.logout-item .nav-link.active {
+  background-color: #e6f2ff;
+  color: #0a3d62;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  left: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+
+.textd {
+  font-family: Calibri, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.textU {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.textL {
+  font-family: Calibri, sans-serif;
+  font-size: 13px;
+  color: #333;
+}
+
+.custom-navbar {
+  height: 60px;
+  border-bottom: 1px solid #cccccc;
+  background-color: #ffffff;
+  font-family: Calibri, sans-serif;
+  font-weight: 600;
+  z-index: 1000; /* to stay on top */
+
+  /* Stronger and clearer shadow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+body {
+  font-family: Calibri;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+}
+
+
+
+/* Default (PC/Desktop) view ke liye */
+.container {
+  margin-left: 0;
+}
+
+/* Mobile view ke liye */
+@media (max-width: 768px) {
+  .container {
+    margin-left: -26px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .newbtn,
+  .newbtndisable {
+    margin-left: 6px !important;
+  }
+
+  .row {
+    margin-left: 0px !important;
+  }
+}
+.navbar-toggler-icon {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.textS{
+  font-size: 14px; 
+  margin-left: 69%; 
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+@media (min-width: 992px) {
+  .navbar {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+}
+.textd {
+  font-family: Calibri;
+  font-size: 13px;
+  color: #10486b;
+}
+
+.textU {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.textL {
+  font-size: 10px;
+  color: #555;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.navbar {
+  /* background-color: #0f3f5d; */
+  padding: 10px 30px;
+   padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: static;
+  /* Change static to relative */  
+}
+
+.nav-link {
+  color: #e9e1df;
+  text-decoration: none;
+  padding: 10px 15px;
+  font-size: 12px;
+  display: block;
+
+}
+
+.nav-linkH {
+  color: #e9e1df;
+  text-decoration: none;
+  padding: 10px 7px;
+  font-size: 12px;
+  display: block;
+  cursor: pointer;
+}
+.nav-link.active {
+  /* background-color: #e07101; */
+  background-color: #f3f3f3;
+  color: white;
+}
+.nav-link:hover {
+  color: white;
+  background-color: #f3f3f3;
+}
+
+
+
+
+.bs-hover:hover .dropdown-menu {
+  display: flex !important;
+}
+
+
+ 
+   .mega-dropdown-menu form {
+     margin: 3px 1px;
+   }
+ 
+   .mega-dropdown-menu .form-group {
+     margin-bottom: 3px;
+   }
+   .HeaderS{
+    line-height: 32px; 
+    font-family: 'Calibri'; 
+    font-size: 13px; 
+    cursor: pointer;
+   }
+   .HeaderC{
+    /* color: rgb(224,113,1);  */
+    color: #097ef7; 
+    font-family: Arial, Helvetica, sans-serif; 
+    
+    
+    margin-left: 2%; 
+    text-decoration: none; 
+    border-bottom: 1px solid;
+   }
+ 
+
+  cursor: pointer;
+}
+
+
+.dropdown-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dropdown-column li {
+  margin-bottom: 5px;
+}
+
+.dropdown-column a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+/* Default nav item color */
+.navbar-nav .nav-link {
+  
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* Jab hovered ho ya selected ho */
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.navbar-nav .nav-link:hover {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background-color: #10486b !important;
+  color: white !important;
+  
+}
+
+
+.dropdown-column a:hover {
+  color: #e07101;
+  text-decoration: underline;
+}
+
+* {
+  margin: 0px;
+  padding: -1px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+.dropdown-item:focus, .dropdown-item:hover
+{
+  background-color: #f3f3f3;
+}
+a {
+  font-family: Ubuntu-Regular;
+  /* font-size: 14px; */  
+  line-height: 1.3;
+  color: #ee7939;
+  text-underline-position: auto;
+  margin: -1px;
+  font-family: sans-serif;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+
+}
+  .mega-dropdown {
+     position: fixed !important;
+     width: 100%;
+   }
+ 
+   .mega-dropdown-menu {
+     padding: 0px 0px;
+     border: 1px gray slategrey;
+     width: 100%;
+     /* background-color: rgb(245, 245, 245);*/
+     background-color: rgb(243, 243, 243);
+ 
+   }
+ 
+   .mega-dropdown-menu:before {
+     content: "";
+     /*border-bottom: 15px solid #fff;*/
+     border-right: 17px solid transparent;
+     border-left: 17px solid transparent;
+ 
+     position: fixed;
+     top: -15px;
+     left: 285px;
+     z-index: 10;
+   }
+ 
+   .mega-dropdown-menu:after {
+     content: "";
+     /*border-bottom: 17px solid #ccc;*/
+     border-right: 19px solid transparent;
+     border-left: 19px solid transparent;
+     position: fixed;
+     top: -10px;
+     left: 283px;
+     z-index: 8;
+   }
+ 
+   .mega-dropdown-menu>li>ul {
+     padding: 0;
+     margin: 0;
+   }
+ 
+   .mega-dropdown-menu>li>ul>li {
+     list-style: none;
+   }
+ 
+   .mega-dropdown-menu>li>ul>li>a {
+     display: block;
+     padding: 0px 0px 0px 0px;
+     clear: both;
+     font-weight: normal;
+     line-height: 0.7;
+     color: rgb(16, 72, 107);
+     white-space: normal;
+     font-family: Arial, Helvetica, sans-serif;
+     font-size: 12px;
+     text-decoration: none;
+     /* Remove underline */
+   }
+ 
+   .mega-dropdown-menu>li ul>li>a:hover,
+   .mega-dropdown-menu>li ul>li>a:focus {
+     text-decoration: none;
+     /* Remove underline on hover or focus */
+     /* color: #ee7939; */
+     color: #097ef7;
+   }
+ 
+   .mega-dropdown-menu .dropdown-header {
+     color: rgb(224, 113, 1);
+     /* Text color */
+     border-bottom: solid;
+     /* Underline style */
+     border-width: 1px;
+     /* Thickness of underline */
+     font-size: 17px;
+     /* Font size */    
+     font-weight: normal;
+     /* Font weight */
+     margin-bottom: 2px;
+     /* Adjust distance from underline */
+   }
+ 
+   .mega-dropdown-menu form {
+     margin: 3px 1px;
+   }
+ 
+   .mega-dropdown-menu .form-group {
+     margin-bottom: 3px;
+   }
+   .HeaderS{
+    line-height: 32px; 
+    font-family: 'Calibri'; 
+    font-size: 13px; 
+    cursor: pointer;
+   }
+   
+   .HeaderC{
+    /* color: rgb(224,113,1);  */
+    color: #097ef7; 
+    font-family: Arial, Helvetica, sans-serif; 
+    
+    
+    margin-left: 2%; 
+    text-decoration: none; 
+    border-bottom: 1px solid;
+   }
+   @media (max-width: 991px) {
+
+    /* Navbar collapse background */
+    #mynavbar {
+      background-color: #ffffff !important;
+      padding: 10px 0;
+    }
+
+    /* Parent links */
+    .navbar-nav .nav-item a.nav-link,
+    .navbar-nav .nav-item a.g1-parent {
+      color: #10486b !important;
+      background-color: #ffffff !important;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    /* ✅ Prevent header color change on click */
+    .navbar-nav .nav-item a.nav-link.active,
+    .navbar-nav .nav-item a.g1-parent.active {
+      background-color: #ffffff !important;
+      color: #10486b !important;
+    }
+
+    /* Child dropdown background */
+    .mega-dropdown-menu {
+      background-color: #ffffff !important;
+      border: 1px solid #ddd !important;
+      padding: 8px 12px;
+      box-shadow: none !important;
+    }
+
+    /* Child items */
+    .mega-dropdown-menu li.dropdown-item a {
+      background-color: #ffffff !important;
+      color: #10486b !important;
+      padding: 6px 10px;
+    }
+
+    /* Sub-child items */
+    .dropdown-submenu.mega-dropdown-menu {
+      background-color: #ffffff !important;
+      border-left: 2px solid #eee;
+      margin-left: 10px;
+    }
+
+    .dropdown-submenu.mega-dropdown-menu li.dropdown-item a {
+      background-color: #ffffff !important;
+      color: #10486b !important;
+    }
+
+    /* Hover effect */
+    .mega-dropdown-menu li.dropdown-item a:hover,
+    .dropdown-submenu.mega-dropdown-menu li.dropdown-item a:hover {
+        background-color: #f1f1f1 !important;
+    color: #097ef7 !important;
+    font-weight: bold !important; /* font bold */
+    font-size: inherit !important; /* font-size same rahe */
+    transform: none !important; /* scale effect remove */
+      
+    }
+  }
+
+  @media (max-width: 991px) {
+
+    .mega-dropdown-menu li.dropdown-item a:active,
+    .mega-dropdown-menu li.dropdown-item a:focus {
+      background-color: transparent !important; 
+      color: #10486b !important;
+    }
+  }
+
+
+  .mega-dropdown-menu {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-rows: minmax(30px, auto);    
+    grid-template-rows: repeat(8, auto);    
+    padding: 12px;
+    margin-top: 13px;
+    background: #fff;
+    border: 0px solid #ccc;
+    min-width: 600px;
+    /* dropdown ki width barhao */
+    z-index: 9999;
+  }
+
+  .navbar-nav .nav-item a.nav-link,
+  .navbar-nav .nav-item a.g1-parent {
+    font-family: calibri;
+    font-weight: 200;
+    font-size: medium;
+    /* agar chhota lag raha ho to "16px" ya "1rem" use karo */
+    color: #10486b;
+    display: block;
+    /* dropdown me proper width lena ke liye */
+    padding: 8px 12px;
+    /* text ko space dene ke liye */
+  }
+.dropdown-menu .dropdown-item a {
+  color: #10486b;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.2em; /* 👈 text height fix */
+  letter-spacing: 0.02em; /* 👈 text spacing fix */
+  transition: color 0.2s ease, background-color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+  /* Sirf dropdown ke text hover par red hoga */
+.dropdown-menu .dropdown-item a:hover {
+  color: #086edb !important;
+  text-shadow: 0 0 0.3px #086edb;
+
+  background-color: transparent !important;
+  font-weight: 500 !important; /* 👈 same rakho — bold mat karo */
+  transform: none !important;
+  letter-spacing: 0.02em !important; /* 👈 same as normal */
+  text-rendering: geometricPrecision;
+}
+
+
+
+
+  .dropdown-menu .dropdown-item:hover {
+    background-color: transparent !important;
+    /* Gray background remove */
+  }
+
+  .mega-dropdown-menu li.dropdown-item {
+    display: block;
+    padding: 4px 8px;
+  }
+
+  .dropdown-submenu.mega-dropdown-menu {
+    margin-left: 15px;
+    gap: 5px;
+  }
+
+  .mega-dropdown-menu li.dropdown-item a {
+    color: #10486b;
+    font-weight: 400;
+    text-decoration: none;
+    display: block;
+  }
+
+  .mega-dropdown-menu li.dropdown-item a:hover {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+  }
+.mega-dropdown-menu {
+  display: grid !important;
+  grid-template-columns: repeat(9, auto);   /* 👈 1 row me 10 items */
+  column-gap: 10px;
+  padding: 10px;
+  background: white;
+  z-index: 9999;   
+  grid-auto-flow: column;
+  grid-template-rows: repeat(10, auto);    
+  border: 0;  
+  margin-top: 13px;  
+}
+
+  .navbar-nav .nav-item a.nav-link,
+  .navbar-nav .nav-item a.g1-parent {
+    font-family: calibri;
+    font-weight: bolder;
+    font-size: medium;
+    color: #10486b;
+    transition: color 0.2s, font-weight 0.2s;
+  }
+
+  .navbar-nav .nav-item a.nav-link:hover,
+  .navbar-nav .nav-item a.nav-link.active,
+  .navbar-nav .nav-item a.g1-parent:hover,
+  .navbar-nav .nav-item a.g1-parent.active {
+    color: #097ef7;
+    font-weight: 800;
+  }
+
+
+
+  .language-dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 15px;
+    list-style: none;
+    margin-left: 64%;
+    margin-top: 40%;
+  }
+
+  .language-dropdown li {
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .mega-dropdown-menu li.dropdown-item {
+    display: block;
+    padding: 4px 8px;
+    padding-left: 20px;
+    /* <-- item ko right side shift */
+  }
+
+  .dropdown-submenu.mega-dropdown-menu {
+    margin-left: 5px;
+    /* <-- sub-children ko aur right shift */
+    gap: 5px;
+  }
+
+  .globe-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .globe-btn:hover i {
+    color: #254d77;
+
+  }
+
+  .language-dropdown {
+    position: absolute;
+    top: 40px;
+    /* globe button ke thoda niche */
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0;
+    margin: 0;
+    width: 160px;
+    z-index: 1000;
+  }
+
+  .language-dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .language-dropdown li:hover {
+    background: #f1f1f1;
+  }
+
+  /* ✅ Remove blue background on header click in mobile view */
+  @media (max-width: 991px) {
+
+    .navbar-nav .nav-link:active,
+    .navbar-nav .nav-link:focus {
+      background-color: transparent !important;
+      color: #10486b !important;
+      outline: none !important;
+    }
+  }
+  .lay-footer{
+    margin-left:15px;
+    color:#0d4365;
+    font-weight: 500;
+    font-size:14px;
+  }
+  .addQuick{
+    margin:0 2%;
+    color:#10486b;
+    font-family:calibri;
+    font-weight:bold;
+    font-size:12px;
+  }
+  .addQuickD{
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+  }
+.Mymenu {
+  cursor: pointer;
+  margin: 0;
+  font-weight: bolder;
+  color: #10486b;
+  transition: color 0.2s ease-in-out;
+}
+
+.Mymenu:hover {
+  color: #097ef7;
+}
+.addimg{
+  margin-top:-2px; 
+  color:#10486b;
+  height:10px;
+  width:10px;
+}
+.layerr{
+  font-size: 22px !important;
+   margin-right: 12px;
+}
+.err{
+    min-width: 70px; 
+    max-width: 80%; 
+    padding: 10px 20px; 
+    font-size: 15px !important; 
+    font-weight: bold; 
+    line-height: 1.2;
+}
+.Succ{
+    position: fixed; 
+    top: 90px; 
+    left: 30px; 
+    z-index: 999999; 
+    background: transparent;
+}
+.popup{
+    font-size: 15px !important; 
+    display: inline-block; 
+    vertical-align: middle;
+}
+.loguser{
+    font-size: 17px; 
+    vertical-align: middle; 
+    margin-right: 5px;
+}
+.con{
+    margin-top:60px;
+}

@@ -1,0 +1,29 @@
+<!-- <div class="dropdown-wrapper" style="position: relative;">
+<input type="text" 
+       [placeholder]="placeholder" 
+       [value]="searchQuery"
+       (click)="toggleDropdown($event)" 
+       (input)="onInputChange($event)"
+       class="form-control" />
+
+
+  <ul *ngIf="showDropdown" 
+      style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; max-height: 200px; overflow-y: auto; z-index: 1000;">
+    <li *ngFor="let item of filteredList" 
+        (mousedown)="selectItem(item)"
+        style="padding: 5px 10px; cursor: pointer;">
+      {{ item.descs }}
+    </li>
+  </ul>
+</div> -->
+<div id="loader" *ngIf="loaderService.loading$ | async">
+  <div class="loader-overlay">
+    <div class="loader">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+</div>

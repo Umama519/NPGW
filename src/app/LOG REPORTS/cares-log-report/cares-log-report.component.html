@@ -1,0 +1,180 @@
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <!-- <div class="page-header headingCaption">
+        Selected Criteria
+    </div> -->
+    <!-- <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-12 col-sm-12">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+    </div> -->
+    <br />
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" >Form Date :</label>
+                <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" >To Date :</label>
+                <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
+            </div>
+        </div>  
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss" >Mobile # :</label>
+                <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
+            </div>
+        </div> 
+        <div class="col-lg-1 col-sm-1">
+            <div class="form-group">
+                <label class="labelcss">Extract Output :</label>
+                <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
+                    [disabled]="lovDisabled">
+                </app-global-lov>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-3">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+        <!-- <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Extract Output :</label><br>
+
+                <span class="excel-span">
+                    <input id="rhb_Screen" checked value="S" type="radio" name="extractOutput"
+                    class="excel" />
+                    <label class="labelcss">On Screen</label>
+                </span>
+
+                <span  class="excel-span">
+                    <input id="rhb_File" value="F" type="radio" name="extractOutput"
+                    class="excel" />
+                    <label class="labelcss">On File</label>
+                </span>
+            </div>
+        </div>-->
+    </div>           
+    <br>    
+    <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="Cares.length > 0">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div class="grid-scroll">
+                <table class="tableA table-condensed GridViewStyle">
+                    <thead>
+                        <tr class="HeaderStyleA">
+                            <th class="tdCenter">Msisdn</th>
+                            <th class="tdCenter">Imsi</th>
+                            <th class="tdCenter">Customer Name</th>
+                            <th class="tdCenter">NIC</th>
+                            <th class="tdCenter">NIC Type</th>
+                            <th class="tdCenter">Gender</th>
+                            <th class="tdCenter">Package ID</th>
+                            <th class="tdCenter">Access Level</th>
+                            <th class="tdCenter">Copper Person</th>
+                            <th class="tdCenter">VASSTR</th>
+                            <th class="tdCenter">Payment Mode</th>
+                            <th class="tdCenter">Waiver Code</th>
+                            <th class="tdCenter">Waiver Amount</th>
+                            <th class="tdCenter">Extra Deposit</th>
+                            <th class="tdCenter">Advance Bill</th>
+                            <th class="tdCenter">Cheque Number</th>
+                            <th class="tdCenter">Cheque Date</th>
+                            <th class="tdCenter">Bank Name</th>
+                            <th class="tdCenter">Other Descrip</th>
+                            <th class="tdCenter">Special Amount</th>
+                            <th class="tdCenter">Vas Amount</th>
+                            <th class="tdCenter">Cradit Amount</th>
+                            <th class="tdCenter">Discount Amount</th>
+                            <th class="tdCenter">Prov Tax</th>
+                            <th class="tdCenter">Porting Charges</th>
+                            <th class="tdCenter">Total Paid</th>
+                            <th class="tdCenter">Franchise Code</th>
+                            <th class="tdCenter">Error Message</th>
+                            <th class="tdCenter">Operator ID</th>
+                            <th class="tdCenter">Return Flag</th>
+                            <th class="tdCenter">User ID</th>
+                            <th class="tdCenter">Error Code</th>
+                            <th class="tdCenter">Start Date</th>
+                            <th class="tdCenter">Product</th>
+                            <th class="tdCenter">Secuirty</th>
+                            <th class="tdCenter">Donor</th>
+                            <th class="tdCenter">Log Date</th>
+                            <th class="tdCenter">Cares Interface</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="RowStyleA" *ngFor="let row of Cares; let i = index"
+                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                            <td class="tdCenter">{{ row.msisdn }}</td>
+                            <td class="tdCenter">{{ row.imsi }}</td>
+                            <td class="tdCenter">{{ row.custname }}</td>
+                            <td class="tdCenter">{{ row.nic }}</td>
+                            <td class="tdCenter">{{ row.nictype }}</td>
+                            <td class="tdCenter">{{ row.gender }}</td>
+                            <td class="tdCenter">{{ row.packageid }}</td>
+                            <td class="tdCenter">{{ row.accesslevel }}</td>
+                            <td class="tdCenter">{{ row.corpperson }}</td>
+                            <td class="tdCenter">{{ row.vasstr }}</td>
+                            <td class="tdCenter">{{ row.paymentmode }}</td>
+                            <td class="tdCenter">{{ row.waivercode }}</td>
+                            <td class="tdCenter">{{ row.waiveramount }}</td>
+                            <td class="tdCenter">{{ row.extradeposit }}</td>
+                            <td class="tdCenter">{{ row.advancebill }}</td>
+                            <td class="tdCenter">{{ row.chequenumber }}</td>
+                            <td class="tdCenter">{{ row.chequedate }}</td>
+                            <td class="tdCenter">{{ row.bankname }}</td>
+                            <td class="tdCenter">{{ row.modeotherdesc }}</td>
+                            <td class="tdCenter">{{ row.specialnumamount }}</td>
+                            <td class="tdCenter">{{ row.vasamount }}</td>
+                            <td class="tdCenter">{{ row.creditamount }}</td>
+                            <td class="tdCenter">{{ row.discountamount }}</td>
+                            <td class="tdCenter">{{ row.provtax }}</td>
+                            <td class="tdCenter">{{ row.portingcharges }}</td>
+                            <td class="tdCenter">{{ row.totalpaid }}</td>
+                            <td class="tdCenter">{{ row.franchise_code }}</td>
+                            <td class="tdCenter">{{ row.err_msg }}</td>
+                            <td class="tdCenter">{{ row.operatorid }}</td>
+                            <td class="tdCenter">{{ row.returnflag }}</td>
+                            <td class="tdCenter">{{ row.userid }}</td>
+                            <td class="tdCenter">{{ row.errorcode }}</td>
+                            <td class="tdCenter">{{ row.startdt }}</td>
+                            <td class="tdCenter">{{ row.product }}</td>
+                            <td class="tdCenter">{{ row.security }}</td>
+                            <td class="tdCenter">{{ row.donor }}</td>
+                            <td class="tdCenter">{{ row.log_date }}</td>
+                            <td class="tdCenter">{{ row.cares_interface }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

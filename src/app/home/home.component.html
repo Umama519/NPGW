@@ -1,0 +1,83 @@
+<style>
+
+.FontSty {
+  color: #10486b;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 14px;  
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: inline-block;
+  
+}
+
+.FontSty:hover {
+  color: #0d6efd;
+  font-weight: 600;
+  text-decoration: none;
+  transform: scale(1.02); /* thoda zoom effect without shaking */
+}
+
+  
+</style>
+<!-- Class in card -->
+<div class=" mt-2" style="margin-left: 17px; width: 580px; border-radius: 0px;">
+  <div class="page-header headingCaptionQ" style="margin-left: -1px;">
+    Quick Links
+  </div>
+
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
+    </div>
+  </div>
+
+  <div class="card-body p-2" >
+    <table class="table  table-sm mb-0 no-row-border" style="    margin-left: -9px; width: 586px;" >
+
+      <tbody>
+        <tr *ngFor="let link of quickLinks; let i = index">
+          <td class="d-flex justify-content-between align-items-center; border-bottom : none">
+            <a (click)="goToLink(link)" target="_blank" class="FontSty">
+              {{ link.title.split(' ').length > 1
+              ? link.title.split(' ').slice(1).join(' ')
+              : link.title
+              }}
+            </a>
+
+            <div class="d-flex align-items-center gap-2">
+              <div class="border-end" style="height: 16px;"></div>
+              <span class="text-danger fw-bold" style="cursor: pointer;" (click)="openDeleteModal(i)">
+                &#10006;
+              </span>
+            </div>
+          </td>
+        </tr>        
+      </tbody>
+    </table>
+  </div>
+  <!-- Delete Confirmation Modal -->
+  <div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" *ngIf="showModal">
+    <div class="modal-dialogA" role="document">
+      <div class="modal-contentA">
+        <div class="modal-headerA">
+          <h5 class="modal-titleA" style="font-size: 17px; margin-top: -4%;">Confirm Deletion</h5>
+        </div>
+        <div class="modal-bodyA">
+          <p>Are you sure you want to delete this record?</p>
+        </div>
+        <div class="modal-footerA">
+          <button type="button" style="border-radius: 0px;" class="btn btn-secondary" (click)="closeModal()">No</button>
+          <button type="button" style="border-radius: 0px;" class="btn btn-danger" (click)="confirmDelete()">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>

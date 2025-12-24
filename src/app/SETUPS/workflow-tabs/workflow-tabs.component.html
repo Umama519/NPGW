@@ -1,0 +1,78 @@
+<style>
+  /*.table-container {
+    margin-top: 10px;*/
+    /* overflow-x: auto; */
+    /*width: 102%;
+    margin-left: -15px;
+  }
+
+  table {
+    width: 90%;
+    border-collapse: collapse;
+  }
+
+  th, td { 
+    border: 1px solid #ddd;
+    padding: 0px;
+    text-align: left;
+    font-size: 11px;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }*/
+</style>
+<div class="container" *ngIf="tabs && tabs.length > 0">
+  <div class="row line-w" style="margin-left: -4px;">
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)">
+      <mat-tab *ngFor="let tab of tabs" [label]="tab.tabName">
+        <div class="row line-w" style="margin-left: 90%; margin-top: 5px;">
+          <div class="col-lg-5 col-sm-5">
+            <button ID="btn_Add" class="newbtn" style="font-size: 14px; margin-left: 3px;" (click)="addNew(tab.pf)">
+              <i class="bi bi-plus-circle"></i> Add New
+            </button>
+          </div>
+        </div>
+        <br>
+        <div class="row line-w" style="margin-left: -4px;" id="table">
+          <div class="col-md-11">
+            <div class="table-responsive">
+              <div>
+                <table class="tableA table-condensed GridViewStyle">
+                  <thead>
+                    <tr class="HeaderStyleA">
+                      <th *ngFor="let col of getColumns(gridData[0])">{{ col }}</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr class="RowStyleA" *ngFor="let row of gridData; let i = index"
+                        [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                        [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                      <td *ngFor="let col of getColumns(row); let i = index">
+
+                        <ng-container *ngIf="i === 0; else normalCell">
+                          <a (click)="goToForm(row[col])" class="link" style=" cursor: pointer">
+                            {{ formatCell(row[col]) }}
+                          </a>
+                        </ng-container>
+                        <ng-template #normalCell>
+                          {{ formatCell(row[col]) }}
+                        </ng-template>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="gridData.length === 0">
+                  No data available for this tab.
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+            <br>
+
+
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>

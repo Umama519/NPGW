@@ -1,0 +1,116 @@
+<div class="container">
+    <div class="row">
+        <br />
+    </div>
+    <!-- <div class="page-header headingCaption">
+        Selected Criteria
+    </div> -->
+    <!-- <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-12 col-sm-12">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+    </div> -->
+    <br />
+    <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Form Date :</label>
+                <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
+            </div>
+        </div>
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">To Date :</label>
+                <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
+            </div>
+        </div> 
+        <div class="col-lg-1 col-sm-1">
+            <div class="form-group">
+                <label class="labelcss">Extract Output :</label>
+                <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
+                    [disabled]="lovDisabled">
+                </app-global-lov>
+            </div>
+        </div>
+       <div class="col-lg-3 col-sm-3">
+            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
+                <i class="bi bi-arrow-repeat"></i> Fetch
+            </button>
+            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+        <!-- <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Extract Output :</label><br>
+
+            <span class="excel-span">
+                <input id="rhb_Screen" checked value="S" type="radio" name="extractOutput"
+                class="excel" />
+                <label class="labelcss">On Screen</label>
+            </span>
+
+            <span  class="excel-span">
+                <input id="rhb_File" value="F" type="radio" name="extractOutput"
+                class="excel" />
+                <label class="labelcss">On File</label>
+            </span>
+            </div>
+        </div> -->
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="Finance.length > 0">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <div class="grid-scroll">
+                    <table class="tableA table-condensed GridViewStyle">
+                    <thead>
+                        <tr class="HeaderStyleA">
+                            <th class="tdCenter">PAYMENT MODE</th>
+                            <th class="tdCenter">NPR DATE</th>
+                            <th class="tdCenter">TRANSACTION ID</th>
+                            <th class="tdCenter">PRODUCT TYPE</th>
+                            <th class="tdCenter">MOBILE NO</th>
+                            <th class="tdCenter">SIM NO</th>
+                            <th class="tdCenter">FIN_OFF</th>
+                            <th class="tdCenter">GST</th>
+                            <th class="tdCenter">PAYMENT AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="RowStyleA" *ngFor="let row of Finance; let i = index"
+                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                            <td class="tdCenter">{{ row.cash }}</td>
+                            <td class="tdCenter">{{ row.nprdate }}</td>
+                            <td class="tdCenter">{{ row.npr_no }}</td>
+                            <td class="tdCenter">{{ row.product }}</td>
+                            <td class="tdCenter">{{ row.mobile }}</td>
+                            <td class="tdCenter">{{ row.iccid }}</td>
+                            <td class="tdCenter">{{ row.franchiseid }}</td>
+                            <td class="tdCenter">{{ row.gst }}</td>
+                            <td class="tdCenter">{{ row.amount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

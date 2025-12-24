@@ -1,0 +1,237 @@
+<p>npr-current-bulk-status works!</p>
+<style>
+    .main-container {
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f6fa;
+}
+
+.upload-section, .batch-summary, .batch-detail {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+h2, h3 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.upload-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-box input[type="file"] {
+  border: 1px solid #ccc;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.upload-box button {
+  background-color: #10486b;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.upload-box button:hover {
+  background-color: #10486b;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background-color: #10486b;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+.data-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-table tr:hover {
+  background-color: #f0f8ff;
+}
+
+.file-format {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.file-format h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  display: inline-block;
+  padding-bottom: 3px;
+}
+
+.format-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.format-table th, .format-table td {
+  border: 1px solid #999;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.format-table th {
+  background-color: #e0e0e0;
+}
+</style>
+<div class="main-container">
+  <div class="row">
+        <br />
+    </div>
+  <div *ngIf="showSuccessPopup">
+        <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+            <span>{{ popupMessage }}</span>
+            <!-- <span>{{ errmessage }}</span> -->
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;"></div>
+  <div class="row">
+        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
+            <!-- <h6>Select File Path :</h6> -->
+            <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+            Select File Path :</label>
+            <input type="file" id="fileInput"  #fileInput (change)="onFileSelected($event)" style="margin-left: 4px;"/>
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="uploadFile(fileInput)">
+                <i class="bi bi-check-circle"></i> Upload
+            </button>    
+        </div>
+    </div>
+    <br>
+    <div style="width: 109%;" class="file-format">
+      <h4>Excel File Format</h4>
+      <table class="format-table">
+        <thead>
+          <tr>
+            <th>MOBILE NUMBER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>3XXXXXXXXX</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+     <div class="row">
+        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">            
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="onProcess1()">
+                <i class="bi bi-check-circle"></i> Process Data
+            </button>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">            
+            <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+              {{generatedSeqWF}}</label>
+        </div>
+    </div>
+    <br>
+    <!-- *ngIf="isgridview" -->
+    <div class="row line-w" style="margin-left: -4px;" >
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <div>
+                        <table class="tableA table-condensed GridViewStyle">
+                            <thead>
+                                <tr class="HeaderStyleA">
+                                    <th class="tdCenter">Batch #</th>
+                                    <th class="back">Batch Date</th>
+                                    <th class="back">Total Records</th>
+                                    <th class="back">Processed</th>
+                                </tr>
+                            </thead>
+                            <tbody>  
+                                <tr class="RowStyleA" *ngFor="let row of GridData1; let i = index"
+                                    [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                                    [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                                    <td style="width: 100px;" class="tdCenter"> {{row.batchNo}} </td>
+                                    <td style="width: 100px;" class="tdCenter"> {{row.batchdate}} </td>
+                                    <td style="width: 100px;" class="tdCenter"> {{row.totalrecords}} </td>
+                                    <td style="width: 100px;" class="tdCenter"> {{row.processed}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <div>
+                        <!-- <table class="tableA table-condensed GridViewStyle">
+                            <thead>
+                                <tr class="HeaderStyleA">
+                                    <th class="tdCenter">Batch#</th>
+                                    <th class="back">Mobile#</th>
+                                    <th class="back">Reject/Hold Code</th>
+                                    <th class="back">Process Status</th>
+                                    <th class="back">User ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>  
+                                <tr class="RowStyleA" *ngFor="let row of GridData; let i = index"
+                                    [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                                    [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                                    <td style="width: 100px;" class="tdCenter">{{ row.batch }}</td>
+                                    <td style="width: 100px;" class="tdCenter">{{ row.mobile }}</td>
+                                    <td style="width: 100px;" class="tdCenter">{{ row.rejectHoldCode }}</td>
+                                    <td style="width: 100px;" class="tdCenter">{{ row.processStatus }}</td>
+                                    <td style="width: 100px;" class="tdCenter">{{ row.user_id }}</td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+                        <table class="tableA table-condensed GridViewStyle" *ngIf="GridData.length > 0">
+                            <thead>
+                                <tr class="HeaderStyleA">
+                                    <th *ngFor="let header of GridHeaders" class="tdCenter">
+                                        {{ header | titlecase }}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="RowStyleA" *ngFor="let row of GridData; let i = index"
+                                [style.background-color]="i % 2 === 0 ? '#ffffff' : 'rgb(244, 242, 242)'"
+                                [style.color]="i % 2 === 0 ? '#000' : '#969a9d'">
+                                    <td *ngFor="let header of GridHeaders" class="tdCenter">
+                                    {{ row[header] }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="GridData.length === 0" style="color: gray; margin-top: 10px;">
+                            No data found
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

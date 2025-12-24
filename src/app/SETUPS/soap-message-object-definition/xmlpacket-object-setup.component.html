@@ -1,0 +1,168 @@
+<style>
+   .form-floating>.form-control {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      /* input pe halka shadow */
+      border-radius: 6px;
+   }
+
+   .form-floating>label {
+      font-weight: 600;
+   }
+
+   /* Table Header Style */
+   .table thead {
+      background-color: #003366 !important;
+      /* Dark Blue */
+      color: white !important;
+      /* White Text */
+   }
+</style>
+
+<div class="container-fluid mt-0" style="width: 109%; ">
+   <!-- Outer Card -->
+   <div class="border-0" style="margin-bottom:15px; margin-left: -11px;">
+      <div class="container-fluid">
+         <!-- Action Buttons -->
+         <div class="d-flex flex-wrap justify-content-start mb-3 mt-2">
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" *ngIf="showAddButton" (click)="AddButton()">
+               <i class="bi bi-plus-circle"></i> Add New
+            </button>
+
+            <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" *ngIf="showSubmitButton"
+               (click)="submitButton()">
+               <i class="bi bi-check-circle"></i> Submit
+            </button>
+            <button ID="btn_Reset" class="newbtn" style="margin-left: 3px;" *ngIf="showResetButton"
+               (click)="ResetButton()">
+               <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+
+         </div>
+         <!-- Success/Error Popup -->
+         <div *ngIf="showSuccessPopup">
+            <div [ngClass]="{
+               'error-message': isErrorPopup,
+               'Success-message': !isErrorPopup
+               }">
+               <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+               <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+               <span>{{ popupMessage }}</span>
+               <span>{{ errmessage }}</span>
+            </div>
+         </div>
+         <!-- Form Fields Inside Card -->
+         <div class="">
+            <div>
+               <div class="row g-2">
+                  <!-- Object ID -->
+                  <div class="col-lg-3 col-md-4">
+                     <div class="form-group">
+                        <label for="txt_ObjectID"   >Object ID</label>
+                        <div style="display: flex; align-items: center;">
+                        <input id="txt_ObjectID" type="text" class="form-controlM" maxlength="30" [(ngModel)]="selectedObjID">
+                       <button id="btn_Search" class="searchInputStyle" (click)="searchButton()">
+                        <i class="bi bi-search srcicon"></i>
+
+                    </button>
+
+                     </div>
+                  </div>
+               </div>
+               <!-- Description -->
+               <div class="col-lg-5 col-md-5">
+                  <div class="form-group">
+                     <label for="txt_Description"   >Description</label>
+                     <input id="txt_Description" type="text" class="form-controlA" [(ngModel)]="selectedDescription"
+                       disabled maxlength="100">
+
+                  </div>
+               </div>
+               <!-- Length -->
+               <div class="col-lg-4 col-md-4">
+                  <div class="form-group">
+                     <label    for="txt_Lenght">Length</label>
+                     <input id="txt_Lenght"  class="form-controlA" [(ngModel)]="selectedLenght"
+                        inputmode="numeric" pattern="[0-9]*" maxlength="2" style="border-radius: 0px;" disabled
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Table Card -->
+<div class="card shadow-sm border-0" style="margin-bottom:5px;">
+   <div class="card-body p-0">
+      <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+         <table class="tableA table-condensed GridViewStyle">
+            <thead class="custom-header text-center HeaderStyleA">
+               <tr>
+                  <th style="width:12%">Object ID</th>
+                  <th style="width:28%">Description</th>
+                  <th style="width:10%">Length</th>
+                  <th style="width:15%">Defined By</th>
+                  <th style="width:15%">Defined Date</th>
+                  <th style="width:10%">Delete</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let row of XmlObjGet; let i = index" (click)="edit(row)" class="RowStyleA">
+                  <td class="text-center">{{ row.objid }}</td>
+                  <td>{{ row.descrip }}</td>
+                  <td class="text-center">{{ row.lngth }}</td>
+                  <td class="text-center">{{ row.userid }}</td>
+                  <td class="text-center">{{ row.userdate }}</td>
+                  <td style="text-align: center; font-size: 5px;">
+                     <a (click)="confirmDelete(row.objid)">
+                        <svg class="custom-crossA" viewBox="0 0 100 100">
+                           <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15"
+                              stroke-linecap="round" />
+                        </svg>
+                     </a>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" aria-hidden="true" *ngIf="showModal">
+      <div class="modal-dialogA" role="document">
+         <div class="modal-contentA">
+            <div class="modal-headerA">
+               <h5 class="modal-titleA" style="margin-top: -4%; font-size: 17px">Confirm Deletion
+               </h5>
+            </div>
+            <div class="modal-bodyA">
+               <p>Are you sure you want to delete this record?</p>
+            </div>
+            <div class="modal-footerA">
+               <button type="button" style="border-radius: 0px;" class="btn btn-secondary"
+                  (click)="closeModal()">No</button>
+               <button type="button" style="border-radius: 0px;" class="btn btn-danger"
+                  (click)="deleteRecord(MessageData.objid)">
+                  Yes, Delete
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+   .custom-header {
+      background-color: #10486b !important;
+      /* Dark Blue */
+      color: #dbdbdb !important;
+      /* White text */
+   }
+
+   .custom-header th {
+      background-color: #10486b !important;
+      color: #dbdbdb !important;
+   }
+</style>
+
+</div>

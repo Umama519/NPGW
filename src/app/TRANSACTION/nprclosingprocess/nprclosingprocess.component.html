@@ -1,0 +1,278 @@
+<style>
+    /* For red rows */
+    .row-red {
+        background-color: red;
+        color: white;
+        /* Optional: Font color for better contrast */
+    }
+
+    /* For white rows */
+    .row-white {
+        background-color: white;
+        color: black;
+        /* Optional: Font color for better contrast */
+    }
+
+    .text-primary:hover {
+        color: darkblue !important;
+    }
+
+    .custom-cross {
+        width: 12px;
+        height: 30;
+        display: inline-block;
+    }
+    .headingCaption .main-heading {
+        position: absolute;
+        left: 5px;
+        /* Move to the left side */
+        color: #10486b;
+    }
+
+    .headingCaption .separator {
+        margin: 0 125px;
+        font-size: 18px;
+        color: #666;
+    }
+
+    .headingCaption .sub-heading {
+        color: #10486b;
+    }
+</style>
+<div class="container">
+    <div class="row">
+      <br />
+    </div>  
+    <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+      'error-message': isErrorPopup,
+      'Success-message': !isErrorPopup
+    }">
+        <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+        <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+        <span>{{ popupMessage }}</span>
+        <!-- <span>{{ errmessage }}</span> -->
+    </div>
+    </div>
+    <div class="row" style="margin-left: -13px;">
+        <div class="col-lg-12 col-sm-12">
+
+            <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="Fetch()">
+                <i class="bi bi-check-circle"></i> Fetch
+            </button>
+            <button ID="btn_Close" class="newbtn" style="margin-left: 7px;" *ngIf="!isClose" (click)="CloseButton()">
+                <i class="bi bi-check-circle"></i> Close
+            </button>
+            <button ID="btn_UnClose" class="newbtn" style="margin-left: 7px;" *ngIf="!isUnClose" (click)="UnCloseButton()">
+                <i class="bi bi-check-circle"></i> Un Close
+            </button>
+            <button ID="btn_Reset" class="newbtn" style="margin-left: 7px;" (click)="ResetButton()">
+                <i class="bi bi-arrow-clockwise"></i> Exit
+            </button>
+
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-3 col-sm-3">
+            <div class="form-group">
+                <label class="labelcss"  >Mobile :</label>
+                <input ID="txt_Mobile" class="form-controlA" name="txt_Mobile" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="page-header headingCaption">
+        <span class="main-heading" style="margin-left: 35px;">NPR Closing Process</span>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Register Name :</label>
+                <input ID="txt_MRegister" disabled class="form-controlA"  [(ngModel)]="selectedPINRegName" name="txt_MRegister"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >User Name :</label>
+                <input ID="txt_MUsername" disabled class="form-controlA"  [(ngModel)]="selectedPINUserName" name="txt_MUsername"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >CNIC :</label>
+                <input ID="txt_MCNIC" disabled class="form-controlA" [(ngModel)]="selectedPINCnic"  name="txt_MCNIC" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >NIC :</label>
+                <input ID="txt_MNIC" disabled class="form-controlA" name="txt_MNIC" [(ngModel)]="selectedPINNic" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Passport :</label>
+                <input ID="txt_MPassport" disabled class="form-controlA" [(ngModel)]="selectedPINPassport" name="txt_MPassport"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Other ID :</label>
+                <input ID="txt_MOtherID" disabled class="form-controlA" name="txt_MOtherID" [(ngModel)]="selectedPINOtherID" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >ICCID / IMSI :</label>
+                <input ID="txt_MICCID" disabled class="form-controlA" [(ngModel)]="selectedPINICCID" name="txt_MICCID" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Account Type :</label>
+                <input ID="txt_MAccountType" disabled class="form-controlA" [(ngModel)]="selectedPINAccTyp" name="txt_MAccountType"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Tariff Plan :</label>
+                <input ID="txt_MTariff" disabled class="form-controlA" [(ngModel)]="selectedPINTarifPln" name="txt_MTariff" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Access Level :</label>
+                <input ID="txt_MAccessLevel" disabled class="form-controlA" [(ngModel)]="selectedPINAccLvl" name="txt_MAccessLevel"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Security Deposit :</label>
+                <input ID="txt_MSecurityDeposit" disabled class="form-controlA" [(ngModel)]="selectedPINSecDep" name="txt_MSecurityDeposit"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Line Rent :</label>
+                <input ID="txt_MLineRent" disabled class="form-controlA" [(ngModel)]="selectedPINLineRt" name="txt_MLineRent"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Refund Amount :</label>
+                <input ID="txt_MRefAmt" disabled class="form-controlA" [(ngModel)]="selectedPINRefundAmt" name="txt_MRefAmt" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Refund Date :</label>
+                <input ID="txt_MRefDt" disabled class="form-controlA" [(ngModel)]="selectedPINRefundDt" name="txt_MRefDt" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >User ID :</label>
+                <input ID="txt_MUserID" disabled class="form-controlA" [(ngModel)]="selectedPINUserID" name="txt_MUserID" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >User Name :</label>
+                <input ID="txt_MUserNam" disabled class="form-controlA" name="txt_MUserNam" [(ngModel)]="selectedPINUsername" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >NPR Initiator :</label>
+                <input ID="txt_MNPRInitiator" disabled class="form-controlA" [(ngModel)]="selectedPINNPRInt" name="txt_MNPRInitiator"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >NPR Generation Date :</label>
+                <input ID="txt_MNPRGenrtDt" disabled class="form-controlA" [(ngModel)]="selectedPINNPRGenDt" name="txt_MNPRGenrtDt" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Current Status :</label>
+                <input ID="txt_MCurrSts" disabled class="form-controlA" [(ngModel)]="selectedPINCurrSts" name="txt_MCurrSts" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Message Timestamp :</label>
+                <input ID="txt_MMsgTime" disabled class="form-controlA" [(ngModel)]="selectedPINMsgTime" name="txt_MMsgTime"
+                    style="border-radius: 0px;" MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Assign To :</label>
+                <input ID="txt_MAssignTo" disabled class="form-controlA" [(ngModel)]="selectedPINAssignTo" name="txt_MAssignTo" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Due Date :</label>
+                <input ID="txt_MCurrSts" disabled class="form-controlA" [(ngModel)]="selectedPINDueDt" name="txt_MDueDt" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="form-group">
+                <label class="labelcss"  >Close Date :</label>
+                <input ID="txt_MCloseSts" disabled class="form-controlA" [(ngModel)]="selectedPINCloseDt" name="txt_MCloseSts" style="border-radius: 0px;"
+                    MaxLength="50">
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

@@ -1,0 +1,39 @@
+<!-- Message Maintenance Modal -->
+<div class="popup-overlay">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="font-size:13px;">
+
+            <!-- Header -->
+            <div class="page-header headingCaption mb-3" style="width: 750px; margin-left:0px;">
+                Message Maintenance
+            </div>
+
+            <div class="modal-body p-3">
+                <div class="text-danger fw-bold mb-2" style="font-size:13px;"></div>                
+                <div class="row mb-1 align-items-start">
+                    <label class="col-3 text-start pe-2">Rejection Description :</label>
+                    <div class="col-9">
+                        <textarea id="txt_RejDesc" [(ngModel)]="selectedRejcd" class="form-controlA form-control-sm"
+                            rows="2"></textarea>
+                    </div>
+                </div>                
+                <div class="row mb-1 align-items-start" *ngFor="let item of selectedobjectName; let i = index">
+                     <label class="col-3 text-start" style="font-size:11px;">{{ item }} :</label>
+
+                    <div class="col-9">
+                        <input type="text" class="form-controlA form-controlAA-sm" [(ngModel)]="selectedobjValue[i]">
+                    </div>
+                </div>
+                
+                <div class="modal-footer justify-content-end py-2">
+                    <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="btn_Submit()">
+                        <i class="bi bi-check-circle"></i> Submit
+                    </button>
+                    <button ID="btn_Submit" class="newbtn" style="margin-left: 7px;" (click)="btn_Close()">
+                        <i class="bi bi-x-circle"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
