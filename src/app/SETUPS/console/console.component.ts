@@ -515,7 +515,7 @@ export class ConsoleComponent {
     //     return;
     //   }
     // }
-    let params: any = {
+    let params: any = { 
       ID: this.loginUser || '',
       Admin: this.roleMessage || '',
       Checkbox: chkb,
@@ -531,7 +531,7 @@ export class ConsoleComponent {
       getdata: ''
     };
     const queryParams = new URLSearchParams(params).toString();
-    const url = `${environment.apiBaseUrl}/api/ConsoleStatus/filter?${queryParams}`;
+    const url = `${environment.apiBaseUrl}/api/ConsoleStatus/filter?${queryParams}`;  
     this.loaderService.show();
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
