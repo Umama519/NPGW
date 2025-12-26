@@ -35,8 +35,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinghistory-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './porting-history-report.component.html',
   styleUrl: './porting-history-report.component.css'

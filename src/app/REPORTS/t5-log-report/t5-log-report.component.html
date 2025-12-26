@@ -1,195 +1,165 @@
 <div class="container">
-    <div class="row">
-        <br />
-    </div>
-    <!--<div class="page-header headingCaption">
-        Selected Criteria
-    </div>-->
-    <!-- <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-12 col-sm-12">
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Fetch()">
-                <i class="bi bi-arrow-repeat"></i> Fetch
-            </button>
-            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
-                <i class="bi bi-arrow-clockwise"></i> Reset
-            </button>
-        </div>
-    </div> -->
-    <div *ngIf="showSuccessPopup">
-        <div [ngClass]="{
+  <div class="row">
+    <br />
+  </div>
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
           'error-message': isErrorPopup,
           'Success-message': !isErrorPopup
         }">
-            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
-            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
-            <span>{{ popupMessage }}</span>
-            <!-- <span>{{ errmessage }}</span> -->
-        </div>
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
     </div>
-    <br />
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Mobile # :</label>
-                <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
-            </div>
-        </div>       
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Port ID :</label>
-                <input id="txt_PortID" type="text" class="form-controlA" autocomplete="off">
-            </div>
-        </div>
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss">Activity No :</label>
-                <input id="txt_Activity" type="text" class="form-controlA" autocomplete="off">
-            </div>
-        </div>
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Arrival Form Date :</label>
-                <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
-            </div>
-        </div>
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Arrival To Date :</label>
-                <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
-            </div>
-        </div>
-       <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss">Status :</label>
-                <app-global-lov [items]="Status" displayField="name" valueField="code" [(ngModel)]="selectedStatus"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
-        </div>
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss" >Recepient :</label>
-                <app-global-lov [items]="participantNames" displayField="userid" valueField="userid" [(ngModel)]="selectedRecepient"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
-        </div>
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss" >Donor :</label>
-                <app-global-lov [items]="participantNames" displayField="userid" valueField="userid" [(ngModel)]="selectedDonor"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
-        </div>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Mobile # :</label>
+        <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
+      </div>
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">        
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Due Form Date :</label>
-                <input id="txt_DueFDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="DueFormDate">
-            </div>
-        </div>
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Due To Date :</label>
-                <input id="txt_DueTDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="DueToDate">
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="labelcss">Action :</label>
-                <app-global-lov [items]="participantNames1" displayField="descs" valueField="action" [(ngModel)]="selectedAction"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
-        </div>
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss">is BroadCast :</label><br>
-                <input ID="chb_Broad" type="checkbox" name="chb_Broad" [(ngModel)]="selectedBoard" />
-            </div>
-        </div>
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss">Extract Output :</label>
-                <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-3">
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
-                <i class="bi bi-arrow-repeat"></i> Fetch
-            </button>
-            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
-                <i class="bi bi-arrow-clockwise"></i> Reset
-            </button>
-        </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Port ID :</label>
+        <input id="txt_PortID" type="text" class="form-controlA" autocomplete="off">
+      </div>
     </div>
-    <!-- <br>      
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="form-group">
-            <label class="labelcss">Extract Output :</label><br>
-
-            <span class="excel-span">
-                <input id="rhb_Screen" checked value="S" type="radio" name="extractOutput"
-                class="excel" />
-                <label class="labelcss">On Screen</label>
-            </span>
-
-            <span  class="excel-span">
-                <input id="rhb_File" value="F" type="radio" name="extractOutput"
-                class="excel" />
-                <label class="labelcss">On File</label>
-            </span>
-        </div>
-    </div> -->
-    <br>
-    <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="PortIn.length > 0">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <div class="grid-scroll">
-                    <table class="tableA table-condensed GridViewStyle">
-                    <thead>
-                        <tr class="HeaderStyleA">
-                            <th class="tdCenter">Recipient</th>
-                            <th class="tdLeft">Donor</th>
-                            <th class="tdCenter">Cell #</th>
-                            <th class="tdCenter">Port ID</th>
-                            <th class="tdCenter">Action Description</th>
-                            <th class="tdCenter">Type</th>
-                            <th class="tdCenter">Assign To</th>
-                            <th class="tdCenter">Status</th>
-                            <!-- <th class="tdCenter">NPR Type</th> -->
-                            <th class="tdCenter">Message TimeStamp</th>
-                            <th class="tdLeft">Due Date</th>
-                            <th class="tdCenter">Completion Date</th>
-                            <th class="tdLeft">Time in Minutes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="RowStyleA" *ngFor="let row of PortIn; let i = index"
-                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                            <td style="width: 100px;" class="tdCenter">{{ row.recepient }}</td>
-                            <td style="width: 100px;" class="tdRight">{{ row.donor }}</td>
-                            <td style="width: 150px;" class="tdCenter">{{ row.mobile }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.portid }}</td>
-                            <td style="width: 150px;" class="tdCenter">{{ row.activity }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.sendrec }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.assignname }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.status }}</td>
-                            <!-- <td style="width: 100px;" class="tdCenter">{{ row. }}</td> -->
-                            <td style="width: 100px;" class="tdCenter">{{ row.arrivaldate }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.duefdate }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.commpitiondate }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.totaltime }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">Activity No :</label>
+        <input id="txt_Activity" type="text" class="form-controlA" autocomplete="off">
+      </div>
     </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Arrival Form Date :</label>
+        <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Arrival To Date :</label>
+        <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
+      </div>
+    </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">Status :</label>
+        <app-global-lov [items]="Status" displayField="name" valueField="code" [(ngModel)]="selectedStatus"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">Recepient :</label>
+        <app-global-lov [items]="participantNames" displayField="operatorName" valueField="operatorName" [(ngModel)]="selectedRecepient"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">Donor :</label>
+        <app-global-lov [items]="participantNames" displayField="operatorName" valueField="operatorName" [(ngModel)]="selectedDonor"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Due Form Date :</label>
+        <input id="txt_DueFDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="DueFormDate">
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Due To Date :</label>
+        <input id="txt_DueTDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="DueToDate">
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <div class="form-group">
+        <label class="labelcss">Action :</label>
+        <app-global-lov [items]="participantNames1" displayField="descs" valueField="action" [(ngModel)]="selectedAction"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">is BroadCast :</label><br>
+        <input ID="chb_Broad" type="checkbox" name="chb_Broad" [(ngModel)]="selectedBoard" />
+      </div>
+    </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">Extract Output :</label>
+        <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <button id="btn_Submit" class="newbtn" style="margin-left: 25%; margin-top: 15px;" (click)="Fetch()">
+        <i class="bi bi-search"></i> Fetch
+      </button>
+      <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+        <i class="bi bi-arrow-clockwise"></i> Reset
+      </button>
+    </div>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="PortIn.length > 0">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div style="max-height: 400px;  border: 1px solid #ddd; width: 100%;">
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Recipient</th>
+                <th class="tdLeft">Donor</th>
+                <th class="tdCenter">Cell #</th>
+                <th class="tdCenter">Port ID</th>
+                <th class="tdCenter">Action Description</th>
+                <th class="tdCenter">Type</th>
+                <th class="tdCenter">Assign To</th>
+                <th class="tdCenter">Status</th>
+                <!-- <th class="tdCenter">NPR Type</th> -->
+                <th class="tdCenter">Message TimeStamp</th>
+                <th class="tdLeft">Due Date</th>
+                <th class="tdCenter">Completion Date</th>
+                <th class="tdLeft">Time in Minutes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of PortIn; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter">{{ row.recepient }}</td>
+                <td style="width: 100px;" class="tdRight">{{ row.donor }}</td>
+                <td style="width: 150px;" class="tdCenter">{{ row.mobile }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.portid }}</td>
+                <td style="width: 150px;" class="tdCenter">{{ row.activity }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.sendrec }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.assignname }}</td>
+                <td style="width: 80px;" class="tdCenter">{{ row.status }}</td>
+                <!-- <td style="width: 100px;" class="tdCenter">{{ row. }}</td> -->
+                <td style="width: 130px;" class="tdCenter">{{ row.arrivaldate }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.duefdate }}</td>
+                <td style="width: 130px;" class="tdCenter">{{ row.commpitiondate }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.totaltime }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

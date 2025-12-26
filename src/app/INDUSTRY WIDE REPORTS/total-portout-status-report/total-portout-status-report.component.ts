@@ -19,8 +19,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-totalportoutstatus-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './total-portout-status-report.component.html',
   styleUrl: './total-portout-status-report.component.css'
@@ -91,15 +89,16 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
   }
 
   Operator_Lov1() {
+    debugger;
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         // Check if 'ALL' already exists in API data
-        const hasAll = data.some(p => p.userid === 'ALL' || p.user === 'ALL');
+        const hasAll = data.some(p => p.operatorName === 'ALL' || p.operatorId === 'ALL');
 
         if (!hasAll) {
           // Only add 'ALL' if it's not in API response
-          data.unshift({ user: 'ALL', userid: 'ALL' });
+          data.unshift({ operatorId: 'ALL', operatorName: 'ALL' });
         }
 
         this.operatorNames = data;

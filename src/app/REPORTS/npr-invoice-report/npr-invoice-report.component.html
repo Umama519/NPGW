@@ -1,405 +1,578 @@
+<style>
+  .txtPinPot {
+    border-radius: 0px;
+    flex: 1;
+    height: 20px;
+    font-size: 12px;
+  }
+</style>
 <div class="container">
-    <div class="row">
-        <br />
-    </div>
+  <div class="row">
     <br />
-    <div *ngIf="showSuccessPopup">
-        <div [ngClass]="{
+  </div>
+  <br />
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
           'error-message': isErrorPopup,
           'Success-message': !isErrorPopup
         }">
-            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
-            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
-            <span>{{ popupMessage }}</span>
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+    </div>
+  </div>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+        <label class="labelcss">Mobile Number :</label>
+        <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
+      </div>
+    </div>
+    <div class="col-lg-6 col-sm-6">
+      <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 18px;" (click)="Fetch()">
+        <i class="bi bi-search"></i> Fetch
+      </button>
+      <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Print()">
+        <i class="bi bi-arrow-repeat"></i> Print
+      </button>
+      <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+        <i class="bi bi-arrow-repeat"></i> Reset
+      </button>
+    </div>
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    NPR Information
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">ONO :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblONO" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Mobile :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblMobile" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Base Location :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblBaseLocation" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        ONO :
+        <span class="label-text">{{lblONO}}</span>-->
+    <!--class="form-controlA txtPinPot"-->
+    <!--</label>
         </div>
+    </div>-->
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">-->
+    <!-- <label class="label-css">Mobile : {{lblMobile}}</label> -->
+    <!--<label class="labelcss">
+          Mobile :
+          pa
+          <span class="label-text">{{lblMobile}}</span>
+        </label>
+      </div>
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >Mobile Number :</label>
-                <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
-            </div>
-        </div> 
-        <div class="col-lg-6 col-sm-6">
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
-                <i class="bi bi-arrow-repeat"></i> Fetch
-            </button>
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Print()">
-                <i class="bi bi-arrow-repeat"></i> Print
-            </button>
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
-                <i class="bi bi-arrow-repeat"></i> Reset
-            </button>
-        </div>
-    </div>           
-    <br>    
-    <div class="page-header headingCaption">
-        NPR Information
+    <div class="col-lg-4 col-sm-4">
+      <div class="form-group">
+        <label class="labelcss">
+          Base Location :
+          <span class="label-text">{{lblBaseLocation}}</span>
+        </label>
+      </div>
+    </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">DNO :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblDNO" style="flex:1;">
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                ONO :
-                <span class="label-text">{{lblONO}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <!-- <label class="label-css">Mobile : {{lblMobile}}</label> -->
-                <label class="label-css">
-                Mobile :
-                <span class="label-text">{{lblMobile}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css" >Base Location : 
-                <span class="label-text">{{lblBaseLocation}}</span>    
-            </label>
-            </div>
-        </div> 
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Old Product Type :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblProduct" style="flex:1;">
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                DNO :
-                <span class="label-text">{{lblDNO}}</span>
-                </label>
-            </div>
-        </div> 
-         <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Old Product Type :
-                <span class="label-text">{{lblProduct}}</span>
-                </label>
-            </div>
-        </div> 
-         <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                OLD IMSI#/ICCID :
-                <span class="label-text">{{lblOldImsi}}</span>
-                </label>
-            </div>
-        </div> 
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">OLD IMSI# / ICCID# :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblOldImsi" style="flex:1;">
     </div>
-    <br>
-    <div class="page-header headingCaption">
-        Personal Information
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        DNO :
+        <span class="label-text">{{lblDNO}}</span>
+      </label>
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Register Name :
-                <span class="label-text">{{lblRegname}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Address 1 :
-                <span class="label-text">{{lblAddres1}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Tel # (Res) :
-                <span class="label-text">{{lblTellRes}}</span>
-                </label>
-            </div>
-        </div> 
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Old Product Type :
+        <span class="label-text">{{lblProduct}}</span>
+      </label>
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                User Name :
-                <span class="label-text">{{lblUserName}}</span>
-                </label>
-            </div>
-        </div> 
-         <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Address 2 :
-                <span class="label-text">{{lblAddres2}}</span>
-                </label>
-            </div>
-        </div> 
-         <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Tel # (Off) :
-                <span class="label-text">{{lblTellOff}}</span>
-                </label>
-            </div>
-        </div> 
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        OLD IMSI# / ICCID# :
+        <span class="label-text">{{lblOldImsi}}</span>
+      </label>
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Email :
-                <span class="label-text">{{lblEmail}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Address 3 :
-                <span class="label-text">{{lblAddres3}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Ext # :
-                <span class="label-text">{{lblExt}}</span>
-                </label>
-            </div>
-        </div> 
+  </div>-->
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    Personal Information
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Register Name :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblRegname" style="flex:1;">
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Select ID Category :
-                <span class="label-text">{{lblSelectID}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Address 4 :
-                <span class="label-text">{{lblAddres4}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                FAX # :
-                <span class="label-text">{{lblFax}}</span>
-                </label>
-            </div>
-        </div> 
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Address 1 :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAddres1" style="flex:1;">
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                CNIC : Other ID :
-                <span class="label-text">{{lblCnic}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                City :
-                <span class="label-text">{{lblCity}}</span>
-                </label>
-            </div>
-        </div>
-    </div>    
-    <br>
-    <div class="page-header headingCaption">
-        Product Information
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Tel # (Res) :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblTellRes" style="flex:1;">
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Base Location :
-                <span class="label-text">{{lblBaseLocation}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                New Product Type :
-                <span class="label-text">{{lblNewProduct}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Associated # 1 :
-                <span class="label-text">{{lblAssociate1}}</span>
-                </label>
-            </div>
-        </div> 
+    <!-- <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Register Name :
+        <span class="label-text">{{lblRegname}}</span>
+      </label>
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                New IMSI#/ ICCID# :
-                <span class="label-text">{{lblNewImsi}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Tariff Plan :
-                <span class="label-text">{{lblTariff}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Associated # 2 :
-                <span class="label-text">{{lblAssociate2}}</span>
-                </label>
-            </div>
-        </div> 
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Address 1 :
+        <span class="label-text">{{lblAddres1}}</span>
+      </label>
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Franchisee ID :
-                <span class="label-text">{{lblFranchise}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Access ID :
-                <span class="label-text">{{lblAccess}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                With Handset :
-                <span class="label-text">{{lblHandSet}}</span>
-                </label>
-            </div>
-        </div> 
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Tel # (Res) :
+        <span class="label-text">{{lblTellRes}}</span>
+      </label>
     </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                CSR ID :
-                <span class="label-text">{{lblCSR}}</span>
-                </label>
-            </div>
-        </div> 
+  </div> -->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">User Name :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblUserName" style="flex:1;">
     </div>
-    <br>
-    <div class="page-header headingCaption">
-        Port-In Charges
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Address 2 :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAddres2" style="flex:1;">
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="label-css">
-                Port-In Fee :
-                <span class="label-text"></span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="label-css">
-                Charges :
-                <span class="label-text">{{lblPortFee}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="label-css">
-                Waiver :
-                <span class="label-text">{{lblWPIF}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="label-css">
-                Amount :
-                <span class="label-text">{{lblPIFAmount}}</span>
-                </label>
-            </div>
-        </div> 
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Tel # (Off) :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblTellOff" style="flex:1;">
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="label-css">
-                Security Deposit :
-                <span class="label-text">{{lblSecurityDeposit}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <span class="label-text">{{lblWSD}}</span>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <span class="label-text">{{lblWSDAmount}}</span>
-            </div>
-        </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        User Name :
+        <span class="label-text">{{lblUserName}}</span>
+      </label>
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <label class="label-css">
-                Line Rent :	
-                <span class="label-text">{{lblLinerent}}</span>
-                </label>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <span class="label-text">{{lblWLR}}</span>
-            </div>
-        </div> 
-        <div class="col-lg-3 col-sm-3">
-            <div class="form-group">
-                <span class="label-text">{{lblWLRAmount}}</span>
-            </div>
-        </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Address 2 :
+        <span class="label-text">{{lblAddres2}}</span>
+      </label>
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-4 col-sm-4">
-            <div class="form-group">
-                <label class="label-css">
-                Total Amount :
-                <span class="label-text">{{lblTotalAmount}}</span>
-                </label>
-            </div>
-        </div> 
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Tel # (Off) :
+        <span class="label-text">{{lblTellOff}}</span>
+      </label>
     </div>
-    <br>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Email :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblEmail" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Address 3 :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAddres3" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Ext # :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblExt" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Email :
+        <span class="label-text">{{lblEmail}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Address 3 :
+        <span class="label-text">{{lblAddres3}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Ext # :
+        <span class="label-text">{{lblExt}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Select ID Category :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblSelectID" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Address 4 :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAddres4" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Fax # :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblFax" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Select ID Category :
+        <span class="label-text">{{lblSelectID}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Address 4 :
+        <span class="label-text">{{lblAddres4}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Fax # :
+        <span class="label-text">{{lblFax}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Cnic : Other ID :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblCnic" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">City :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblCity" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Cnic : Other ID :
+        <span class="label-text">{{lblCnic}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        City :
+        <span class="label-text">{{lblCity}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    Product Information
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Base Location :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblBaseLocation" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">New Product Type :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblNewProduct" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Associated # 1 :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAssociate1" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Base Location :
+        <span class="label-text">{{lblBaseLocation}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        New Product Type :
+        <span class="label-text">{{lblNewProduct}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Associated # 1 :
+        <span class="label-text">{{lblAssociate1}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">New IMSI# / ICCID# :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblNewImsi" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Tariff Plan :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblTariff" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Associated # 2 :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAssociate2" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+      <div class="form-group">
+        <label class="labelcss">
+          New IMSI# / ICCID# :
+          <span class="label-text">{{lblNewImsi}}</span>
+        </label>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-4">
+      <div class="form-group">
+        <label class="labelcss">
+          Tariff Plan :
+          <span class="label-text">{{lblTariff}}</span>
+        </label>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-4">
+      <div class="form-group">
+        <label class="labelcss">
+          Associated # 2 :
+          <span class="label-text">{{lblAssociate2}}</span>
+        </label>
+      </div>
+    </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Franchisee ID :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblFranchise" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Access ID :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblAccess" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4% ">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">With Handset :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblHandSet" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Franchisee ID :
+        <span class="label-text">{{lblFranchise}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Access ID :
+        <span class="label-text">{{lblAccess}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        With Handset :
+        <span class="label-text">{{lblHandSet}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Csr ID :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblCSR" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Csr ID :
+        <span class="label-text">{{lblCSR}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    Port-In Charges
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;">
+    <!--<div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Port-In Fee :</label>-->
+      <!--<input disabled class="form-controlA txtPinPot" style="flex:1;">-->
+    <!--</div>-->
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Port-In Fee :</label>
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Charges :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblPortFee" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.5%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Waiver :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblWPIF" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.5%">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Amount :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblPIFAmount" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <label class="labelcss">
+        Port-In Fee :
+        <span class="label-text"></span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <label class="labelcss">
+        Charges :
+        <span class="label-text">{{lblPortFee}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <label class="labelcss">
+        Waiver :
+        <span class="label-text">{{lblWPIF}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <label class="labelcss">
+        Amount :
+        <span class="label-text">{{lblPIFAmount}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px ">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Security Deposit :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblSecurityDeposit" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.7%">
+      <!--<label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Charges :</label>-->
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblWSD" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <!--<label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Waiver :</label>-->
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblWSDAmount" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <label class="labelcss">
+        Security Deposit :
+        <span class="label-text">{{lblSecurityDeposit}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <span class="label-text">{{lblWSD}}</span>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <span class="label-text">{{lblWSDAmount}}</span>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Line Rent :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblLinerent" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.7%">
+      <!--<label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Charges :</label>-->
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblWLR" style="flex:1;">
+    </div>
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px; margin-left: 8.4%">
+      <!--<label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Waiver :</label>-->
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblWLRAmount" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <label class="labelcss">
+        Line Rent :
+        <span class="label-text">{{lblLinerent}}</span>
+      </label>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <span class="label-text">{{lblWLR}}</span>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-3">
+    <div class="form-group">
+      <span class="label-text">{{lblWLRAmount}}</span>
+    </div>
+  </div>-->
+  </div>
+  <div class="row line-w" style="margin-left: -4px; margin-top: 1px">
+    <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 2px;">
+      <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Total Amount :</label>
+      <input disabled class="form-controlA txtPinPot" [(ngModel)]="lblTotalAmount" style="flex:1;">
+    </div>
+    <!--<div class="col-lg-4 col-sm-4">
+    <div class="form-group">
+      <label class="labelcss">
+        Total Amount :
+        <span class="label-text">{{lblTotalAmount}}</span>
+      </label>
+    </div>
+  </div>-->
+  </div>
+  <br>
 </div>

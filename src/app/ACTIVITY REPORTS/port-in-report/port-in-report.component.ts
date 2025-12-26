@@ -8,6 +8,7 @@ import { environment } from 'environments/environment';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
 import { DateRangeService } from 'app/services/date-range.service';
 import { loaderService } from 'app/SETUPS/Service/loaderService';
+import { PaginationService } from 'app/services/pagination.service';
 
 export interface PortIn {
   fromdate: string;
@@ -43,14 +44,12 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinreport-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-in-report.component.html',
   styleUrl: './port-in-report.component.css'
 })
 export class PortInReportComponent {
-  constructor(private http: HttpClient, private el: ElementRef, public loaderService: loaderService, private dateRangeService: DateRangeService, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
+  constructor(private http: HttpClient, private el: ElementRef, private pager: PaginationService, public loaderService: loaderService, private dateRangeService: DateRangeService, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
   lovDisabled: boolean = false; 
   PortIn: PortIn[] = [];
   FormDate: string = '';
@@ -63,14 +62,23 @@ export class PortInReportComponent {
   filteredData: any[] = []; // To ho
   GridData: any[] = [];
   selectedUserID: any = '';
-  defaultUserID: string = '';  // <- Ye first value store karega
-  participantNames: any[] = []; // Stores one column (e.g., 'name')
+  defaultUserID: string = ''; 
+  participantNames: any[] = [];
   showSuccessPopup: boolean = false;
   isSubmitting: boolean = false;
   isErrorPopup: boolean = false;
   popupMessage: string = '';
   rhb_Live: string = 'L';
   loginUser: string = '';
+  data: any[] = [];
+  pagedData: any[] = [];
+
+  currentPage = 1;
+  itemsPerPage = 10;
+
+  totalPages = 0;
+  windowStart = 1;
+  windowEnd = 10;
 
   // Stores Action descriptions
   ngOnInit(): void {
@@ -97,16 +105,14 @@ export class PortInReportComponent {
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
-        // Check if 'ALL' already exists in API data
-        const hasAll = data.some(p => p.userid === 'ALL' || p.user === 'ALL');
+        const hasAll = data.some(p => p.operatorName === 'ALL' || p.operatorId === 'ALL');
 
         if (!hasAll) {
-          // Only add 'ALL' if it's not in API response
-          data.unshift({ user: 'ALL', userid: 'ALL' });
+          data.unshift({ operatorId: 'ALL', operatorName: 'ALL' });
         }
 
         this.participantNames = data;
-        this.selectedOperatorId = 'ALL'; // Set default as 'ALL'
+        this.selectedOperatorId = 'ALL';
       },
       error: (err) => {
         console.error("Error fetching participants:", err);
@@ -119,7 +125,7 @@ export class PortInReportComponent {
     try {
     const txt_FromDate = this.el.nativeElement.querySelector('#txt_FromDate').value;
     const txt_ToDate = this.el.nativeElement.querySelector('#txt_ToDate').value;
-    const donor = this.selectedOperatorId
+    const donor = this.selectedOperatorId;
     const ddl_Donor = donor === 'ALL' ? 'All' : donor;
     const txt_FranchiseID = this.el.nativeElement.querySelector('#txt_FranchiseID').value;
     // const rhb_Live = this.el.nativeElement.querySelector('#rhb_Live').checked ? 'L' : 'H';
@@ -133,7 +139,7 @@ export class PortInReportComponent {
       next: (res) => {
         if (res && res.length > 0) {
             if (rhb_Screen === 'S') {
-              this.PortIn = res;
+              this.pagedData  = res;
             } else {
               setTimeout(() => {
                 this.export(res, 'excel');
@@ -216,6 +222,40 @@ export class PortInReportComponent {
           npr: 'NPR',
         }, file
       );
-    }  
+  }
+  updatePagination() {
+    this.pagedData = this.pager.getPagedData(this.data, this.currentPage, this.itemsPerPage);
+
+    const pageInfo = this.pager.getPageNumbers(
+      this.data.length,
+      this.itemsPerPage,
+      this.currentPage,
+      10
+    );
+
+    this.totalPages = pageInfo.totalPages;
+    this.windowStart = pageInfo.start;
+    this.windowEnd = pageInfo.end;
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.updatePagination();
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
+
 }
 

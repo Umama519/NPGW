@@ -44,8 +44,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-dailyconsolestatus-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './daily-console-report.component.html',
   styleUrl: './daily-console-report.component.css'
@@ -90,19 +88,17 @@ export class DailyConsoleReportComponent {
   
     Operator_Lov() {
       debugger;
-      const url = `${environment.apiBaseUrl}/api/Action_LOV_`;
+      const url = `${environment.apiBaseUrl}/api/Action_LOV_/Action`;
       this.http.get<any[]>(url).subscribe({
         next: (data) => {
-          // Check if 'ALL' already exists in API data
           const hasAll = data.some(p => p.action === '' || p.descs === 'Select');
   
           if (!hasAll) {
-            // Only add 'ALL' if it's not in API response
             data.unshift({ descs: '', action: '' });
           }
   
           this.participantNames = data;
-          this.selectedOperatorId = ' '; 
+          this.selectedOperatorId = 'ACC'; 
         },
         error: (err) => {
           console.error("Error fetching participants:", err);
@@ -173,7 +169,7 @@ export class DailyConsoleReportComponent {
       if (txt_Todate) txt_Todate.value = '';
       if (txt_Mobile) txt_Mobile.value = '';
       if (txt_PortID) txt_PortID.value = '';
-      if (this.selectedOperatorId) this.selectedOperatorId = '';
+      if (this.selectedOperatorId) this.selectedOperatorId = 'ACC';
       if (this.selectedExport) this.selectedExport = 'S';
       if (this.rhb_Live) this.rhb_Live = 'L';
       this.Daily = [];

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 import { ExcelExportService } from 'app/services/excel-export.service';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
+import { environment } from 'environments/environment';
 
 export interface PortIn {
   fromdate: string;
@@ -32,8 +33,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinoutdetail-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-inout-det-report.component.html',
   styleUrl: './port-inout-det-report.component.css'
@@ -90,15 +89,15 @@ export class PortInoutDetReportComponent {
 
   Operator_Lov() {
     debugger;
-    const url = "http://localhost:5000/api/Action_LOV_/Operator";
+    const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         // Check if 'ALL' already exists in API data
-        const hasAll = data.some(p => p.userid === 'ALL' || p.user === 'ALL');
+        const hasAll = data.some(p => p.operatorName === 'ALL' || p.operatorId === 'ALL');
 
         if (!hasAll) {
           // Only add 'ALL' if it's not in API response
-          data.unshift({ user: 'ALL', userid: 'ALL' });
+          data.unshift({ operatorId: 'ALL', operatorName: 'ALL' });
         }
 
         this.participantNames = data;
@@ -126,7 +125,7 @@ export class PortInoutDetReportComponent {
     const rhb_Screen = this.selectedExport;
     const table = this.el.nativeElement.querySelector('#table');
 
-    const url = `http://localhost:5000/api/PortInOutReport?recepient=${ddl_Donor}&donor=${ddl_Recepient}&nprtype=${this.selectedNPRType}&type=${this.selectedProduct}&fromdate=${txt_FromDate}&todate=${txt_ToDate}&franchiseid=${txt_FranchiseID}&userid=${this.loginUser}`;
+    const url = `${environment.apiBaseUrl}/api/PortInOutReport?recepient=${ddl_Donor}&donor=${ddl_Recepient}&nprtype=${this.selectedNPRType}&type=${this.selectedProduct}&fromdate=${txt_FromDate}&todate=${txt_ToDate}&franchiseid=${txt_FranchiseID}&userid=${this.loginUser}`;
     
     this.http.get<any>(url).subscribe({
       next: (res) => {

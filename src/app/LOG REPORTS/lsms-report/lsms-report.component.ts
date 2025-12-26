@@ -23,8 +23,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-lsms-query-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule],
   templateUrl: './lsms-report.component.html',
   styleUrl: './lsms-report.component.css'

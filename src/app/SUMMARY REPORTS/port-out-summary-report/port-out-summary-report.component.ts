@@ -30,8 +30,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portoutsummary-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-out-summary-report.component.html',
   styleUrl: './port-out-summary-report.component.css'

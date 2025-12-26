@@ -29,8 +29,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-rejectionhisreport-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './rejection-history-report.component.html',
   styleUrl: './rejection-history-report.component.css'
@@ -86,14 +84,13 @@ export class RejectionHistoryReportComponent {
 
   Operator_Lov() {
     debugger;
-    const url = `${environment.apiBaseUrl}/api/Action_LOV_/RejectCode`;
+    const url = `${environment.apiBaseUrl}/api/Action_LOV_/Rejection`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
-        // Check if 'ALL' already exists in API data
+        debugger;
         const hasAll = data.some(p => p.descs === 'ALL');
 
         if (!hasAll) {
-          // Only add 'ALL' if it's not in API response
           data.unshift({ descs: 'ALL' });
         }
 
@@ -106,16 +103,17 @@ export class RejectionHistoryReportComponent {
     });
   }
 
+ 
   Operator_Lov1() {
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         // Check if 'ALL' already exists in API data
-        const hasAll = data.some(p => p.userid === 'ALL' || p.user === 'ALL');
+        const hasAll = data.some(p => p.operatorName === 'ALL' || p.operatorId === 'ALL');
 
         if (!hasAll) {
           // Only add 'ALL' if it's not in API response
-          data.unshift({ user: 'ALL', userid: 'ALL' });
+          data.unshift({ operatorId: 'ALL', operatorName: 'ALL' });
         }
 
         this.operatorNames = data;

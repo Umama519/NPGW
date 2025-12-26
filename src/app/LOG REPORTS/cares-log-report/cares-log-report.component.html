@@ -28,57 +28,57 @@
         </div>
     </div>
     <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >Form Date :</label>
-                <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
-            </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">Mobile # :</label>
+          <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
         </div>
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >To Date :</label>
-                <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
-            </div>
-        </div>  
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >Mobile # :</label>
-                <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
-            </div>
-        </div> 
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss">Extract Output :</label>
-                <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">Form Date :</label>
+          <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
         </div>
-        <div class="col-lg-3 col-sm-3">
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
-                <i class="bi bi-arrow-repeat"></i> Fetch
-            </button>
-            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
-                <i class="bi bi-arrow-clockwise"></i> Reset
-            </button>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">To Date :</label>
+          <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
         </div>
-        <!-- <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Extract Output :</label><br>
+      </div>
+      <div class="col-lg-1 col-sm-1">
+        <div class="form-group">
+          <label class="labelcss">Extract Output :</label>
+          <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-3">
+        <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
+          <i class="bi bi-search"></i> Fetch
+        </button>
+        <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+          <i class="bi bi-arrow-clockwise"></i> Reset
+        </button>
+      </div>
+      <!-- <div class="col-lg-2 col-sm-2">
+      <div class="form-group">
+          <label class="labelcss">Extract Output :</label><br>
 
-                <span class="excel-span">
-                    <input id="rhb_Screen" checked value="S" type="radio" name="extractOutput"
-                    class="excel" />
-                    <label class="labelcss">On Screen</label>
-                </span>
+          <span class="excel-span">
+              <input id="rhb_Screen" checked value="S" type="radio" name="extractOutput"
+              class="excel" />
+              <label class="labelcss">On Screen</label>
+          </span>
 
-                <span  class="excel-span">
-                    <input id="rhb_File" value="F" type="radio" name="extractOutput"
-                    class="excel" />
-                    <label class="labelcss">On File</label>
-                </span>
-            </div>
-        </div>-->
+          <span  class="excel-span">
+              <input id="rhb_File" value="F" type="radio" name="extractOutput"
+              class="excel" />
+              <label class="labelcss">On File</label>
+          </span>
+      </div>
+  </div>-->
     </div>           
     <br>    
     <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="Cares.length > 0">

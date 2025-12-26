@@ -22,8 +22,6 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portoutreport-aspx',
-    standalone: true,  
-
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-out-report.component.html',
   styleUrl: './port-out-report.component.css'
@@ -74,11 +72,11 @@ export class PortOutReportComponent {
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         // Check if 'ALL' already exists in API data
-        const hasAll = data.some(p => p.userid === 'ALL' || p.user === 'ALL');
+        const hasAll = data.some(p => p.operatorName === 'ALL' || p.operatorId === 'ALL');
 
         if (!hasAll) {
           // Only add 'ALL' if it's not in API response
-          data.unshift({ user: 'ALL', userid: 'ALL' });
+          data.unshift({ operatorId: 'ALL', operatorName: 'ALL' });
         }
 
         this.participantNames = data;
