@@ -28,46 +28,46 @@
         </div>
     </div>
     <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >Form Date :</label>
-                <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
-            </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">Mobile # :</label>
+          <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
         </div>
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >To Date :</label>
-                <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
-            </div>
-        </div>  
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss" >Mobile # :</label>
-                <input id="txt_Mobile" type="text" class="form-controlA" autocomplete="off">
-            </div>
-        </div> 
-        <div class="col-lg-1 col-sm-1">
-            <div class="form-group">
-                <label class="labelcss">Extract Output :</label>
-                <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
-                    [disabled]="lovDisabled">
-                </app-global-lov>
-            </div>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">Form Date :</label>
+          <input id="txt_FromDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="FormDate">
         </div>
-        <div class="col-lg-3 col-sm-3">
-            <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
-                <i class="bi bi-arrow-repeat"></i> Fetch
-            </button>
-            <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
-                <i class="bi bi-arrow-clockwise"></i> Reset
-            </button>
+      </div>
+      <div class="col-lg-2 col-sm-2">
+        <div class="form-group">
+          <label class="labelcss">To Date :</label>
+          <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
         </div>
+      </div>
+      <div class="col-lg-1 col-sm-1">
+        <div class="form-group">
+          <label class="labelcss">Extract Output :</label>
+          <app-global-lov [items]="Export" displayField="name" valueField="code" [(ngModel)]="selectedExport"
+                          [disabled]="lovDisabled">
+          </app-global-lov>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-3">
+        <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
+          <i class="bi bi-search"></i> Fetch
+        </button>
+        <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
+          <i class="bi bi-arrow-clockwise"></i> Reset
+        </button>
+      </div>
     </div>           
     <br>    
     <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="PMDLog.length > 0">
         <div class="col-md-12">
             <div class="table-responsive">
-                <div>
+                <div style="max-height: 400px;  border: 1px solid #ddd; width: 100%;">
                 <table class="tableA table-condensed GridViewStyle">
                     <thead>
                         <tr class="HeaderStyleA">
@@ -87,7 +87,7 @@
                             <td class="tdCenter">{{ row.message }}</td>
                             <!-- <td class="tdCenter">{{ row.xml }}</td> -->
                              <td class="tdCenter">
-                                <textarea  [value]="row.xml"  rows="3"  cols="50" style="width:300px; height:80px;" readonly> </textarea>
+                                <textarea [value]="row.xml" rows="3" cols="50" style="width:500px; height:80px;" readonly> </textarea>
                             </td>
                             <td class="tdCenter">{{ row.arrialdate }}</td>
                             <td class="tdCenter">{{ row.process }}</td>

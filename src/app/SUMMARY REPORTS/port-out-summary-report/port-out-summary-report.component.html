@@ -77,46 +77,46 @@
     <br>
     <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="Portout.length > 0">
         <div class="col-md-12">
-            <div class="table-responsive">
-                <div class="grid-scroll">
-                <table class="tableA table-condensed GridViewStyle">
-                    <thead>
-                        <tr class="HeaderStyleA">
-                            <th class="tdCenter">Date</th>
-                            <th class="tdCenter">Recipient</th>
-                            <th class="tdCenter">Donor</th>
-                            <th class="tdCenter">IN</th>
-                            <th class="tdCenter">Franchisee</th>
-                            <th class="tdCenter">Service Centre</th>
-                            <th class="tdCenter">Prepaid</th>
-                            <th class="tdCenter">Postpaid</th>
-                            <th class="tdCenter">Accept</th>
-                            <th class="tdCenter">Reject</th>
-                            <th class="tdCenter">Hold</th>
-                            <th class="tdCenter">Success Port Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="RowStyleA" *ngFor="let row of Portout; let i = index"
-                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                            <td class="tdCenter">{{ row.nprdate }}</td>
-                            <td class="tdCenter">{{ row.recepient }}</td>
-                            <td class="tdCenter">{{ row.donor }}</td>
-                            <td class="tdCenter">{{ row.portin }}</td>
-                            <td class="tdCenter">{{ row.franchise }}</td>
-                            <td class="tdCenter">{{ row.service }}</td>
-                            <td class="tdCenter">{{ row.prepaid }}</td>
-                            <td class="tdCenter">{{ row.postpaid }}</td>
-                            <td class="tdCenter">{{ row.accept }}</td>
-                            <td class="tdCenter">{{ row.reject }}</td>
-                            <td class="tdCenter">{{ row.hold }}</td>
-                            <td class="tdCenter">{{ row.successpot }}</td>                            
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
+          <div class="table-responsive">
+            <div style="max-height: 400px;  border: 1px solid #ddd; width: 100%;">
+              <table class="tableA table-condensed GridViewStyle">
+                <thead>
+                  <tr class="HeaderStyleA">
+                    <th class="tdCenter">Date</th>
+                    <th class="tdCenter">Recipient</th>
+                    <th class="tdCenter">Donor</th>
+                    <th class="tdCenter">IN</th>
+                    <th class="tdCenter">Franchisee</th>
+                    <th class="tdCenter">Service Centre</th>
+                    <th class="tdCenter">Prepaid</th>
+                    <th class="tdCenter">Postpaid</th>
+                    <th class="tdCenter">Accept</th>
+                    <th class="tdCenter">Reject</th>
+                    <th class="tdCenter">Hold</th>
+                    <th class="tdCenter">Success Port Out</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="RowStyleA" *ngFor="let row of Portout; let i = index"
+                      [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                      [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                    <td class="tdCenter">{{ row.nprdate }}</td>
+                    <td class="tdCenter">{{ row.recepient }}</td>
+                    <td class="tdCenter">{{ row.donor }}</td>
+                    <td class="tdCenter">{{ row.portin }}</td>
+                    <td class="tdCenter">{{ row.franchise }}</td>
+                    <td class="tdCenter">{{ row.service }}</td>
+                    <td class="tdCenter">{{ row.prepaid }}</td>
+                    <td class="tdCenter">{{ row.postpaid }}</td>
+                    <td class="tdCenter">{{ row.accept }}</td>
+                    <td class="tdCenter">{{ row.reject }}</td>
+                    <td class="tdCenter">{{ row.hold }}</td>
+                    <td class="tdCenter">{{ row.successpot }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
     </div>
 </div>

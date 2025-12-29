@@ -56,7 +56,7 @@
         </div>
         <div class="col-lg-3 col-sm-3">
             <button id="btn_Submit" class="newbtn" style="margin-left: 3px; margin-top: 15px;" (click)="Fetch()">
-                <i class="bi bi-arrow-repeat"></i> Fetch
+              <i class="bi bi-search"></i> Fetch
             </button>
             <button id="btn_Reset" class="newbtn" style="margin-left: 3px;" (click)="Reset()">
                 <i class="bi bi-arrow-clockwise"></i> Reset
@@ -83,36 +83,36 @@
     <br>    
     <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="NPRCancel.length > 0">
         <div class="col-md-12">
-            <div class="table-responsive">
-                <div class="grid-scroll">
-                    <table class="tableA table-condensed GridViewStyle">
-                    <thead>
-                        <tr class="HeaderStyleA">
-                            <th class="tdCenter">Mobile #</th>
-                            <th class="tdCenter">Register Name</th>
-                            <th class="tdCenter">Start Date</th>
-                            <th class="tdCenter">Close Date</th>
-                            <th class="tdCenter">Port ID</th>
-                            <th class="tdCenter">Action Date</th>
-                            <th class="tdCenter">Action Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="RowStyleA" *ngFor="let row of NPRCancel; let i = index"
-                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                            <td class="tdCenter">{{ row.mobile }}</td>
-                            <td class="tdCenter">{{ row.regname }}</td>
-                            <td class="tdCenter">{{ row.startdate }}</td>
-                            <td class="tdCenter">{{ row.closedate }}</td>
-                            <td class="tdCenter">{{ row.portid }}</td>
-                            <td class="tdCenter">{{ row.actiondate }}</td>
-                            <td class="tdCenter">{{ row.descrip }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
+          <div class="table-responsive">
+            <div style="max-height: 400px;  border: 1px solid #ddd; width: 100%;">
+              <table class="tableA table-condensed GridViewStyle">
+                <thead>
+                  <tr class="HeaderStyleA">
+                    <th class="tdCenter">Mobile #</th>
+                    <th class="tdCenter">Register Name</th>
+                    <th class="tdCenter">Start Date</th>
+                    <th class="tdCenter">Close Date</th>
+                    <th class="tdCenter">Port ID</th>
+                    <th class="tdCenter">Action Date</th>
+                    <th class="tdCenter">Action Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="RowStyleA" *ngFor="let row of NPRCancel; let i = index"
+                      [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                      [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                    <td class="tdCenter">{{ row.mobile }}</td>
+                    <td class="tdCenter">{{ row.regname }}</td>
+                    <td class="tdCenter">{{ row.startdate }}</td>
+                    <td class="tdCenter">{{ row.closedate }}</td>
+                    <td class="tdCenter">{{ row.portid }}</td>
+                    <td class="tdCenter">{{ row.actiondate }}</td>
+                    <td class="tdCenter">{{ row.descrip }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
     </div>
 </div>

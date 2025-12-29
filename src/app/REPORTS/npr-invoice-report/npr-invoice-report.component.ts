@@ -66,8 +66,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-forms-nprinvoicesearch1-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule],
   templateUrl: './npr-invoice-report.component.html',
   styleUrl: './npr-invoice-report.component.css'

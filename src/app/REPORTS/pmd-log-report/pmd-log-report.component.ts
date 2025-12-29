@@ -20,8 +20,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-pmd-msg-log-rpt-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './pmd-log-report.component.html',
   styleUrl: './pmd-log-report.component.css'

@@ -39,8 +39,7 @@ export class NPRManualSetup {
 
 @Component({
   selector: 'app-report-t5logdiff-rpt-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './t5-log-difference-report.component.html',
   styleUrl: './t5-log-difference-report.component.css'

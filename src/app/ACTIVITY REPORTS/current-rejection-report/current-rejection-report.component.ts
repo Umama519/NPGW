@@ -29,8 +29,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-currentrejectreport-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './current-rejection-report.component.html',
   styleUrl: './current-rejection-report.component.css'
@@ -82,7 +81,7 @@ export class CurrentRejectionReportComponent {
   ];
   Operator_Lov() {
     debugger;
-    const url = `${environment.apiBaseUrl}/api/Action_LOV_/RejectCode`;
+    const url = `${environment.apiBaseUrl}/api/Action_LOV_/Rejection`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         // Check if 'ALL' already exists in API data

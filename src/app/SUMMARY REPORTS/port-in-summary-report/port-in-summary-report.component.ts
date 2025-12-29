@@ -32,8 +32,7 @@ export interface Portin {
 declare var $: any;
 @Component({
   selector: 'app-public-portinsummary-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-in-summary-report.component.html',
   styleUrl: './port-in-summary-report.component.css'

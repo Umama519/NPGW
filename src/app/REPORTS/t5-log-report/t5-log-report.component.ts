@@ -49,8 +49,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-t5log-rpt-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './t5-log-report.component.html',
   styleUrl: './t5-log-report.component.css'
@@ -108,7 +107,7 @@ export class T5LogReportComponent {
   ];
   Operator_Lov() {
       debugger;
-      const url = `${environment.apiBaseUrl}/api/Action_LOV_`;
+    const url = `${environment.apiBaseUrl}/api/Action_LOV_/Action`;
       this.http.get<any[]>(url).subscribe({
         next: (data) => {
           // Check if 'ALL' already exists in API data
@@ -120,7 +119,7 @@ export class T5LogReportComponent {
           }
   
           this.participantNames1 = data;
-          this.selectedAction = '%'; 
+          this.selectedAction = 'ACC'; 
         },
         error: (err) => {
           console.error("Error fetching participants:", err);
@@ -128,15 +127,14 @@ export class T5LogReportComponent {
       });
     }
   Operator_Lov1() {
+    debugger;
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
-        // Check if 'ALL' already exists in API data
-        const hasAll = data.some(p => p.userid === 'ALL' || p.user === 'ALL');
+        const hasAll = data.some(p => p.operatorName === 'ALL' || p.operatorId === 'ALL');
 
         if (!hasAll) {
-          // Only add 'ALL' if it's not in API response
-          data.unshift({ user: 'ALL', userid: 'ALL' });
+          data.unshift({ operatorId: 'ALL', operatorName: 'ALL' });
         }
 
         this.participantNames = data;

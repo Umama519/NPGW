@@ -36,8 +36,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-mnpaction-rpt-aspx',
-    standalone: true,  
-
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './mnp-action-report.component.html',
   styleUrl: './mnp-action-report.component.css'
@@ -83,7 +82,7 @@ export class MnpActionReportComponent {
 
   Operator_Lov() {
     debugger;
-    const url = `${environment.apiBaseUrl}/api/Action_LOV_`;
+    const url = `${environment.apiBaseUrl}/api/Action_LOV_/Action`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         // Check if 'ALL' already exists in API data
@@ -95,7 +94,7 @@ export class MnpActionReportComponent {
         }
 
         this.participantNames = data;
-        this.selectedAction = '%';
+        this.selectedAction = 'ACC';
       },
       error: (err) => {
         console.error("Error fetching participants:", err);
@@ -155,7 +154,7 @@ export class MnpActionReportComponent {
 
     if (txt_Frmdate) txt_Frmdate.value = '';
     if (txt_Todate) txt_Todate.value = '';
-    if (this.selectedAction) this.selectedAction = '%';
+    if (this.selectedAction) this.selectedAction = 'ACC';
     if (this.selectedExport) this.selectedExport = 'S';
     this.PMDLog = [];
   }
