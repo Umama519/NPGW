@@ -131,7 +131,7 @@ export class ConsoleComponent {
   expandedRows: { [key: number]: boolean } = {};
   totalItems = 0;
   currentPage = 1;
-  itemsPerPage: number = 18;
+  itemsPerPage: number = 16;
   windowSize: number = 0;
   windowStart = 1;
   pagedData: any[] = [];
