@@ -23,15 +23,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-nprcancel-report',
-<<<<<<< HEAD
-<<<<<<< HEAD
-  standalone: true,
-=======
->>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
-=======
-    standalone: true,  
-
->>>>>>> a610ef1c1d7d032226ea4d45a66ed2c66f02743a
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './nprcancel-report.component.html',
   styleUrl: './nprcancel-report.component.css'

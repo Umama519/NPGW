@@ -36,15 +36,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-iwportinghistory-aspx',
-<<<<<<< HEAD
-<<<<<<< HEAD
-  standalone: true,
-=======
->>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
-=======
-    standalone: true,  
-
->>>>>>> a610ef1c1d7d032226ea4d45a66ed2c66f02743a
+   standalone: true, 
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './iw-porting-history-report.component.html',
   styleUrl: './iw-porting-history-report.component.css'
@@ -140,7 +132,7 @@ export class IwPortingHistoryReportComponent {
     // : 'B';
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';
     this.rhb_Live = this.selectedReport;
-    //const rhb_Screen = this.selectedExport;
+    const rhb_Screen = this.selectedExport;
     const table = this.el.nativeElement.querySelector('#table');
 
     const url = `${environment.apiBaseUrl}/api/IWPortingHistoryReport?fromdate=${txt_FromDate}&todate=${txt_ToDate}&datafor=${this.rhb_Live}&userid=${this.loginUser}`;
@@ -148,38 +140,6 @@ export class IwPortingHistoryReportComponent {
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-<<<<<<< HEAD
-          //if (rhb_Screen === 'S') {
-          this.dataset = res;
-          this.processData();
-          this.IWPorting = this.dataset;
-          this.div_excel = true;
-          debugger;
-          setTimeout(() => {
-            this.createPieChart1();
-            this.createPieChart2();
-            this.createPieChart3();
-            this.createPieChart4();
-          }, 500);
-          //} else {
-          //  this.dataset = res;
-          //  this.processData();
-          //  this.IWPorting = this.dataset;
-          //  this.div_excel = true;
-          //  setTimeout(() => {
-          //    this.createPieChart1();
-          //    this.createPieChart2();
-          //    this.createPieChart3();
-          //    this.createPieChart4();
-          //  }, 500);
-          //  setTimeout(() => {
-          //    this.export(this.IWPorting, 'excel');
-          //    //this.IWPorting = [];
-          //    //this.Reset();
-          //    return;
-          //  }, 100);
-          //}
-=======
           if (rhb_Screen === 'S') {
             this.dataset = res;
             this.processData();
@@ -210,7 +170,6 @@ export class IwPortingHistoryReportComponent {
               return;
             }, 100);
           }
->>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
         } else {
           this.showSuccessPopup = false;
           setTimeout(() => {
@@ -402,12 +361,7 @@ export class IwPortingHistoryReportComponent {
       labels: ['UFONE', 'WARID', 'TELENOR', 'MOBILINK', 'ZONG', 'INSTA'],
       datasets: [{
         label: 'Port-In Analysis',
-<<<<<<< HEAD
-        //data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
-        data: [this.ufone, this.warid, this.telenor, this.mobilink, this.zong, this.insta],
-=======
         data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
->>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
         backgroundColor: ['#b6abf1ff', '#F7B37A', '#7FC6D8', '#FF7878', '#A1C85A', '#b6da37ff'],
         borderWidth: 1
       }]
@@ -481,12 +435,7 @@ export class IwPortingHistoryReportComponent {
       labels: ['UFONE', 'WARID', 'TELENOR', 'MOBILINK', 'ZONG', 'INSTA'],
       datasets: [{
         label: 'Port-Out Analysis',
-<<<<<<< HEAD
-        //data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
-        data: [this.ufone, this.warid, this.telenor, this.mobilink, this.zong, this.insta],
-=======
         data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
->>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
         backgroundColor: ['#b6abf1ff', '#F7B37A', '#7FC6D8', '#FF7878', '#A1C85A', '#b6da37ff'],
         borderWidth: 1
       }]
@@ -513,62 +462,6 @@ export class IwPortingHistoryReportComponent {
     if (canvas) {
       this.chartRef4 = new Chart(canvas, config);
     }
-<<<<<<< HEAD
-  }
-
-  //export(IWPorting: any, file: any) {
-  //  this.IWPorting = IWPorting;
-  //  this.excelService.exportToFile(
-  //    this.IWPorting, 'Industry Wise Porting History Report', {
-  //    recepient: 'Recepient',
-  //    warid: 'Warid',
-  //    ufone: 'Ufone',
-  //    telenor: 'Telenor',
-  //    mobilink: 'Mobilink',
-  //    zong: 'Zong',
-  //    insta: 'Insta',
-  //    Total: 'Grand Total',
-  //    NetGL: 'Net Gain Loss',
-  //    Pin_P: 'PIN %',
-  //    NetGL_P: 'Net Gain Loss %'
-  //  }, file
-  //  );
-  //}
-  export(IWPorting: any, file: any) {
-    this.IWPorting = IWPorting;
-
-    this.excelService.exportToFile(
-      this.IWPorting,
-      'Industry Wise Porting History Report',
-      {
-        recepient: 'Recepient',
-        warid: 'Warid',
-        ufone: 'Ufone',
-        telenor: 'Telenor',
-        mobilink: 'Mobilink',
-        zong: 'Zong',
-        insta: 'Insta',
-        Total: 'Grand Total',
-        NetGL: 'Net Gain Loss',
-        Pin_P: 'PIN %',
-        NetGL_P: 'Net Gain Loss %'
-      },
-      file,
-      [
-        'operatorPieChart1',
-        'operatorPieChart2',
-        'operatorPieChart3',
-        'operatorPieChart4'
-      ]
-    );
-  }
-  SaveToExl() {
-    setTimeout(() => {
-      this.export(this.IWPorting, 'excel');
-      return;
-    }, 100);
-  }
-=======
   }
 
   //export(IWPorting: any, file: any) {
@@ -618,5 +511,4 @@ export class IwPortingHistoryReportComponent {
     );
   }
 
->>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
 }
