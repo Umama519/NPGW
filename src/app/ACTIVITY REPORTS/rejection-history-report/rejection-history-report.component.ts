@@ -29,7 +29,8 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-rejectionhisreport-aspx',
-  standalone: true, 
+    standalone: true,  
+
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './rejection-history-report.component.html',
   styleUrl: './rejection-history-report.component.css'

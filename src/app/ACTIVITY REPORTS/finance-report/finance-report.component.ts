@@ -26,7 +26,8 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-financereport-aspx',
-   standalone: true, 
+    standalone: true,  
+
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './finance-report.component.html',
   styleUrl: './finance-report.component.css'

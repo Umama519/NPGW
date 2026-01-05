@@ -163,6 +163,7 @@ export class LoginComponent {
               localStorage.setItem('roleMessage', msg[5] || '');
             localStorage.setItem('lastLogging', msg[6] || '');
             localStorage.setItem('PasswordChange', 'Y');
+            
 
             this.router.navigateByUrl('app-PasswordChangeAlert');
           }

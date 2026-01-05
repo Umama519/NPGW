@@ -36,7 +36,8 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-iwportinghistory-aspx',
-   standalone: true, 
+    standalone: true,  
+
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './iw-porting-history-report.component.html',
   styleUrl: './iw-porting-history-report.component.css'

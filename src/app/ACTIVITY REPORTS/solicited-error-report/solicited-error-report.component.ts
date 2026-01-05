@@ -27,7 +27,8 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-solicitederrreport-aspx',
-  standalone: true, 
+    standalone: true,  
+
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './solicited-error-report.component.html',
   styleUrl: './solicited-error-report.component.css'
