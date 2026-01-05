@@ -45,9 +45,14 @@ declare var $: any;
 @Component({
   selector: 'app-public-portinreport-aspx',
 <<<<<<< HEAD
+<<<<<<< HEAD
   standalone: true,
 =======
 >>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
+=======
+    standalone: true,  
+
+>>>>>>> a610ef1c1d7d032226ea4d45a66ed2c66f02743a
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-in-report.component.html',
   styleUrl: './port-in-report.component.css'
@@ -226,6 +231,7 @@ export class PortInReportComponent {
           npr: 'NPR',
         }, file
       );
+<<<<<<< HEAD
   }
   updatePagination() {
     this.pagedData = this.pager.getPagedData(this.data, this.currentPage, this.itemsPerPage);
@@ -265,5 +271,8 @@ export class PortInReportComponent {
     }
   }
 
+=======
+    }  
+>>>>>>> a610ef1c1d7d032226ea4d45a66ed2c66f02743a
 }
 

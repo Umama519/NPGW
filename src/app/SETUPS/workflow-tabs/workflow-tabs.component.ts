@@ -22,25 +22,44 @@ export class WorkflowTabsComponent implements OnInit {
   constructor(private workflowService: WorkflowService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    debugger;
+  this.route.queryParams.subscribe(params => {
+    this.wfId = params['pf'] || null;
     this.loadTabs();
-    //this.route.queryParams.subscribe(params => {
-    //  this.wfId = params['pf'] || null;
-    //});
-    //this.loadData(this.wfId);
-  }
+  });
+}
+loadTabs() {
+  this.workflowService.getTabs().subscribe(data => {
+    this.tabs = data || [];
 
-  loadTabs() {
-    this.workflowService.getTabs().subscribe(data => {
-      this.tabs = data || [];
-      if (this.tabs.length > 0) {
-        this.activeTabPF = this.tabs[0].pf;
-        this.activeTab = this.tabs[0].tabName;
-        this.loadData(this.activeTabPF);
-        this.onTabChange(0);
+    if (this.tabs.length > 0) {
+
+      let index = 0;
+
+      if (this.wfId) {
+        const foundIndex = this.tabs.findIndex(t => t.pf == this.wfId);
+        index = foundIndex !== -1 ? foundIndex : 0;
       }
-    });
-  }
+
+      this.activeTabPF = this.tabs[index].pf;
+      this.activeTab = this.tabs[index].tabName;
+
+      this.loadData(this.activeTabPF);
+      this.onTabChange(index);
+    }
+  });
+}
+
+  // loadTabs() {
+  //   this.workflowService.getTabs().subscribe(data => {
+  //     this.tabs = data || [];
+  //     if (this.tabs.length > 0) {
+  //       this.activeTabPF = this.tabs[0].pf;
+  //       this.activeTab = this.tabs[0].tabName;
+  //       this.loadData(this.activeTabPF);
+  //       this.onTabChange(0);
+  //     }
+  //   });
+  // }
   onTabChange(index: number) {
     debugger;
     this.activeTab = this.tabs[index].tabName;

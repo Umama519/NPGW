@@ -236,6 +236,9 @@ export class WorkflowdefinitiondeactivationComponent {
   wf: any;
   index: any;
   lovDisabled: boolean = false;
+  tabs: any[] = [];
+  activeTabPF: any;
+  activeTab: any;
 
   ngOnInit(): void {
     debugger;
@@ -255,6 +258,7 @@ export class WorkflowdefinitiondeactivationComponent {
     this.route.queryParams.subscribe(params => {
       this.wfId = params['wfId'] || null;
       this.wf = params['pf'] || null;
+      
 
       if (this.wfId) {
         this.GetGrid(this.wfId);

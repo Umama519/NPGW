@@ -147,6 +147,7 @@ export class LoginComponent {
             localStorage.setItem('loginUser', this.userObj.Userid);
             localStorage.setItem('Exp_msg', msg[4] || '');
             localStorage.setItem('FrID', msg[8] || '');
+           
 
             this.router.navigateByUrl('app-PasswordChangeAlert');
           }
@@ -158,7 +159,10 @@ export class LoginComponent {
             localStorage.setItem('Exp_msg', msg[4] || '');
             localStorage.setItem('Expiry', msg[3] || '');
             localStorage.setItem('FrID', msg[8] || '');
+              localStorage.setItem('roleMessage', msg[5] || '');
+            localStorage.setItem('lastLogging', msg[6] || '');
             localStorage.setItem('PasswordChange', 'Y');
+            
 
             this.router.navigateByUrl('app-PasswordChangeAlert');
           }

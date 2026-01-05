@@ -22,9 +22,14 @@ declare var $: any;
 @Component({
   selector: 'app-public-portingstatusreport-aspx',
 <<<<<<< HEAD
+<<<<<<< HEAD
   standalone: true,
 =======
 >>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
+=======
+    standalone: true,  
+
+>>>>>>> a610ef1c1d7d032226ea4d45a66ed2c66f02743a
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './porting-status-report.component.html',
   styleUrl: './porting-status-report.component.css'
