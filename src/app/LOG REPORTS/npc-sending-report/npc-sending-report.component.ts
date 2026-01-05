@@ -23,7 +23,10 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-npcsendingrpt-aspx',
+<<<<<<< HEAD
   standalone: true,
+=======
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   imports: [CommonModule, FormsModule],
   templateUrl: './npc-sending-report.component.html',
   styleUrl: './npc-sending-report.component.css'

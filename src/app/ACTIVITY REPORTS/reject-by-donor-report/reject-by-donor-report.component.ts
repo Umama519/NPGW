@@ -34,7 +34,10 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-rejectbydonor-aspx',
+<<<<<<< HEAD
   standalone: true,
+=======
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './reject-by-donor-report.component.html',
   styleUrl: './reject-by-donor-report.component.css'

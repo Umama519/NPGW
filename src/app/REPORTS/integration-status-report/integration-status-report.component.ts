@@ -21,7 +21,10 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-sysintegrationstatus-aspx',
+<<<<<<< HEAD
   standalone: true,
+=======
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   imports: [CommonModule, FormsModule],
   templateUrl: './integration-status-report.component.html',
   styleUrl: './integration-status-report.component.css'

@@ -44,7 +44,10 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinreport-aspx',
+<<<<<<< HEAD
   standalone: true,
+=======
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-in-report.component.html',
   styleUrl: './port-in-report.component.css'
@@ -232,7 +235,15 @@ export class PortInReportComponent {
       this.itemsPerPage,
       this.currentPage,
       10
+<<<<<<< HEAD
     );    
+=======
+    );
+
+    this.totalPages = pageInfo.totalPages;
+    this.windowStart = pageInfo.start;
+    this.windowEnd = pageInfo.end;
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   }
 
   goToPage(page: number) {

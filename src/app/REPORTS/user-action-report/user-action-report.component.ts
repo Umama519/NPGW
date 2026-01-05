@@ -21,7 +21,10 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-useraction-rpt-aspx',
+<<<<<<< HEAD
   standalone: true,
+=======
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './user-action-report.component.html',
   styleUrl: './user-action-report.component.css'

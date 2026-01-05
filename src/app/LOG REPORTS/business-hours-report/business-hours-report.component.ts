@@ -21,7 +21,10 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-bussinesshourrpt-aspx',
+<<<<<<< HEAD
   standalone: true,
+=======
+>>>>>>> df6adcae315ddb201abfceb949d6603edc257f9e
   imports: [CommonModule, FormsModule],
   templateUrl: './business-hours-report.component.html',
   styleUrl: './business-hours-report.component.css'
