@@ -135,7 +135,6 @@ export class LoginComponent {
             localStorage.removeItem('ConsolePagedData');
             localStorage.removeItem('ConsoleCurrentPage');
             localStorage.removeItem('ConsoleGridData');
-            debugger
             localStorage.setItem('token', res.token);
 
             this.router.navigateByUrl('app-home');

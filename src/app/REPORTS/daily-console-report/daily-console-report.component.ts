@@ -44,7 +44,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-dailyconsolestatus-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './daily-console-report.component.html',
   styleUrl: './daily-console-report.component.css'

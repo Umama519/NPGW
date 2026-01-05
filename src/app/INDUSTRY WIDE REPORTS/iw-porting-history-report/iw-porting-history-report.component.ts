@@ -36,7 +36,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-iwportinghistory-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './iw-porting-history-report.component.html',
   styleUrl: './iw-porting-history-report.component.css'
@@ -132,7 +132,7 @@ export class IwPortingHistoryReportComponent {
     // : 'B';
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';
     this.rhb_Live = this.selectedReport;
-    const rhb_Screen = this.selectedExport;
+    //const rhb_Screen = this.selectedExport;
     const table = this.el.nativeElement.querySelector('#table');
 
     const url = `${environment.apiBaseUrl}/api/IWPortingHistoryReport?fromdate=${txt_FromDate}&todate=${txt_ToDate}&datafor=${this.rhb_Live}&userid=${this.loginUser}`;
@@ -140,36 +140,36 @@ export class IwPortingHistoryReportComponent {
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-          if (rhb_Screen === 'S') {
-            this.dataset = res;
-            this.processData();
-            this.IWPorting = this.dataset;
-            this.div_excel = true;
-            debugger;
-            setTimeout(() => {
-              this.createPieChart1();
-              this.createPieChart2();
-              this.createPieChart3();
-              this.createPieChart4();
-            }, 500);
-          } else {
-            this.dataset = res;
-            this.processData();
-            this.IWPorting = this.dataset;
-            this.div_excel = true;
-            setTimeout(() => {
-              this.createPieChart1();
-              this.createPieChart2();
-              this.createPieChart3();
-              this.createPieChart4();
-            }, 500);
-            setTimeout(() => {
-              this.export(this.IWPorting, 'excel');
-              //this.IWPorting = [];
-              //this.Reset();
-              return;
-            }, 100);
-          }
+          //if (rhb_Screen === 'S') {
+          this.dataset = res;
+          this.processData();
+          this.IWPorting = this.dataset;
+          this.div_excel = true;
+          debugger;
+          setTimeout(() => {
+            this.createPieChart1();
+            this.createPieChart2();
+            this.createPieChart3();
+            this.createPieChart4();
+          }, 500);
+          //} else {
+          //  this.dataset = res;
+          //  this.processData();
+          //  this.IWPorting = this.dataset;
+          //  this.div_excel = true;
+          //  setTimeout(() => {
+          //    this.createPieChart1();
+          //    this.createPieChart2();
+          //    this.createPieChart3();
+          //    this.createPieChart4();
+          //  }, 500);
+          //  setTimeout(() => {
+          //    this.export(this.IWPorting, 'excel');
+          //    //this.IWPorting = [];
+          //    //this.Reset();
+          //    return;
+          //  }, 100);
+          //}
         } else {
           this.showSuccessPopup = false;
           setTimeout(() => {
@@ -361,7 +361,8 @@ export class IwPortingHistoryReportComponent {
       labels: ['UFONE', 'WARID', 'TELENOR', 'MOBILINK', 'ZONG', 'INSTA'],
       datasets: [{
         label: 'Port-In Analysis',
-        data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
+        //data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
+        data: [this.ufone, this.warid, this.telenor, this.mobilink, this.zong, this.insta],
         backgroundColor: ['#b6abf1ff', '#F7B37A', '#7FC6D8', '#FF7878', '#A1C85A', '#b6da37ff'],
         borderWidth: 1
       }]
@@ -435,7 +436,8 @@ export class IwPortingHistoryReportComponent {
       labels: ['UFONE', 'WARID', 'TELENOR', 'MOBILINK', 'ZONG', 'INSTA'],
       datasets: [{
         label: 'Port-Out Analysis',
-        data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
+        //data: [this.dataset[0].Total, this.dataset[1].Total, this.dataset[2].Total, this.dataset[3].Total, this.dataset[4].Total, this.dataset[5].Total],
+        data: [this.ufone, this.warid, this.telenor, this.mobilink, this.zong, this.insta],
         backgroundColor: ['#b6abf1ff', '#F7B37A', '#7FC6D8', '#FF7878', '#A1C85A', '#b6da37ff'],
         borderWidth: 1
       }]
@@ -510,5 +512,10 @@ export class IwPortingHistoryReportComponent {
       ]
     );
   }
-
+  SaveToExl() {
+    setTimeout(() => {
+      this.export(this.IWPorting, 'excel');
+      return;
+    }, 100);
+  }
 }

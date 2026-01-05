@@ -44,7 +44,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinreport-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-in-report.component.html',
   styleUrl: './port-in-report.component.css'
@@ -232,8 +232,7 @@ export class PortInReportComponent {
       this.itemsPerPage,
       this.currentPage,
       10
-    );
-    
+    );    
   }
 
   goToPage(page: number) {

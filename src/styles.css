@@ -2441,36 +2441,7 @@ filter: alpha(opacity=50); /* IE-only */
 	height: 16px;
 }
 .ui-icon,
-/* .ui-widget-content .ui-icon {
-	background-image: url("images/ui-icons_444444_256x240.png");
-}
-.ui-widget-header .ui-icon {
-	background-image: url("images/ui-icons_444444_256x240.png");
-}
-.ui-state-hover .ui-icon,
-.ui-state-focus .ui-icon,
-.ui-button:hover .ui-icon,
-.ui-button:focus .ui-icon {
-	background-image: url("images/ui-icons_555555_256x240.png");
-}
-.ui-state-active .ui-icon,
-.ui-button:active .ui-icon {
-	background-image: url("images/ui-icons_ffffff_256x240.png");
-}
-.ui-state-highlight .ui-icon,
-.ui-button .ui-state-highlight.ui-icon {
-	background-image: url("images/ui-icons_777620_256x240.png");
-}
-.ui-state-error .ui-icon,
-.ui-state-error-text .ui-icon {
-	background-image: url("images/ui-icons_cc0000_256x240.png");
-}
-.ui-button .ui-icon {
-	background-image: url("images/ui-icons_777777_256x240.png");
-} */
 
-/* positioning */
-/* Three classes needed to override `.ui-button:hover .ui-icon` */
 .ui-icon-blank.ui-icon-blank.ui-icon-blank {
 	background-image: none;
 }
@@ -2750,8 +2721,10 @@ filter: alpha(opacity=50); /* IE-only */
  .mat-mdc-tab .mdc-tab__text-label {
   font-size: 14px !important;
   font-family: Calibri;
-  /* color: #555 !important;
+  margin-top: 14px;
   padding: 12px 20px !important;
+  /* color: #555 !important;
+  
   text-transform: capitalize;
   transition: 0.3s ease !important; */
 }

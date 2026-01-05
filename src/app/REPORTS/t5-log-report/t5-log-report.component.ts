@@ -49,7 +49,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-t5log-rpt-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './t5-log-report.component.html',
   styleUrl: './t5-log-report.component.css'

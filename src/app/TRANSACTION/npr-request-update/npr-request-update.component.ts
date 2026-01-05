@@ -1170,8 +1170,8 @@ export class NpRequestupdateComponent implements OnInit {
   }
   validateBeforeSubmit(): { ok: boolean; msg?: string } {
     const m = this.model;
-    if (!m.OMO) return { ok: false, msg: 'Select ONO' };
-    if (!m.dmos) return { ok: false, msg: 'Select DNO' };
+    if (!m.OMO) return { ok: false, msg: 'Select Owner Operator' };
+    if (!m.dmos) return { ok: false, msg: 'Select Donor Operator' };
     if (!m.mobile || m.mobile.toString().length < 7) return { ok: false, msg: 'Mobile is required' };
     if (!m.registerName) return { ok: false, msg: 'Register Name is required' };
     if (!m.userName) return { ok: false, msg: 'User Name is required' };

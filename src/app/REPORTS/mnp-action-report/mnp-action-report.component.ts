@@ -36,7 +36,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-mnpaction-rpt-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './mnp-action-report.component.html',
   styleUrl: './mnp-action-report.component.css'

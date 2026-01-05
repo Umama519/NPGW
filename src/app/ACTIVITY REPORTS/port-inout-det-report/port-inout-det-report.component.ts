@@ -33,7 +33,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinoutdetail-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-inout-det-report.component.html',
   styleUrl: './port-inout-det-report.component.css'

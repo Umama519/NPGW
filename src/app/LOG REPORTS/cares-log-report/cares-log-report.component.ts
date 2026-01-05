@@ -52,7 +52,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-caresloggingdatarec-rpt-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './cares-log-report.component.html',
   styleUrl: './cares-log-report.component.css'

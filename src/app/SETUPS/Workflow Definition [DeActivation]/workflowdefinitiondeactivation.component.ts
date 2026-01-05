@@ -109,6 +109,7 @@ export interface WorkFlowGet {
   MESSEGEID: any,
   MESSEGEDESC: any,
   RESPONSENO: any,
+  RESPONSE: any,
   ALARMID: any,
   STAT: any,
   TIMEID: any,
@@ -122,8 +123,7 @@ export interface WorkFlowGet {
 
 @Component({
   selector: 'app-workflow.aspx',
-    standalone: true,  
-
+  standalone: true,
   imports: [FormsModule, CommonModule, GlobalLovComponent],
   templateUrl: './workflowdefinitiondeactivation.component.html',
   styleUrl: './workflowdefinitiondeactivation.component.css'
@@ -316,8 +316,8 @@ export class WorkflowdefinitiondeactivationComponent {
           this.actions = res;
           this.selectedActionCode = this.actions[0].aact;
           this.selectedAddActionCode = this.actions[0].aact;
+          this.selectedAddActionDesc = this.actions[0].descrip;
           this.loderesponse();
-          //this.selectedAddActionDesc = this.actions[0].descrip;
           
         } else {
           console.log('No data found');
@@ -441,6 +441,7 @@ export class WorkflowdefinitiondeactivationComponent {
       next: (res: any[]) => {
         this.actions = res;
         this.selectedAddActionCode = this.actions[0].aact;
+        this.selectedAddActionDesc = this.actions[0].descrip;
         // if (res && res.length > 0) {
         //   this.externalAlarms = res;
         //   this.selectedExternalAlarmID = this.messages[0].ALARM;          
@@ -474,6 +475,7 @@ export class WorkflowdefinitiondeactivationComponent {
         if (res && res.length > 0) {
           this.responses = res;
           this.selectedResponseCode = this.responses[0].RESPONSE;
+          this.selectedResponseDesc = this.responses[0].RDSCR;
         }
       },
       error: (err) => {
@@ -675,7 +677,8 @@ export class WorkflowdefinitiondeactivationComponent {
               RESPONSEID: this.convertToText(item.RESPONSEID),
               MESSEGEID: this.convertToText(item.MESSEGEID),
               MESSEGEDESC: this.convertToText(item.MESSEGEDESC),
-              RESPONSENO: this.convertToText(item.RESPONSENO),
+              RESPONSENO: this.convertToText(item.RESPONSEID),
+              RESPONSE: this.convertToText(item.RESPONSENO),
               ALARMID: this.convertToText(item.ALARMID),
               STAT: this.convertToText(item.STAT),
               TIMEID: this.convertToText(item.TIMEID),
@@ -725,6 +728,7 @@ export class WorkflowdefinitiondeactivationComponent {
     const id = this.selectedResponseCode + '-' + this.selectedResponseDesc;
     let isNewFlag = true;
     const isDuplicateIndex = this.gridDat.findIndex(item => item.RESPONSEID === id);
+    const response = this.gridDat[0].RESPONSE;
     if (isDuplicateIndex !== -1) {
       this.gridDat.splice(isDuplicateIndex, 1);
       isNewFlag = false;
@@ -732,7 +736,7 @@ export class WorkflowdefinitiondeactivationComponent {
 
     const wf = (document.getElementById('txtWF') as HTMLInputElement).value;
     const responseid = this.selectedResponseDesc;//(document.getElementById('ddlResponseCode') as HTMLSelectElement).selectedOptions[0].text;
-    const responseno = this.selectedResponseCode;//(document.getElementById('ddlResponseCode') as HTMLInputElement).value;
+    const responseno = this.selectedResponseCode;//(document.getElementById('ddlResponseCode') as HTMLInputElement).value;    
     const messageid = this.selectedMessageID;//(document.getElementById('ddlMessageID') as HTMLSelectElement).selectedOptions[0].text;
     const messageDesc = this.selectedMessageDesc;//(document.getElementById('ddlMessageID') as HTMLInputElement).value;
     const status = this.selectedCurrentWFStatus;//(document.getElementById('ddlCurrentWFStatus') as HTMLSelectElement).selectedOptions[0].text;
@@ -756,6 +760,7 @@ export class WorkflowdefinitiondeactivationComponent {
       MESSEGEID: messageid,
       MESSEGEDESC: messageDesc,
       RESPONSENO: responseno,
+      RESPONSE: response,
       ALARMID: '',
       STAT: status === 'C' ? 'Continue' : status === 'S' ? 'Stop' : '',
       TIMEID: '',
@@ -1103,140 +1108,11 @@ export class WorkflowdefinitiondeactivationComponent {
     const selectedUser = this.users.find(u => u.USERID === this.selectedUserID);
     this.selectedUserName = selectedUser ? selectedUser.UNAME : '';
   }
-  insertGroupDetail() {
-    debugger;
-    this.isSubmitting = true;
-
-    const urlInsert = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail`;
-
-    if (this.gridDat.length === 0) {
-      this.popupMessage = 'No data to insert!';
-      this.isErrorPopup = true;
-      this.showSuccessPopup = true;
-      this.ResetButton();
-      return;
-    }
-
-    // 🔹 Check insert or update
-    const hasNewRow = this.gridDat.some(r => r.isNew);
-    this.isadd = hasNewRow ? 'I' : 'U';
-
-
-
-    // ======================================
-    // 🔥 INSERT MODE (ONE POST REQUEST)
-    // ======================================
-    if (this.isadd === 'I') {
-
-      const mappedData: WorkFlowSetup[] = this.gridDat.map(item => {
-        const setup = new WorkFlowSetup();
-        setup.wf = '';
-        setup.wfn = this.generatedSeqWF;
-        setup.nextwfn = '';
-        setup.response = String(item.RESPONSENO);
-        setup.aact = item.ACTIONID;
-        setup.alarm = item.ALARMID;
-        setup.timstat = item.STAT === 'Continue' ? 'C' : item.STAT === 'Stop' ? 'S' : '';
-        setup.sndrec = item.SENDRECE === 'NONE' ? '' : item.SENDRECE === 'Send' ? 'S' : 'R';
-        setup.msgid = item.MESSEGEID === 'No Message' ? '' : item.MESSEGEID;
-        setup.timid = item.TIMEID;
-        setup.wfstat_dtl = item.WORKFLOWSTAT === 'Yes' ? 'Y' : 'N';
-        setup.transaction = 'D';
-        setup.userid = this.loginUser;
-        return setup;
-      });
-
-      setTimeout(() => {
-        this.http.post(urlInsert, mappedData).subscribe({
-          next: (response: any) => this.handleServerResponse(response),
-          error: (error) => {
-            this.popupMessage = `Error inserting data: ${error.message}`;
-            this.isErrorPopup = true;
-            this.showSuccessPopup = true;
-            this.isSubmitting = false;
-          }
-        });
-      }, 500);
-
-      return; // Insert end
-    }
-
-
-
-    // ======================================
-    // 🔥 UPDATE MODE (MULTIPLE PUT REQUESTS)
-    // ======================================
-    if (this.isadd === 'U') {
-      debugger;
-      const requests = this.gridDat.map(item => {
-
-        // 🔸 Each item has its own URL
-        const urlUpdate = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail/${this.operatorData.wfn}/${item.RESPONSENO}`;
-
-        const setup = new WorkFlowSetup();
-        setup.wf = '';
-        setup.wfn = this.generatedSeqWF;
-        setup.nextwfn = '';
-        setup.response = String(item.RESPONSENO);
-        setup.aact = item.ACTIONID;
-        setup.alarm = item.ALARMID;
-        setup.timstat = item.STAT === 'Continue' ? 'C' : item.STAT === 'Stop' ? 'S' : '';
-        setup.sndrec = item.SENDRECE === 'NONE' ? '' : item.SENDRECE === 'Send' ? 'S' : 'R';
-        setup.msgid = item.MESSEGEID === 'No Message' ? '' : item.MESSEGEID;
-        setup.timid = item.TIMEID;
-        setup.wfstat_dtl = item.WORKFLOWSTAT === 'Yes' ? 'Y' : 'N';
-        setup.transaction = 'DE';
-        setup.userid = this.loginUser;
-
-        return this.http.put(urlUpdate, [setup]);   // 🔸 Array me bhejna zaroori hai
-      });
-
-      setTimeout(() => {
-        forkJoin(requests).subscribe({
-          next: (responses: any[]) => {
-            this.popupMessage = "Record(s) updated successfully!";
-            this.isErrorPopup = false;
-            this.showSuccessPopup = true;
-            this.isSubmitting = false;
-            this.loadData(this.wf);
-          },
-          error: (error) => {
-            this.popupMessage = `Error updating data: ${error.message}`;
-            this.isErrorPopup = true;
-            this.showSuccessPopup = true;
-            this.isSubmitting = false;
-          }
-        });
-      }, 500);
-    }
-  }
-  handleServerResponse(response: any) {
-    const msg = response.message || JSON.stringify(response);
-
-    if (msg.startsWith("1")) {
-      const msgR = msg.split(';').slice(1).join(',').replace(/["}]/g, '').trim();
-      this.isErrorPopup = false;
-      this.popupMessage = msgR;
-      this.loadData(this.wf);
-    } else if (msg.startsWith("0")) {
-      const msgR = msg.split(';').slice(1).join(',').replace(/["}]/g, '').trim();
-      this.isErrorPopup = true;
-      this.popupMessage = msgR;
-    } else {
-      this.isErrorPopup = false;
-      this.popupMessage = "Unexpected response format!";
-    }
-
-    this.showSuccessPopup = true;
-    this.isSubmitting = false;
-  }
-
-
   //insertGroupDetail() {
   //  debugger;
   //  this.isSubmitting = true;
-  //  const url = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail`;
-  //  const url1 = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail/${this.operatorData.wfn}/${this.gridDat[0].RESPONSENO}`;
+
+  //  const urlInsert = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail`;
 
   //  if (this.gridDat.length === 0) {
   //    this.popupMessage = 'No data to insert!';
@@ -1246,124 +1122,254 @@ export class WorkflowdefinitiondeactivationComponent {
   //    return;
   //  }
 
+  //  // 🔹 Check insert or update
   //  const hasNewRow = this.gridDat.some(r => r.isNew);
   //  this.isadd = hasNewRow ? 'I' : 'U';
 
-  //  const mappedData: WorkFlowSetup[] = this.gridDat.map((item, index) => {
-  //    const url = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail/${this.operatorData.wfn}/${item.RESPONSENO}`;
 
-  //    const setup = new WorkFlowSetup();
-  //    setup.wf = '';
-  //    setup.wfn = this.generatedSeqWF;//item.WORKFLOW;
-  //    setup.nextwfn = '';
-  //    setup.response = String(item.RESPONSENO)//String(this.selectedResponseCode);//this.selectedResponseCode;
-  //    setup.aact = item.ACTIONID;//this.selectedAddActionCode;
-  //    setup.alarm = item.ALARMID;
-  //    setup.timstat = item.STAT === 'Continue' ? 'C' : item.STAT === 'Stop' ? 'S' : '';
-  //    setup.sndrec = item.SENDRECE === 'NONE' ? '' : item.SENDRECE === 'Send' ? 'S' : item.SENDRECE === 'Receive' ? 'R' : ''; // setup.sndrec = item.sndrec;
-  //    setup.msgid = item.MESSEGEID === 'No Message' ? '' : item.MESSEGEID;;//this.selectedMessageID;
-  //    setup.timid = item.TIMEID;
-  //    setup.wfstat_dtl = item.WORKFLOWSTAT === 'Yes' ? 'Y' : item.STAT === 'No' ? 'N' : '';
-  //    setup.transaction = this.isadd === 'I' ? 'D' : this.isadd === 'U' ? 'DE' : '';
-  //    setup.userid = this.loginUser;
-  //    setup.wfttyp = '';
-  //    setup.wfstat = '';
-  //    setup.mact = '';
-  //    setup.wf_valid_from = '';
-  //    setup.maasn = '';
-  //    setup.wf_valid_to = '';
-  //    setup.mauid = '';
-  //    setup.maugrpid = '';
-  //    setup.matimid = '';
-  //    setup.maalarm = '';
-  //    setup.mainttimid = '';
-  //    setup.maintalarm = '';
-  //    setup.donrec = '';
-  //    setup.timadd = '';
-  //    // setup.timid = '';
 
-  //    return setup;
-  //  });
-  //  if (this.isadd === 'U') {
+  //  // ======================================
+  //  // 🔥 INSERT MODE (ONE POST REQUEST)
+  //  // ======================================
+  //  if (this.isadd === 'I') {
+
+  //    const mappedData: WorkFlowSetup[] = this.gridDat.map(item => {
+  //      const setup = new WorkFlowSetup();
+  //      setup.wf = '';
+  //      setup.wfn = this.generatedSeqWF;
+  //      setup.nextwfn = '';
+  //      setup.response = String(item.RESPONSENO);
+  //      setup.aact = item.ACTIONID;
+  //      setup.alarm = item.ALARMID;
+  //      setup.timstat = item.STAT === 'Continue' ? 'C' : item.STAT === 'Stop' ? 'S' : '';
+  //      setup.sndrec = item.SENDRECE === 'NONE' ? '' : item.SENDRECE === 'Send' ? 'S' : 'R';
+  //      setup.msgid = item.MESSEGEID === 'No Message' ? '' : item.MESSEGEID;
+  //      setup.timid = item.TIMEID;
+  //      setup.wfstat_dtl = item.WORKFLOWSTAT === 'Yes' ? 'Y' : 'N';
+  //      setup.transaction = 'D';
+  //      setup.userid = this.loginUser;
+  //      return setup;
+  //    });
+
   //    setTimeout(() => {
-  //      this.http.put(url1, mappedData).subscribe({
-  //        next: (response: any) => {
-  //          debugger;
-  //          // this.popupMessage = `${this.gridDat.length} record(s) inserted successfully!`;
-  //          // this.gridDat = response;
-  //          // this.isErrorPopup = false;
-  //          // this.showSuccessPopup = true;
-  //          // this.gridDat = [];
-  //          // this.isgridview = false;
-  //          // this.isSubmitting = false;          
-  //          const msg = response.message || JSON.stringify(response);
-  //          if (msg.startsWith("1")) {
-  //            const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
-  //            this.isErrorPopup = false;
-  //            this.popupMessage = msgR;
-  //            // this.ResetButton();
-  //          } else if (msg.startsWith("0")) {
-  //            const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
-  //            this.isErrorPopup = true;
-  //            this.popupMessage = msgR;
-  //          } else {
-  //            this.isErrorPopup = false;
-  //            this.popupMessage = "Unexpected response format!";
-  //          }
-  //          this.showSuccessPopup = true;
-  //        },
+  //      this.http.post(urlInsert, mappedData).subscribe({
+  //        next: (response: any) => this.handleServerResponse(response),
   //        error: (error) => {
   //          this.popupMessage = `Error inserting data: ${error.message}`;
   //          this.isErrorPopup = true;
   //          this.showSuccessPopup = true;
   //          this.isSubmitting = false;
-  //          // this.ResetButton();
   //        }
-
   //      });
   //    }, 500);
-  //  } else if (this.isadd === 'I') {
-  //    setTimeout(() => {
-  //      this.http.post(url, mappedData).subscribe({
-  //        next: (response: any) => {
-  //          if (response) {
-  //            const msg = response.message || JSON.stringify(response);
-  //            if (msg.startsWith("1")) {
-  //              const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
-  //              this.isErrorPopup = false;
-  //              this.popupMessage = msgR;
-  //              // this.ResetButton();
-  //            } else if (msg.startsWith("0")) {
-  //              const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
-  //              this.isErrorPopup = true;
-  //              this.popupMessage = msgR;
-  //            } else {
-  //              this.isErrorPopup = false;
-  //              this.popupMessage = "Unexpected response format!";
-  //            }
-  //            this.showSuccessPopup = true;
-  //            // this.popupMessage = `${this.gridDat.length} record(s) inserted successfully!`;
-  //            // this.gridDat = response;
-  //            // this.isErrorPopup = false;
-  //            // this.showSuccessPopup = true;
-  //            // this.gridDat = [];
-  //            // this.isgridview = false;
-  //            // this.isSubmitting = false;
-  //          } else {
 
-  //          }
+  //    return; // Insert end
+  //  }
+
+
+
+  //  // ======================================
+  //  // 🔥 UPDATE MODE (MULTIPLE PUT REQUESTS)
+  //  // ======================================
+  //  if (this.isadd === 'U') {
+  //    debugger;
+  //    const requests = this.gridDat.map(item => {
+
+  //      const urlUpdate = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail/${this.operatorData.wfn}/${item.RESPONSENO}`;
+
+  //      const setup = new WorkFlowSetup();
+  //      setup.wf = '';
+  //      setup.wfn = this.generatedSeqWF;
+  //      setup.nextwfn = '';
+  //      setup.response = String(item.RESPONSENO);
+  //      setup.aact = item.ACTIONID;
+  //      setup.alarm = item.ALARMID;
+  //      setup.timstat = item.STAT === 'Continue' ? 'C' : item.STAT === 'Stop' ? 'S' : '';
+  //      setup.sndrec = item.SENDRECE === 'NONE' ? '' : item.SENDRECE === 'Send' ? 'S' : 'R';
+  //      setup.msgid = item.MESSEGEID === 'No Message' ? '' : item.MESSEGEID;
+  //      setup.timid = item.TIMEID;
+  //      setup.wfstat_dtl = item.WORKFLOWSTAT === 'Yes' ? 'Y' : 'N';
+  //      setup.transaction = 'DE';
+  //      setup.userid = this.loginUser;
+
+  //      return this.http.put(urlUpdate, [setup]);
+  //    });
+
+  //    setTimeout(() => {
+  //      forkJoin(requests).subscribe({
+  //        next: (responses: any[]) => {
+  //          this.popupMessage = "Record(s) updated successfully!";
+  //          this.isErrorPopup = false;
+  //          this.showSuccessPopup = true;
+  //          this.isSubmitting = false;
+  //          this.loadData(this.wf);
   //        },
   //        error: (error) => {
-  //          this.popupMessage = `Error inserting data: ${error.message}`;
+  //          this.popupMessage = `Error updating data: ${error.message}`;
   //          this.isErrorPopup = true;
   //          this.showSuccessPopup = true;
   //          this.isSubmitting = false;
-  //          // this.ResetButton();
   //        }
   //      });
   //    }, 500);
   //  }
   //}
+  //handleServerResponse(response: any) {
+  //  const msg = response.message || JSON.stringify(response);
+
+  //  if (msg.startsWith("1")) {
+  //    const msgR = msg.split(';').slice(1).join(',').replace(/["}]/g, '').trim();
+  //    this.isErrorPopup = false;
+  //    this.popupMessage = msgR;
+  //    this.loadData(this.wf);
+  //  } else if (msg.startsWith("0")) {
+  //    const msgR = msg.split(';').slice(1).join(',').replace(/["}]/g, '').trim();
+  //    this.isErrorPopup = true;
+  //    this.popupMessage = msgR;
+  //  } else {
+  //    this.isErrorPopup = false;
+  //    this.popupMessage = "Unexpected response format!";
+  //  }
+
+  //  this.showSuccessPopup = true;
+  //  this.isSubmitting = false;
+  //}
+
+
+  insertGroupDetail() {
+    debugger;
+    this.isSubmitting = true;
+    const url = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail`;
+    const url1 = `${environment.apiBaseUrl}/api/WorkFlow/GroupDetail/${this.operatorData.wfn}/${this.gridDat[0].RESPONSE}`;
+
+    if (this.gridDat.length === 0) {
+      this.popupMessage = 'No data to insert!';
+      this.isErrorPopup = true;
+      this.showSuccessPopup = true;
+      this.ResetButton();
+      return;
+    }
+
+    const hasNewRow = this.gridDat.some(r => r.isNew);
+    this.isadd = hasNewRow ? 'I' : 'U';
+
+    const mappedData: WorkFlowSetup[] = this.gridDat.map((item, index) => {
+
+      const setup = new WorkFlowSetup();
+      setup.wf = '';
+      setup.wfn = this.generatedSeqWF;//item.WORKFLOW;
+      setup.nextwfn = '';
+      setup.response = String(item.RESPONSENO)//String(this.selectedResponseCode);//this.selectedResponseCode;
+      setup.aact = item.ACTIONID;//this.selectedAddActionCode;
+      setup.alarm = item.ALARMID;
+      setup.timstat = item.STAT === 'Continue' ? 'C' : item.STAT === 'Stop' ? 'S' : '';
+      setup.sndrec = item.SENDRECE === 'NONE' ? '' : item.SENDRECE === 'Send' ? 'S' : item.SENDRECE === 'Receive' ? 'R' : ''; // setup.sndrec = item.sndrec;
+      setup.msgid = item.MESSEGEID === 'No Message' ? '' : item.MESSEGEID;;//this.selectedMessageID;
+      setup.timid = item.TIMEID;
+      setup.wfstat_dtl = item.WORKFLOWSTAT === 'Yes' ? 'Y' : item.STAT === 'No' ? 'N' : '';
+      setup.transaction = this.isadd === 'I' ? 'D' : this.isadd === 'U' ? 'DE' : '';
+      setup.userid = this.loginUser;
+      setup.wfttyp = '';
+      setup.wfstat = '';
+      setup.mact = '';
+      setup.wf_valid_from = '';
+      setup.maasn = '';
+      setup.wf_valid_to = '';
+      setup.mauid = '';
+      setup.maugrpid = '';
+      setup.matimid = '';
+      setup.maalarm = '';
+      setup.mainttimid = '';
+      setup.maintalarm = '';
+      setup.donrec = '';
+      setup.timadd = '';
+      // setup.timid = '';
+
+      return setup;
+    });
+    if (this.isadd === 'U') {
+      setTimeout(() => {
+        this.http.put(url1, mappedData).subscribe({
+          next: (response: any) => {
+            debugger;
+            // this.popupMessage = `${this.gridDat.length} record(s) inserted successfully!`;
+            // this.gridDat = response;
+            // this.isErrorPopup = false;
+            // this.showSuccessPopup = true;
+            // this.gridDat = [];
+            // this.isgridview = false;
+            // this.isSubmitting = false;
+            const msg = response.message || JSON.stringify(response);
+            if (msg.startsWith("1")) {
+              const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
+              this.isErrorPopup = false;
+              this.popupMessage = msgR;
+            this.showSuccessPopup = true;
+              // this.ResetButton();
+            } else if (msg.startsWith("0")) {
+              const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
+              this.isErrorPopup = true;
+              this.popupMessage = msgR;
+            this.showSuccessPopup = false;
+            } else {
+              this.isErrorPopup = false;
+              this.popupMessage = "Unexpected response format!";
+            this.showSuccessPopup = true;
+            }
+            this.loadData(this.wf);
+          },
+          error: (error) => {
+            this.popupMessage = `Error inserting data: ${error.message}`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            this.isSubmitting = false;
+            // this.ResetButton();
+          }
+        });
+      }, 0);
+    } else if (this.isadd === 'I') {
+      setTimeout(() => {
+        this.http.post(url, mappedData).subscribe({
+          next: (response: any) => {
+            if (response) {
+              const msg = response.message || JSON.stringify(response);
+              if (msg.startsWith("1")) {
+                const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
+                this.isErrorPopup = false;
+                this.popupMessage = msgR;
+                // this.ResetButton();
+              } else if (msg.startsWith("0")) {
+                const msgR = msg.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
+                this.isErrorPopup = true;
+                this.popupMessage = msgR;
+              } else {
+                this.isErrorPopup = false;
+                this.popupMessage = "Unexpected response format!";
+              }
+              this.showSuccessPopup = true;
+              this.loadData(this.wf);
+              // this.popupMessage = `${this.gridDat.length} record(s) inserted successfully!`;
+              // this.gridDat = response;
+              // this.isErrorPopup = false;
+              // this.showSuccessPopup = true;
+              // this.gridDat = [];
+              // this.isgridview = false;
+              // this.isSubmitting = false;
+            } else {
+
+            }
+          },
+          error: (error) => {
+            this.popupMessage = `Error inserting data: ${error.message}`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            this.isSubmitting = false;
+            // this.ResetButton();
+          }
+        });
+      }, 0);
+    }
+  }
   onRowSelect(event: any, row: any) {
     debugger;
     const isChecked = event.target.checked;
@@ -1603,7 +1609,6 @@ export class WorkflowdefinitiondeactivationComponent {
     });
   }
   loadData(pf: string) {
-    debugger;
     if (!pf) {
       console.warn('PF id undefined, API call skipped.');
       return;
@@ -1639,4 +1644,3 @@ export class WorkflowdefinitiondeactivationComponent {
     this.GetGrid1(value);
   }
 }
-

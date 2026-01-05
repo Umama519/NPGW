@@ -29,7 +29,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-currentrejectreport-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './current-rejection-report.component.html',
   styleUrl: './current-rejection-report.component.css'
@@ -106,7 +106,7 @@ export class CurrentRejectionReportComponent {
     const txt_FromDate = this.el.nativeElement.querySelector('#txt_FromDate').value;
     const txt_ToDate = this.el.nativeElement.querySelector('#txt_ToDate').value;
     // const ddl_NPRType = this.el.nativeElement.querySelector('#ddl_NPRType').value;
-    const txt_FranchiseID = this.el.nativeElement.querySelector('#txt_FranchiseID').value;
+    const txt_FranchiseID = '';//this.el.nativeElement.querySelector('#txt_FranchiseID').value;
     const txt_Mobile = this.el.nativeElement.querySelector('#txt_Mobile').value;
     // const ddl_Rejection = this.el.nativeElement.querySelector('#ddl_Rejection').value;
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';\    

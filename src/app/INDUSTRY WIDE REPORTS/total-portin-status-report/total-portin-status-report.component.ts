@@ -19,7 +19,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-totalportinstatusrpt-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './total-portin-status-report.component.html',
   styleUrl: './total-portin-status-report.component.css'

@@ -22,11 +22,11 @@
     background-color: #f4f4f4;
   }*/
 </style>
-<div class="container" *ngIf="tabs && tabs.length > 0">
-  <div class="row line-w" style="margin-left: -4px;">
-    <mat-tab-group (selectedIndexChange)="onTabChange($event)">
+<div class="container" *ngIf="tabs && tabs.length > 0" >
+  <div class="row line-w" style="margin-left: -4px;" >
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)" >
       <mat-tab *ngFor="let tab of tabs" [label]="tab.tabName">
-        <div class="row line-w" style="margin-left: 90%; margin-top: 5px;">
+        <div class="row line-w" style="margin-left: 90%; margin-top: 5px;" >
           <div class="col-lg-5 col-sm-5">
             <button ID="btn_Add" class="newbtn" style="font-size: 14px; margin-left: 3px;" (click)="addNew(tab.pf)">
               <i class="bi bi-plus-circle"></i> Add New

@@ -42,9 +42,9 @@
     </div>
     <br />    
     <div class="row d-flex justify-content-center align-items-center" style="min-height: 100px;">
-        <div class="col-md-12 text-center">
+        <div class="col-md-12" style="margin-left: 86%">
             <label style="font-size: large;">Today's Systems Integration Status</label><br>
-            <label style="font-size:medium;">Report as on {{ currentDate | date:'dd-MMM-yyyy hh:mm a' }}</label>
+            <label style="font-size:medium; margin-left: 10px">Report as on {{ currentDate | date:'dd-MMM-yyyy hh:mm a' }}</label>
         </div>
     </div>
     <br>
@@ -85,11 +85,11 @@
                             <tr class="RowStyleA" *ngFor="let row of Daily; let i = index"
                             [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
                             [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                                <td style="width: 100px;" class="tdCenter">{{ row.adesc }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.adesc }}</td>
                             <td style="width: 100px;" class="tdRight">{{ row.interfac }}</td>
-                            <td style="width: 150px;" class="tdCenter">{{ row.sendrec }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.sendrec }}</td>
                             <td style="width: 100px;" class="tdCenter">{{ row.total }}</td>
-                            <td style="width: 150px;" class="tdCenter">{{ row.done }}</td>
+                            <td style="width: 100px;" class="tdCenter">{{ row.done }}</td>
                             <td style="width: 100px;" class="tdCenter">{{ row.os }}</td>
                             <td style="width: 100px;" class="tdCenter">{{ row.date }}</td>
                             </tr>
