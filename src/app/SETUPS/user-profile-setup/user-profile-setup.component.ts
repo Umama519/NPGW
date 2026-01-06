@@ -89,7 +89,7 @@ export class UserProfileSetupComponent {
   selectedUserStatus: any = '';
   selectedDept: any = '';
   selectedMob: any = '';
-  Notifications: any = '';
+  Notifications: boolean = false;
   selectedLoc: any = '';
   selectedRoleAss: any = '';
   selectedEmail: any = '';
@@ -787,9 +787,6 @@ submitButton() {
     return;
   }
 
-  // ---------------------------
-  // INSERT logic
-  // ---------------------------
   if (this.isadd === 'I') {
     this.http.post(`${environment.apiBaseUrl}/api/UserProfile`, this.UserPrfData)
       .subscribe({
@@ -877,9 +874,10 @@ submitButton() {
           this.showSuccessPopup = true;
           this.showModal = false;
           userID = '';
+          this.Notifications = false;
           this.ResetFields();
-          this.lovdisabled();
-          this.Notifications = 'N';
+          this.lovdisabled();          
+
         },
         (error) => {
           // alert(`Error deleting record: ${error.message}`);

@@ -6,6 +6,7 @@ import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 import { ExcelExportService } from 'app/services/excel-export.service';
 import { environment } from 'environments/environment';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
+import { PaginationService } from '../../services/pagination.service';
 
 export interface Current {
   fromdate: string;
@@ -29,13 +30,15 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-rejectionhisreport-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './rejection-history-report.component.html',
   styleUrl: './rejection-history-report.component.css'
 })
 export class RejectionHistoryReportComponent {
-  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private pager: PaginationService, private datepickerService: DatepickerService, private excelService: ExcelExportService) {
+    this.itemsPerPage = this.pager.defaultItemsPerPage;
+  }
   Current: Current[] = [];
   FormDate: string = '';
   ToDate: String = ''
@@ -44,8 +47,8 @@ export class RejectionHistoryReportComponent {
   selectedRejection: string = 'ALL';
   selectedProduct: string = 'All';
   selectedRecepient: string = '';
-  selectedDonor: string = '';  
-  selectedExport:  string = 'S';
+  selectedDonor: string = '';
+  selectedExport: string = 'S';
   UserID: string[] = []; // For storing UserID values
   filteredData: any[] = []; // To ho
   GridData: any[] = [];
@@ -57,8 +60,16 @@ export class RejectionHistoryReportComponent {
   isSubmitting: boolean = false;
   isErrorPopup: boolean = false;
   popupMessage: string = '';
-  lovDisabled: boolean = false; 
+  lovDisabled: boolean = false;
   loginUser: string = '';
+
+  itemsPerPage: any;
+  totalPages = 0;
+  currentPage = 1;
+  pagedData: any[] = [];
+  paginationWindowStart = 1;
+  paginationWindowSize = 10;
+  showPagination = true;
 
   // Stores Action descriptions
   ngOnInit(): void {
@@ -82,6 +93,32 @@ export class RejectionHistoryReportComponent {
     { code: 'S', name: 'Screen' },
     { code: 'F', name: 'File' }
   ];
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    //this.pagedData = this.GridData.slice(startIndex, endIndex);
+    this.pagedData = this.filteredData.slice(startIndex, endIndex);
+  }
+  showNextWindow() {
+    if (this.paginationWindowStart + this.paginationWindowSize <= this.totalPages) {
+      this.paginationWindowStart += this.paginationWindowSize;
+    }
+  }
+
+  showPreviousWindow() {
+    if (this.paginationWindowStart - this.paginationWindowSize >= 1) {
+      this.paginationWindowStart -= this.paginationWindowSize;
+    }
+  }
+  get paginationNumbers(): number[] {
+    const pages = [];
+    const end = Math.min(this.paginationWindowStart + this.paginationWindowSize - 1, this.totalPages);
+    for (let i = this.paginationWindowStart; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
 
   Operator_Lov() {
     debugger;
@@ -104,7 +141,7 @@ export class RejectionHistoryReportComponent {
     });
   }
 
- 
+
   Operator_Lov1() {
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
@@ -139,37 +176,46 @@ export class RejectionHistoryReportComponent {
     // const ddl_Donor = this.el.nativeElement.querySelector('#ddl_Donor').value;
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';
     const rhb_Screen = this.selectedExport;
-    
+
     const table = this.el.nativeElement.querySelector('#table');
 
     const url = `${environment.apiBaseUrl}/api/RejectionHistoryReport?nprtype=${this.selectedOperatorId}&reject=${this.selectedRejection}&recepient=${this.selectedRecepient}&donor=${this.selectedDonor}&fromdate=${txt_FromDate}&todate=${txt_ToDate}&msisdn=${txt_Mobile}&franchiseid=${txt_FranchiseID}&userid=${this.loginUser}`;
-    
+
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-            if (rhb_Screen === 'S') {
-              this.Current = res;
-            } else {
-              setTimeout(() => {
-                this.export(res, 'excel');
-                this.Current = [];
-                this.Reset();
-                return;
-              }, 100); 
-            }
+          if (rhb_Screen === 'S' && res.length < 1000) {
+            this.Current = res;
+            this.filteredData = res;
+            this.totalPages = Math.ceil(this.Current.length / this.itemsPerPage);
+            this.paginationWindowStart = 1;
+            this.setPage(1);
+            if (table) table.style.display = 'table';
+            this.showPagination = true;
           } else {
-            this.showSuccessPopup = false;
             setTimeout(() => {
-              this.popupMessage = `No Record Found.`;
-              this.isErrorPopup = true;
-              this.showSuccessPopup = true;
-              this.Reset(); 
+              this.export(res, 'excel');
               this.Current = [];
+              this.filteredData = [];
+              this.showPagination = false;
+              //this.Reset();
               return;
-            }, 100); 
-            document.getElementById('loader')!.style.display = 'none';
-            if (table) table.style.display = 'none';
+            }, 100);
           }
+        } else {
+          this.showSuccessPopup = false;
+          setTimeout(() => {
+            this.popupMessage = `No Record Found.`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            //this.Reset(); 
+            this.Current = [];
+            this.showPagination = false;
+            return;
+          }, 100);
+          document.getElementById('loader')!.style.display = 'none';
+          if (table) table.style.display = 'none';
+        }
       },
       error: (err) => {
         document.getElementById('loader')!.style.display = 'none';
@@ -201,23 +247,26 @@ export class RejectionHistoryReportComponent {
     if (this.selectedExport) this.selectedExport = 'S';
     // if (rhb_Screen) rhb_Screen.checked = true;
     this.Current = [];
+    this.showPagination = false;
+    const table = this.el.nativeElement.querySelector('#table');
+    if (table) table.style.display = 'none';
   }
-  export(res:any, file:any) {
-      this.GridData = res;
-      this.excelService.exportToFile( 
-        this.GridData, 'Rejection History Report', {
-          msisdn: 'Mobile #',
-          product: 'Product',
-          city: 'City',
-          franchiseid: 'Franchise ID',
-          rejcd: 'Rejection Code',
-          todate: 'Rejection Date',
-          nprdate: 'NPR Date',
-          recepient: 'Recepient',
-          donor: 'Donor',
-          associate1: 'Associate 1',
-          associate2: 'Associate 2'
-        }, file
-      );
-    }
+  export(res: any, file: any) {
+    this.GridData = res;
+    this.excelService.exportToFile(
+      this.GridData, 'Rejection History Report', {
+      msisdn: 'Mobile #',
+      product: 'Product',
+      city: 'City',
+      franchiseid: 'Franchise ID',
+      rejcd: 'Rejection Code',
+      todate: 'Rejection Date',
+      nprdate: 'NPR Date',
+      recepient: 'Recepient',
+      donor: 'Donor',
+      associate1: 'Associate 1',
+      associate2: 'Associate 2'
+    }, file
+    );
+  }
 }

@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
 
   // ✅ Logout user and redirect to login
   private logoutAndRedirect(): void {
-    alert('A new version is deployed. You will be logged out.');
+    // alert('A new version is deployed. You will be logged out.');
     localStorage.removeItem('loginUser');
     localStorage.removeItem('loginTime');
     this.router.navigateByUrl('/login', { replaceUrl: true });

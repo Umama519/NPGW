@@ -89,42 +89,54 @@
     <div class="row line-w" style="margin-left: -4px" id="table" *ngIf="Current.length > 0">
         <div class="col-md-12">
             <div class="table-responsive">
-                <div class="grid-scroll">
-                    <table class="tableA table-condensed GridViewStyle">
-                    <thead>
-                        <tr class="HeaderStyleA">
-                            <th class="tdCenter">Mobile #</th>
-                            <th class="tdCenter">Product</th>
-                            <th class="tdCenter">City</th>
-                            <th class="tdCenter">Franchise ID</th>
-                            <th class="tdCenter">Rejection Code</th>
-                            <th class="tdCenter">Rejection Date</th>
-                            <th class="tdCenter">NPR Date</th>
-                            <th class="tdCenter">Recipient</th>
-                            <th class="tdCenter">Donor</th>
-                            <th class="tdCenter">Associate 1</th>
-                            <th class="tdCenter">Associate 2</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="RowStyleA" *ngFor="let row of Current; let i = index"
-                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                            <td class="tdCenter">{{ row.msisdn }}</td>
-                            <td class="tdCenter">{{ row.product }}</td>
-                            <td class="tdCenter">{{ row.city }}</td>
-                            <td class="tdCenter">{{ row.franchiseid }}</td>
-                            <td class="tdCenter">{{ row.rejcd }}</td>
-                            <td class="tdCenter">{{ row.todate }}</td>
-                            <td class="tdCenter">{{ row.nprdate }}</td>
-                            <td class="tdCenter">{{ row.recepient }}</td>
-                            <td class="tdCenter">{{ row.donor }}</td>
-                            <td class="tdCenter">{{ row.associate1 }}</td>
-                            <td class="tdCenter">{{ row.associate2 }}</td>
-                        </tr>
-                    </tbody>
+              <div style="max-height: 500px; width: 100%;">
+                <table class="tableA table-condensed GridViewStyle">
+                  <thead>
+                    <tr class="HeaderStyleA">
+                      <th class="tdCenter">Mobile #</th>
+                      <th class="tdCenter">Product</th>
+                      <th class="tdCenter">City</th>
+                      <th class="tdCenter">Franchise ID</th>
+                      <th class="tdCenter">Rejection Code</th>
+                      <th class="tdCenter">Rejection Date</th>
+                      <th class="tdCenter">NPR Date</th>
+                      <th class="tdCenter">Recipient</th>
+                      <th class="tdCenter">Donor</th>
+                      <th class="tdCenter">Associate 1</th>
+                      <th class="tdCenter">Associate 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="RowStyleA" *ngFor="let row of pagedData; let i = index"
+                        [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                        [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                      <td style="width: 100px;" class="tdCenter">{{ row.msisdn }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.product }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.city }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.franchiseid }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.rejcd }}</td>
+                      <td style="width: 130px;" class="tdCenter">{{ row.todate }}</td>
+                      <td style="width: 130px;" class="tdCenter">{{ row.nprdate }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.recepient }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.donor }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.associate1 }}</td>
+                      <td style="width: 100px;" class="tdCenter">{{ row.associate2 }}</td>
+                    </tr>
+                  </tbody>
                 </table>
+                <div style="margin-top: -25px;" *ngIf="totalPages > 1 && showPagination"
+                     class="d-flex justify-content-center py-3 flex-wrap gap-1">
+                  <button *ngIf="paginationWindowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+                  <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+                          [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+                    {{ page }}
+                  </button>
+                  <button *ngIf="paginationWindowStart + paginationWindowSize - 1 < totalPages" class="custom-page-btn"
+                          (click)="showNextWindow()">
+                    »
+                  </button>
                 </div>
+              </div>
             </div>
         </div>
     </div>

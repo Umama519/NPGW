@@ -93,7 +93,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="RowStyleA" *ngFor="let row of RejectDonor; let i = index"
+              <tr class="RowStyleA" *ngFor="let row of pagedData; let i = index"
                   [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
                   [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
                 <td class="tdCenter">{{ row.seq_no }}</td>
@@ -120,5 +120,17 @@
         </div>
       </div>
     </div>
+  </div>
+  <div style="margin-top: 5px;" *ngIf="totalPages > 1 && showPagination"
+       class="d-flex justify-content-center py-3 flex-wrap gap-1">
+    <button *ngIf="paginationWindowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+    <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+            [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+      {{ page }}
+    </button>
+    <button *ngIf="paginationWindowStart + paginationWindowSize - 1 < totalPages" class="custom-page-btn"
+            (click)="showNextWindow()">
+      »
+    </button>
   </div>
 </div>

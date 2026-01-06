@@ -135,7 +135,7 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
               this.popupMessage = `Process Completed ${index} Record(s) Found.`;
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
-              this.Reset(); 
+              //this.Reset(); 
               this.Porting = [];
               return;
             }, 100); 

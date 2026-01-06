@@ -40,7 +40,7 @@
         <input id="txt_ToDate" type="text" class="form-controlA" autocomplete="off" [(ngModel)]="ToDate">
       </div>
     </div>
-    <div class="col-lg-2 col-sm-2">
+    <div class="col-lg-1 col-sm-1">
       <div class="form-group">
         <label class="labelcss">Donor ID :</label>
         <app-global-lov [items]="participantNames" displayField="operatorName" valueField="operatorName" [(ngModel)]="selectedOperatorId"
@@ -58,6 +58,14 @@
       <div class="form-group">
         <label class="labelcss">Account Type :</label>
         <app-global-lov [items]="Product" displayField="name" valueField="code" [(ngModel)]="selectedProduct"
+                        [disabled]="lovDisabled">
+        </app-global-lov>
+      </div>
+    </div>
+    <div class="col-lg-1 col-sm-1">
+      <div class="form-group">
+        <label class="labelcss">Report From :</label>
+        <app-global-lov [items]="Live" displayField="name" valueField="code" [(ngModel)]="selectedLive"
                         [disabled]="lovDisabled">
         </app-global-lov>
       </div>
@@ -122,7 +130,7 @@
   <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="pagedData.length > 0">
     <div class="col-md-12">
       <div class="table-responsive">
-        <div style="max-height: 400px;  border: 1px solid #ddd; width: 150%;">
+        <div style="max-height: 500px;  border: 1px solid #ddd; width: 180%;">
           <table class="tableA table-condensed GridViewStyle">
             <thead>
               <tr class="HeaderStyleA">
@@ -156,51 +164,44 @@
                   [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
                 <td style="width: 100px;" class="tdCenter">{{ row.mobile }}</td>
                 <td style="width: 120px;" class="tdCenter">{{ row.name }}</td>
-                <td style="width: 250px;" class="tdCenter">{{ row.address }}</td>
+                <td style="width: 700px;" class="tdCenter">{{ row.address }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.city }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.otel }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.email }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.cnic }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.newimsi }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.oldimsi }}</td>
-                <td style="width: 150px;" class="tdCenter">{{ row.nprdate }}</td>
+                <td style="width: 260px;" class="tdCenter">{{ row.nprdate }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.product }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.donor }}</td>
-                <td style="width: 150px;" class="tdCenter">{{ row.tariff }}</td>
+                <td style="width: 250px;" class="tdCenter">{{ row.tariff }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.franchiseid }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.portfee }}</td>
-                <td style="width: 100px;" class="tdCenter">{{ row.handsetfee }}</td>
+                <td style="width: 130px;" class="tdCenter">{{ row.handsetfee }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.handsetiemi }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.associate1 }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.associate2 }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.userid }}</td>
-                <td style="width: 100px;" class="tdCenter">{{ row.bvstag }}</td>
+                <td style="width: 120px;" class="tdCenter">{{ row.bvstag }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.npr }}</td>
               </tr>
             </tbody>
           </table>
-          <div class="pagination">
 
-            <!-- Left Arrow -->
-            <button (click)="prevPage()" [disabled]="currentPage === 1">
-              ◀
-            </button>
-
-            <!-- Page Number Window 1–10 -->
-            <button *ngFor="let p of [].constructor(windowEnd - windowStart + 1); let i = index"
-                    (click)="goToPage(windowStart + i)"
-                    [class.active]="currentPage === (windowStart + i)">
-              {{ windowStart + i }}
-            </button>
-
-            <!-- Right Arrow -->
-            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-              ▶
-            </button>
-
-          </div>
         </div>
       </div>
     </div>
+  </div>
+  <div style="margin-top: 5px;" *ngIf="totalPages > 1 && showPagination"
+       class="d-flex justify-content-center py-3 flex-wrap gap-1">
+    <button *ngIf="paginationWindowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+    <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+            [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+      {{ page }}
+    </button>
+    <button *ngIf="paginationWindowStart + paginationWindowSize - 1 < totalPages" class="custom-page-btn"
+            (click)="showNextWindow()">
+      »
+    </button>
   </div>
 </div>

@@ -7,6 +7,7 @@ import { ExcelExportService } from 'app/services/excel-export.service';
 import { environment } from 'environments/environment';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
 import { DateRangeService } from 'app/services/date-range.service';
+import { PaginationService } from '../../services/pagination.service';
 
 export interface Porting {
   fromdate: string;
@@ -35,14 +36,16 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinghistory-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './porting-history-report.component.html',
   styleUrl: './porting-history-report.component.css'
 })
 export class PortingHistoryReportComponent {
-  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private dateRangeService: DateRangeService, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
-  lovDisabled: boolean = false; 
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private pager: PaginationService, private dateRangeService: DateRangeService, private datepickerService: DatepickerService, private excelService: ExcelExportService) {
+    this.itemsPerPage = this.pager.defaultItemsPerPage;
+}
+  lovDisabled: boolean = false;
   Porting: Porting[] = [];
   FormDate: string = '';
   ToDate: String = ''
@@ -51,8 +54,9 @@ export class PortingHistoryReportComponent {
   selectedRejection: string = '%';
   selectedProduct: string = '%';
   selectedRecepient: string = '';
-  selectedDonor: string = '';  
-  selectedExport:  string = 'S';
+  selectedDonor: string = '';
+  selectedExport: string = 'S';
+  selectedLive: string = 'L';
   rhb_Live: string = 'L';
   UserID: string[] = []; // For storing UserID values
   filteredData: any[] = []; // To ho
@@ -67,6 +71,14 @@ export class PortingHistoryReportComponent {
   popupMessage: string = '';
   loginUser: string = '';
 
+  itemsPerPage: any;
+  totalPages = 0;
+  currentPage = 1;
+  pagedData: any[] = [];
+  paginationWindowStart = 1;
+  paginationWindowSize = 10;
+  showPagination = true;
+
   // Stores Action descriptions
   ngOnInit(): void {
     const tab = this.el.nativeElement.querySelector('#table')
@@ -76,15 +88,15 @@ export class PortingHistoryReportComponent {
   }
 
   ngAfterViewInit(): void {
-  this.datepickerService.initializeDatepicker('#txt_FromDate');
-  this.datepickerService.initializeDatepicker('#txt_ToDate');
-}
- NPRType = [
+    this.datepickerService.initializeDatepicker('#txt_FromDate');
+    this.datepickerService.initializeDatepicker('#txt_ToDate');
+  }
+  NPRType = [
     { code: '%', name: 'ALL' },
     { code: 'R', name: 'PIN' },
     { code: 'D', name: 'PIN' },
     { code: 'B', name: 'BROADCAST' }
-  ];  
+  ];
   Product = [
     { code: '%', name: 'ALL' },
     { code: 'O', name: 'PrePaid' },
@@ -94,6 +106,36 @@ export class PortingHistoryReportComponent {
     { code: 'S', name: 'Screen' },
     { code: 'F', name: 'File' }
   ];
+  Live = [
+    { code: 'L', name: 'Live' },
+    { code: 'H', name: 'History' }
+  ];
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    //this.pagedData = this.GridData.slice(startIndex, endIndex);
+    this.pagedData = this.filteredData.slice(startIndex, endIndex);
+  }
+  showNextWindow() {
+    if (this.paginationWindowStart + this.paginationWindowSize <= this.totalPages) {
+      this.paginationWindowStart += this.paginationWindowSize;
+    }
+  }
+
+  showPreviousWindow() {
+    if (this.paginationWindowStart - this.paginationWindowSize >= 1) {
+      this.paginationWindowStart -= this.paginationWindowSize;
+    }
+  }
+  get paginationNumbers(): number[] {
+    const pages = [];
+    const end = Math.min(this.paginationWindowStart + this.paginationWindowSize - 1, this.totalPages);
+    for (let i = this.paginationWindowStart; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
 
   Operator_Lov() {
     debugger;
@@ -149,39 +191,47 @@ export class PortingHistoryReportComponent {
     // const ddl_Product = this.el.nativeElement.querySelector('#ddl_Product').value;
     // const rhb_Live = this.el.nativeElement.querySelector('#rhb_Live').checked ? 'L' : 'H';
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';
-    this.rhb_Live = this.dateRangeService.getRhbLive(txt_FromDate, txt_ToDate);
+    //this.rhb_Live = this.dateRangeService.getRhbLive(txt_FromDate, txt_ToDate);
     const rhb_Screen = this.selectedExport;
-    
+    const rhb_Live = this.selectedLive;
     const table = this.el.nativeElement.querySelector('#table');
 
-    const url = `${environment.apiBaseUrl}/api/PortingHistoryReport?nprtype=${this.selectedOperatorId}&product=${this.selectedProduct}&fromdate=${txt_FromDate}&todate=${txt_ToDate}&msisdn=${txt_Mobile}&franchiseid=${txt_FranchiseID}&datafor=${this.rhb_Live}&userid=${this.loginUser}`;
-    
+    const url = `${environment.apiBaseUrl}/api/PortingHistoryReport?nprtype=${this.selectedOperatorId}&product=${this.selectedProduct}&fromdate=${txt_FromDate}&todate=${txt_ToDate}&msisdn=${txt_Mobile}&franchiseid=${txt_FranchiseID}&datafor=${rhb_Live}&userid=${this.loginUser}`;
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-            if (rhb_Screen === 'S') {
-              this.Porting = res;
-            } else {
-              setTimeout(() => {
-                this.export(res, 'excel');
-                this.Porting = [];
-                this.Reset();
-                return;
-              }, 100); 
-            }
+          if (rhb_Screen === 'S' && res.length < 1000) {
+            this.Porting = res;
+            this.filteredData = res;
+            this.totalPages = Math.ceil(this.Porting.length / this.itemsPerPage);
+            this.paginationWindowStart = 1;
+            this.setPage(1);
+            if (table) table.style.display = 'table';
+            this.showPagination = true;
           } else {
-            this.showSuccessPopup = false;
             setTimeout(() => {
-              this.popupMessage = `No Record Found.`;
-              this.isErrorPopup = true;
-              this.showSuccessPopup = true;
-              this.Reset(); 
+              this.export(res, 'excel');
               this.Porting = [];
+              this.filteredData = [];
+              this.showPagination = false;
+              //this.Reset();
               return;
-            }, 100); 
-            document.getElementById('loader')!.style.display = 'none';
-            if (table) table.style.display = 'none';
+            }, 100);
           }
+        } else {
+          this.showSuccessPopup = false;
+          setTimeout(() => {
+            this.popupMessage = `No Record Found.`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            //this.Reset();
+            this.showPagination = false;
+            this.Porting = [];
+            return;
+          }, 100);
+          document.getElementById('loader')!.style.display = 'none';
+          if (table) table.style.display = 'none';
+        }
       },
       error: (err) => {
         document.getElementById('loader')!.style.display = 'none';
@@ -208,30 +258,34 @@ export class PortingHistoryReportComponent {
     if (txt_Mobile) txt_Mobile.value = '';
     if (this.selectedProduct) this.selectedProduct = '%';
     if (this.selectedExport) this.selectedExport = 'S';
-    if (this.rhb_Live) this.rhb_Live = 'L';
+    if (this.selectedLive) this.selectedLive = 'L';
+    //if (this.rhb_Live) this.rhb_Live = 'L';
     this.Porting = [];
+    this.showPagination = false;
+    const table = this.el.nativeElement.querySelector('#table');
+    if (table) table.style.display = 'none';
   }
-  export(res:any, file:any) {
-      this.GridData = res;
-      this.excelService.exportToFile( 
-        this.GridData, 'Porting History Report', {
-          msisdn: 'Mobile',
-          regname: ' Name',
-          product: 'Product',
-          nprtype: 'NPR Type',
-          franchiseid: 'Franchise ID',
-          oldnetwork: 'Old Network',
-          newnetwork: 'New Network',
-          nprdate: 'NPR Date',
-          portdate: 'Port Date',
-          newroute: 'New Route',
-          region: 'Region',
-          portid: 'Port ID',
-          associate1: 'Associate 1',
-          associate2: 'Associate 2',
-          saleperson: 'Sale Person',
-          bvs: 'BVS'
-        }, file
-      );
-    }
+  export(res: any, file: any) {
+    this.GridData = res;
+    this.excelService.exportToFile(
+      this.GridData, 'Porting History Report', {
+      msisdn: 'Mobile',
+      regname: ' Name',
+      product: 'Product',
+      nprtype: 'NPR Type',
+      franchiseid: 'Franchise ID',
+      oldnetwork: 'Old Network',
+      newnetwork: 'New Network',
+      nprdate: 'NPR Date',
+      portdate: 'Port Date',
+      newroute: 'New Route',
+      region: 'Region',
+      portid: 'Port ID',
+      associate1: 'Associate 1',
+      associate2: 'Associate 2',
+      saleperson: 'Sale Person',
+      bvs: 'BVS'
+    }, file
+    );
+  }
 }

@@ -23,7 +23,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-npcsoapsendingrpt-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './npc-soap-sending-aging-report.component.html',
   styleUrl: './npc-soap-sending-aging-report.component.css'
@@ -136,7 +136,7 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
               this.popupMessage = `Process Completed ${index} Record(s) Found.`;
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
-              this.Reset(); 
+              //this.Reset(); 
               this.Porting = [];
               return;
             }, 100); 

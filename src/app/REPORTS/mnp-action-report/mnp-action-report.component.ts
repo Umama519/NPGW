@@ -6,6 +6,7 @@ import { ExcelExportService } from 'app/services/excel-export.service';
 import { environment } from 'environments/environment';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
 import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
+import { PaginationService } from '../../services/pagination.service';
 
 export interface NPRLog {
   action: string;
@@ -36,13 +37,15 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-mnpaction-rpt-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './mnp-action-report.component.html',
   styleUrl: './mnp-action-report.component.css'
 })
 export class MnpActionReportComponent {
-  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private pager: PaginationService, private datepickerService: DatepickerService, private excelService: ExcelExportService) {
+    this.itemsPerPage = this.pager.defaultItemsPerPage;
+}
   lovDisabled: boolean = false;
   PMDLog: NPRLog[] = [];
   FormDate: string = '';
@@ -64,6 +67,14 @@ export class MnpActionReportComponent {
   popupMessage: string = '';
   loginUser: string = '';
 
+  itemsPerPage: any;
+  totalPages = 0;
+  currentPage = 1;
+  pagedData: any[] = [];
+  paginationWindowStart = 1;
+  paginationWindowSize = 10;
+  showPagination = true;
+
   // Stores Action descriptions
   ngOnInit(): void {
     const tab = this.el.nativeElement.querySelector('#table')
@@ -79,6 +90,32 @@ export class MnpActionReportComponent {
     { code: 'S', name: 'Screen' },
     { code: 'F', name: 'File' }
   ];
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    //this.pagedData = this.GridData.slice(startIndex, endIndex);
+    this.pagedData = this.filteredData.slice(startIndex, endIndex);
+  }
+  showNextWindow() {
+    if (this.paginationWindowStart + this.paginationWindowSize <= this.totalPages) {
+      this.paginationWindowStart += this.paginationWindowSize;
+    }
+  }
+
+  showPreviousWindow() {
+    if (this.paginationWindowStart - this.paginationWindowSize >= 1) {
+      this.paginationWindowStart -= this.paginationWindowSize;
+    }
+  }
+  get paginationNumbers(): number[] {
+    const pages = [];
+    const end = Math.min(this.paginationWindowStart + this.paginationWindowSize - 1, this.totalPages);
+    for (let i = this.paginationWindowStart; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
 
   Operator_Lov() {
     debugger;
@@ -118,10 +155,18 @@ export class MnpActionReportComponent {
         if (res && res.length > 0) {
           if (rhb_Screen === 'S') {
             this.PMDLog = res;
+            this.filteredData = res;
+            this.totalPages = Math.ceil(this.PMDLog.length / this.itemsPerPage);
+            this.paginationWindowStart = 1;
+            this.setPage(1);
+            if (table) table.style.display = 'table';
+            this.showPagination = true;
           } else {
             setTimeout(() => {
               this.export(res, 'excel');
               this.PMDLog = [];
+              this.filteredData = [];
+              this.showPagination = false;
               return;
             }, 100);
           }
@@ -131,8 +176,9 @@ export class MnpActionReportComponent {
             this.popupMessage = `No Record Found.`;
             this.isErrorPopup = true;
             this.showSuccessPopup = true;
-            this.Reset();
+            //this.Reset();
             this.PMDLog = [];
+            this.showPagination = false;
             return;
           }, 100);
           document.getElementById('loader')!.style.display = 'none';
@@ -157,6 +203,9 @@ export class MnpActionReportComponent {
     if (this.selectedAction) this.selectedAction = 'ACC';
     if (this.selectedExport) this.selectedExport = 'S';
     this.PMDLog = [];
+    this.showPagination = false;
+    const table = this.el.nativeElement.querySelector('#table');
+    if (table) table.style.display = 'none';
   }
   export(res: any, file: any) {
     this.GridData = res;

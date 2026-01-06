@@ -19,13 +19,13 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-totalportoutstatus-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './total-portout-status-report.component.html',
   styleUrl: './total-portout-status-report.component.css'
 })
 export class TotalPortoutStatusReportComponent {
-constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
   lovDisabled: boolean = false;
   TotalPortout: TotalPortout[] = [];
   FormDate: string = '';
@@ -35,8 +35,8 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
   selectedRejection: string = 'ALL';
   selectedProduct: string = 'All';
   selectedRecepient: string = '';
-  selectedDonor: string = '';  
-  selectedExport:  string = 'S';
+  selectedDonor: string = '';
+  selectedExport: string = 'S';
   UserID: string[] = []; // For storing UserID values
   filteredData: any[] = []; // To ho
   GridData: any[] = [];
@@ -120,38 +120,38 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
     // const ddl_Donor = this.el.nativeElement.querySelector('#ddl_Donor').value;
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';
     const rhb_Screen = this.selectedExport;
-    
-    
+
+
     const table = this.el.nativeElement.querySelector('#table');
 
     const url = `${environment.apiBaseUrl}/api/TotalPortoutStatusReport?fromdate=${txt_FromDate}&todate=${txt_ToDate}&donor=${this.selectedDonor}&recepient=${this.selectedRecepient}&userid=${this.loginUser}`;
-    
+
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-            if (rhb_Screen === 'S') {
-              this.TotalPortout = res;
-            } else {
-              setTimeout(() => {
-                this.export(res, 'excel');
-                this.TotalPortout = [];
-                this.Reset();
-                return;
-              }, 100); 
-            }
+          if (rhb_Screen === 'S' && res.length < 1000) {
+            this.TotalPortout = res;
           } else {
-            this.showSuccessPopup = false;
             setTimeout(() => {
-              this.popupMessage = `No Record Found.`;
-              this.isErrorPopup = true;
-              this.showSuccessPopup = true;
-              this.Reset(); 
+              this.export(res, 'excel');
               this.TotalPortout = [];
+              //this.Reset();
               return;
-            }, 100); 
-            document.getElementById('loader')!.style.display = 'none';
-            if (table) table.style.display = 'none';
+            }, 100);
           }
+        } else {
+          this.showSuccessPopup = false;
+          setTimeout(() => {
+            this.popupMessage = `No Record Found.`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            //this.Reset(); 
+            this.TotalPortout = [];
+            return;
+          }, 100);
+          document.getElementById('loader')!.style.display = 'none';
+          if (table) table.style.display = 'none';
+        }
       },
       error: (err) => {
         document.getElementById('loader')!.style.display = 'none';
@@ -177,14 +177,14 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
   }
   getGrandTotal(): number {
     return this.TotalPortout.reduce((sum, row) => sum + Number(row.total || 0), 0);
-  } 
-  export(res:any, file:any) {
-      // this.Porting = res;
-      this.excelService.exportToFile( 
-        this.TotalPortout, 'Total Portin Status Report', {
-          recepient: 'Recepient',
-          total: 'Grand Total'
-        }, file
-      );
+  }
+  export(res: any, file: any) {
+    // this.Porting = res;
+    this.excelService.exportToFile(
+      this.TotalPortout, 'Total Portin Status Report', {
+      recepient: 'Recepient',
+      total: 'Grand Total'
+    }, file
+    );
   }
 }

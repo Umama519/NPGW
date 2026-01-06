@@ -21,7 +21,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-bussinesshourrpt-aspx',
-  standalone: true,  
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './business-hours-report.component.html',
   styleUrl: './business-hours-report.component.css'
@@ -134,7 +134,7 @@ constructor(private http: HttpClient, private el: ElementRef, private renderer: 
               this.popupMessage = `Process Completed ${index} Record(s) Found.`;
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
-              this.Reset(); 
+              //this.Reset(); 
               this.Porting = [];
               return;
             }, 100); 

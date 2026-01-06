@@ -6,6 +6,7 @@ import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 import { ExcelExportService } from 'app/services/excel-export.service';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
 import { environment } from 'environments/environment';
+import { PaginationService } from '../../services/pagination.service';
 
 export interface PortIn {
   fromdate: string;
@@ -33,13 +34,15 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-portinoutdetail-aspx',
-   standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './port-inout-det-report.component.html',
   styleUrl: './port-inout-det-report.component.css'
 })
 export class PortInoutDetReportComponent {
-  constructor(private http: HttpClient, private el: ElementRef, private datepickerService: DatepickerService, private renderer: Renderer2, private excelService: ExcelExportService) { }
+  constructor(private http: HttpClient, private el: ElementRef, private pager: PaginationService, private datepickerService: DatepickerService, private renderer: Renderer2, private excelService: ExcelExportService) {
+    this.itemsPerPage = this.pager.defaultItemsPerPage;
+}
   lovDisabled: boolean = false;
   PortIn: PortIn[] = [];
   FormDate: string = '';
@@ -61,6 +64,14 @@ export class PortInoutDetReportComponent {
   isErrorPopup: boolean = false;
   popupMessage: string = '';
   loginUser: string = '';
+
+  itemsPerPage: any;
+  totalPages = 0;
+  currentPage = 1;
+  pagedData: any[] = [];
+  paginationWindowStart = 1;
+  paginationWindowSize = 10;
+  showPagination = true;
 
   // Stores Action descriptions
   ngOnInit(): void {
@@ -87,6 +98,32 @@ export class PortInoutDetReportComponent {
     { code: 'S', name: 'Screen' },
     { code: 'F', name: 'File' }
   ];
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    //this.pagedData = this.GridData.slice(startIndex, endIndex);
+    this.pagedData = this.filteredData.slice(startIndex, endIndex);
+  }
+  showNextWindow() {
+    if (this.paginationWindowStart + this.paginationWindowSize <= this.totalPages) {
+      this.paginationWindowStart += this.paginationWindowSize;
+    }
+  }
+
+  showPreviousWindow() {
+    if (this.paginationWindowStart - this.paginationWindowSize >= 1) {
+      this.paginationWindowStart -= this.paginationWindowSize;
+    }
+  }
+  get paginationNumbers(): number[] {
+    const pages = [];
+    const end = Math.min(this.paginationWindowStart + this.paginationWindowSize - 1, this.totalPages);
+    for (let i = this.paginationWindowStart; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
 
   Operator_Lov() {
     debugger;
@@ -131,13 +168,21 @@ export class PortInoutDetReportComponent {
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-            if (rhb_Screen === 'S') {
+          if (rhb_Screen === 'S' && res.length < 1000) {
               this.PortIn = res;
+              this.filteredData = res;
+              this.totalPages = Math.ceil(this.PortIn.length / this.itemsPerPage);
+              this.paginationWindowStart = 1;
+            this.setPage(1);
+            if (table) table.style.display = 'table';
+            this.showPagination = true;
             } else {
               setTimeout(() => {
                 this.export(res, 'excel');
                 this.PortIn = [];
-                this.Reset();
+                this.filteredData = [];
+                this.showPagination = false;
+                //this.Reset();
                 return;
               }, 100); 
             }
@@ -147,8 +192,9 @@ export class PortInoutDetReportComponent {
               this.popupMessage = `No Record Found.`;
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
-              this.Reset(); 
+              //this.Reset(); 
               this.PortIn = [];
+              this.showPagination = false;
               return;
             }, 100); 
             document.getElementById('loader')!.style.display = 'none';
@@ -181,6 +227,9 @@ export class PortInoutDetReportComponent {
     if (this.selectedProduct) this.selectedProduct = 'All';
     if (this.selectedExport) this.selectedExport = 'S';
     this.PortIn = [];
+    this.showPagination = false;
+    const table = this.el.nativeElement.querySelector('#table');
+    if (table) table.style.display = 'none';
   }
   export(res:any, file:any) {
       this.GridData = res;

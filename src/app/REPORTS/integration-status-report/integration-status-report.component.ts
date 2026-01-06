@@ -21,102 +21,153 @@ declare var $: any;
 
 @Component({
   selector: 'app-report-sysintegrationstatus-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './integration-status-report.component.html',
   styleUrl: './integration-status-report.component.css'
 })
 export class IntegrationStatusReportComponent {
-constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
-    lovDisabled: boolean = false; 
-    Daily: Integration[] = [];
-    FormDate: string = '';
-    ToDate: String = ''
-    Action: any[] = [];
-    selectedOperatorId: string = '';
-    selectedProduct: string = 'All';
-    UserID: string[] = []; // For storing UserID values
-    filteredData: any[] = []; // To ho
-    GridData: any[] = [];
-    selectedUserID: any = '';
-    defaultUserID: string = '';  // <- Ye first value store karega
-    participantNames: any[] = []; // Stores one column (e.g., 'name')
-    showSuccessPopup: boolean = false;
-    isSubmitting: boolean = false;
-    isErrorPopup: boolean = false;
-    popupMessage: string = '';
-    currentDate: Date = new Date();
-  
-    // Stores Action descriptions
-    ngOnInit(): void {
-      debugger;
-      const tab = this.el.nativeElement.querySelector('#table')
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
+  lovDisabled: boolean = false;
+  Daily: Integration[] = [];
+  FormDate: string = '';
+  ToDate: String = ''
+  Action: any[] = [];
+  selectedOperatorId: string = '';
+  selectedProduct: string = 'All';
+  UserID: string[] = []; // For storing UserID values
+  filteredData: any[] = []; // To ho
+  GridData: any[] = [];
+  selectedUserID: any = '';
+  defaultUserID: string = '';  // <- Ye first value store karega
+  participantNames: any[] = []; // Stores one column (e.g., 'name')
+  showSuccessPopup: boolean = false;
+  isSubmitting: boolean = false;
+  isErrorPopup: boolean = false;
+  popupMessage: string = '';
+  currentDate: Date = new Date();
+  private timer: any;
+  itemsPerPage = 15;
+  totalPages = 0;
+  currentPage = 1;
+  pagedData: any[] = [];
+  paginationWindowStart = 1;
+  paginationWindowSize = 10;
+  showPagination = true;
+
+  ngOnInit(): void {
+    debugger;
+    const tab = this.el.nativeElement.querySelector('#table');
+    //this.currentDate = new Date();
+    this.updateTime();
+    this.Fetch();
+  }
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    //this.pagedData = this.GridData.slice(startIndex, endIndex);
+    this.pagedData = this.filteredData.slice(startIndex, endIndex);
+  }
+  showNextWindow() {
+    if (this.paginationWindowStart + this.paginationWindowSize <= this.totalPages) {
+      this.paginationWindowStart += this.paginationWindowSize;
+    }
+  }
+
+  showPreviousWindow() {
+    if (this.paginationWindowStart - this.paginationWindowSize >= 1) {
+      this.paginationWindowStart -= this.paginationWindowSize;
+    }
+  }
+  get paginationNumbers(): number[] {
+    const pages = [];
+    const end = Math.min(this.paginationWindowStart + this.paginationWindowSize - 1, this.totalPages);
+    for (let i = this.paginationWindowStart; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+  updateTime() {
+    this.timer = setInterval(() => {
       this.currentDate = new Date();
       this.Fetch();
-    }
-    Fetch() {
-      debugger;
-      const table = this.el.nativeElement.querySelector('#table');
-  
-      const url = `http://localhost:5000/api/IntegrationStatusReport`;
-      
-      this.http.get<any>(url).subscribe({
-        next: (res) => {
-          if (res && res.length > 0) {
-            this.Daily = res;
-          } else {
-            this.showSuccessPopup = false;
-            setTimeout(() => {
-              this.popupMessage = `No Record Found.`;
-              this.isErrorPopup = true;
-              this.showSuccessPopup = true;
-              this.Reset(); 
-              this.Daily = [];
-              return;
-            }, 100); 
-            document.getElementById('loader')!.style.display = 'none';
-            if (table) table.style.display = 'none';
-            }
-        },
-        error: (err) => {
-          document.getElementById('loader')!.style.display = 'none';
-          console.error("Error fetching UserRightReport data:", err);
-          this.Reset();
-        }
-      });
-    }
-    Reset() {
-      const txt_Frmdate = this.el.nativeElement.querySelector('#txt_FromDate');
-      const txt_Todate = this.el.nativeElement.querySelector('#txt_ToDate');
-      const txt_Mobile = this.el.nativeElement.querySelector('#txt_Mobile');
-      const txt_PortID = this.el.nativeElement.querySelector('#txt_PortID');
-      // const ddl_Action = this.el.nativeElement.querySelector('#ddl_Action');
-      const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen');
-      const rhb_Live = this.el.nativeElement.querySelector('#rhb_Live');
-  
-      if (txt_Frmdate) txt_Frmdate.value = '';
-      if (txt_Todate) txt_Todate.value = '';
-      if (txt_Mobile) txt_Mobile.value = '';
-      if (txt_PortID) txt_PortID.value = '';
-      if (this.selectedOperatorId) this.selectedOperatorId = '';
-      if (rhb_Screen) rhb_Screen.checked = true;
-      if (rhb_Live) rhb_Live.checked = true;
-      this.Daily = [];
-    }
-
-    export(res:any, file:any) {
-      debugger;
-      this.GridData = this.Daily;
-        this.excelService.exportToFile( 
-          this.GridData, 'System Integration Status Report', {
-            adesc: 'Description',
-            interfac: 'Interface',
-            sendrec: 'Account Type',
-            total: 'Total',
-            done: 'Done',
-            os: 'OS',
-            date: 'Date'
-          }, file
-        );
-      }
+    }, 60000);
   }
+  ngOnDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+  Fetch() {
+    debugger;
+    const table = this.el.nativeElement.querySelector('#table');
+
+    const url = `http://localhost:5000/api/IntegrationStatusReport`;
+
+    this.http.get<any>(url).subscribe({
+      next: (res) => {
+        if (res && res.length > 0) {
+          this.Daily = res;
+          this.filteredData = res;
+          this.totalPages = Math.ceil(this.Daily.length / this.itemsPerPage);
+          this.paginationWindowStart = 1;
+          this.setPage(1);
+        } else {
+          this.showSuccessPopup = false;
+          setTimeout(() => {
+            this.popupMessage = `No Record Found.`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            this.Reset();
+            this.Daily = [];
+            this.filteredData = [];
+            this.showPagination = false;
+            return;
+          }, 100);
+          document.getElementById('loader')!.style.display = 'none';
+          if (table) table.style.display = 'none';
+        }
+      },
+      error: (err) => {
+        document.getElementById('loader')!.style.display = 'none';
+        console.error("Error fetching UserRightReport data:", err);
+        this.Reset();
+      }
+    });
+  }
+  Reset() {
+    const txt_Frmdate = this.el.nativeElement.querySelector('#txt_FromDate');
+    const txt_Todate = this.el.nativeElement.querySelector('#txt_ToDate');
+    const txt_Mobile = this.el.nativeElement.querySelector('#txt_Mobile');
+    const txt_PortID = this.el.nativeElement.querySelector('#txt_PortID');
+    // const ddl_Action = this.el.nativeElement.querySelector('#ddl_Action');
+    const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen');
+    const rhb_Live = this.el.nativeElement.querySelector('#rhb_Live');
+
+    if (txt_Frmdate) txt_Frmdate.value = '';
+    if (txt_Todate) txt_Todate.value = '';
+    if (txt_Mobile) txt_Mobile.value = '';
+    if (txt_PortID) txt_PortID.value = '';
+    if (this.selectedOperatorId) this.selectedOperatorId = '';
+    if (rhb_Screen) rhb_Screen.checked = true;
+    if (rhb_Live) rhb_Live.checked = true;
+    this.Daily = [];
+  }
+
+  export(res: any, file: any) {
+    debugger;
+    this.GridData = this.Daily;
+    this.excelService.exportToFile(
+      this.GridData, 'System Integration Status Report', {
+      adesc: 'Description',
+      interfac: 'Interface',
+      sendrec: 'Account Type',
+      total: 'Total',
+      done: 'Done',
+      os: 'OS',
+      date: 'Date'
+    }, file
+    );
+  }
+}

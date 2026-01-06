@@ -19,7 +19,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-totalportinstatusrpt-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './total-portin-status-report.component.html',
   styleUrl: './total-portin-status-report.component.css'
@@ -35,8 +35,8 @@ export class TotalPortinStatusReportComponent {
   selectedRejection: string = 'ALL';
   selectedProduct: string = 'All';
   selectedRecepient: string = '';
-  selectedDonor: string = '';  
-    selectedExport:  string = 'S';
+  selectedDonor: string = '';
+  selectedExport: string = 'S';
   UserID: string[] = []; // For storing UserID values
   filteredData: any[] = []; // To ho
   GridData: any[] = [];
@@ -120,37 +120,37 @@ export class TotalPortinStatusReportComponent {
     // const ddl_Donor = this.el.nativeElement.querySelector('#ddl_Donor').value;
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';
     const rhb_Screen = this.selectedExport;
-    
+
     const table = this.el.nativeElement.querySelector('#table');
 
     const url = `${environment.apiBaseUrl}/api/TotalPortinStatusReport?fromdate=${txt_FromDate}&todate=${txt_ToDate}&donor=${this.selectedDonor}&recepient=${this.selectedRecepient}&userid=${this.loginUser}`;
-    
+
     this.http.get<any>(url).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-            if (rhb_Screen === 'S') {
-              this.TotalPortin = res;
-            } else {
-              setTimeout(() => {
-                this.export(res, 'excel');
-                this.TotalPortin = [];
-                this.Reset();
-                return;
-              }, 100); 
-            }
+          if (rhb_Screen === 'S' && res.length < 1000) {
+            this.TotalPortin = res;
           } else {
-            this.showSuccessPopup = false;
             setTimeout(() => {
-              this.popupMessage = `No Record Found.`;
-              this.isErrorPopup = true;
-              this.showSuccessPopup = true;
-              this.Reset(); 
+              this.export(res, 'excel');
               this.TotalPortin = [];
+              //this.Reset();
               return;
-            }, 100); 
-            document.getElementById('loader')!.style.display = 'none';
-            if (table) table.style.display = 'none';
+            }, 100);
           }
+        } else {
+          this.showSuccessPopup = false;
+          setTimeout(() => {
+            this.popupMessage = `No Record Found.`;
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+            //this.Reset(); 
+            this.TotalPortin = [];
+            return;
+          }, 100);
+          document.getElementById('loader')!.style.display = 'none';
+          if (table) table.style.display = 'none';
+        }
       },
       error: (err) => {
         document.getElementById('loader')!.style.display = 'none';
@@ -177,14 +177,14 @@ export class TotalPortinStatusReportComponent {
   }
   getGrandTotal(): number {
     return this.TotalPortin.reduce((sum, row) => sum + Number(row.total || 0), 0);
-  } 
-  export(res:any, file:any) {
-      // this.Porting = res;
-      this.excelService.exportToFile( 
-        this.TotalPortin, 'Total Portin Status Report', {
-          donor: 'Donor',
-          total: 'Grand Total'
-        }, file
-      );
+  }
+  export(res: any, file: any) {
+    // this.Porting = res;
+    this.excelService.exportToFile(
+      this.TotalPortin, 'Total Portin Status Report', {
+      donor: 'Donor',
+      total: 'Grand Total'
+    }, file
+    );
   }
 }

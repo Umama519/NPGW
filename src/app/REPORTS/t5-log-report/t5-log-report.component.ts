@@ -6,6 +6,7 @@ import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 import { ExcelExportService } from 'app/services/excel-export.service';
 import { environment } from 'environments/environment';
 import { DatepickerService } from 'app/SETUPS/Services/datepicker.service';
+import { PaginationService } from '../../services/pagination.service';
 
 export interface T5Log {
   sessionid: string;
@@ -49,13 +50,15 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-t5log-rpt-aspx',
-  standalone: true, 
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './t5-log-report.component.html',
   styleUrl: './t5-log-report.component.css'
 })
 export class T5LogReportComponent {
-  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private datepickerService: DatepickerService, private excelService: ExcelExportService) { }
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private pager: PaginationService, private datepickerService: DatepickerService, private excelService: ExcelExportService) {
+    this.itemsPerPage = this.pager.defaultItemsPerPage;
+  }
   lovDisabled: boolean = false; 
   PortIn: T5Log[] = [];
   FormDate: string = '';
@@ -80,7 +83,15 @@ export class T5LogReportComponent {
   isSubmitting: boolean = false;
   isErrorPopup: boolean = false;
   popupMessage: string = '';
-  loginUser:  string = '';
+  loginUser: string = '';
+
+  itemsPerPage: any;
+  totalPages = 0;
+  currentPage = 1;
+  pagedData: any[] = [];
+  paginationWindowStart = 1;
+  paginationWindowSize = 10;
+  showPagination = true;
 
   // Stores Action descriptions
   ngOnInit(): void {
@@ -105,6 +116,32 @@ export class T5LogReportComponent {
     { code: 'S', name: 'Screen' },
     { code: 'F', name: 'File' }
   ];
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    //this.pagedData = this.GridData.slice(startIndex, endIndex);
+    this.pagedData = this.filteredData.slice(startIndex, endIndex);
+  }
+  showNextWindow() {
+    if (this.paginationWindowStart + this.paginationWindowSize <= this.totalPages) {
+      this.paginationWindowStart += this.paginationWindowSize;
+    }
+  }
+
+  showPreviousWindow() {
+    if (this.paginationWindowStart - this.paginationWindowSize >= 1) {
+      this.paginationWindowStart -= this.paginationWindowSize;
+    }
+  }
+  get paginationNumbers(): number[] {
+    const pages = [];
+    const end = Math.min(this.paginationWindowStart + this.paginationWindowSize - 1, this.totalPages);
+    for (let i = this.paginationWindowStart; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
   Operator_Lov() {
       debugger;
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Action`;
@@ -174,11 +211,18 @@ export class T5LogReportComponent {
         if (res && res.length > 0) {
             if (rhb_Screen === 'S') {
               this.PortIn = res;
+              this.filteredData = res;
+              this.totalPages = Math.ceil(this.PortIn.length / this.itemsPerPage);
+              this.paginationWindowStart = 1;
+              this.setPage(1);
+              if (table) table.style.display = 'table';
             } else {
               setTimeout(() => {
                 this.export(res, 'excel');
                 this.PortIn = [];
-                this.Reset();
+                this.filteredData = [];
+                this.showPagination = false;
+                //this.Reset();
                 return;
               }, 100); 
             }
@@ -188,8 +232,8 @@ export class T5LogReportComponent {
               this.popupMessage = `No Record Found.`;
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
-              this.Reset(); 
-              this.PortIn = [];
+              //this.Reset(); 
+              //this.PortIn = [];
               return;
             }, 100); 
             document.getElementById('loader')!.style.display = 'none';
@@ -231,6 +275,9 @@ export class T5LogReportComponent {
     if (chb_Broad) chb_Broad.checked = false;
     if (this.selectedExport) this.selectedExport = 'S';    
     this.PortIn = [];
+    this.showPagination = false;
+    const table = this.el.nativeElement.querySelector('#table');
+    if (table) table.style.display = 'none';
   }
   export(res:any, file:any) {
       this.GridData = res;

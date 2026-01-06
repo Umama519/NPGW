@@ -117,7 +117,7 @@
     <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="PortIn.length > 0">
         <div class="col-md-12">
           <div class="table-responsive">
-            <div style="max-height: 400px;  border: 1px solid #ddd; width: 100%;">
+            <div style="max-height: 400px; width: 100%;">
               <table class="tableA table-condensed GridViewStyle">
                 <thead>
                   <tr class="HeaderStyleA">
@@ -133,7 +133,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="RowStyleA" *ngFor="let row of PortIn; let i = index"
+                  <tr class="RowStyleA" *ngFor="let row of pagedData; let i = index"
                       [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
                       [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
                     <td class="tdCenter">{{ row.nprdate }}</td>
@@ -148,6 +148,18 @@
                   </tr>
                 </tbody>
               </table>
+              <div style="margin-top: -25px;" *ngIf="totalPages > 1 && showPagination"
+                   class="d-flex justify-content-center py-3 flex-wrap gap-1">
+                <button *ngIf="paginationWindowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+                <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+                        [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+                  {{ page }}
+                </button>
+                <button *ngIf="paginationWindowStart + paginationWindowSize - 1 < totalPages" class="custom-page-btn"
+                        (click)="showNextWindow()">
+                  »
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-public-useraction-rpt-aspx',
-  standalone: true,   
+  standalone: true,
   imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './user-action-report.component.html',
   styleUrl: './user-action-report.component.css'
@@ -50,7 +50,7 @@ export class UserActionReportComponent {
   isSubmitting: boolean = false;
   isErrorPopup: boolean = false;
   popupMessage: string = '';
-    loginUser: string = '';
+  loginUser: string = '';
 
   // Stores Action descriptions
   ngOnInit(): void {
@@ -87,7 +87,7 @@ export class UserActionReportComponent {
               setTimeout(() => {
                 this.export(res, 'excel');
                 this.UserAction = [];
-                this.Reset();
+                //this.Reset();
                 return;
               }, 100); 
             }
@@ -97,7 +97,7 @@ export class UserActionReportComponent {
               this.popupMessage = `No Record Found.`;
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
-              this.Reset(); 
+              //this.Reset(); 
               this.UserAction = [];
               return;
             }, 100);

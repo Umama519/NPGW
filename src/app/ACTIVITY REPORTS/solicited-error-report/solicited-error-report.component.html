@@ -78,38 +78,50 @@
     <div class="row line-w" style="margin-left: -4px;" id="table" *ngIf="Solerr.length > 0">
         <div class="col-md-12">
             <div class="table-responsive">
-                <div class="grid-scroll">
+              <div style="max-height: 500px;  width: 100%;">
                 <table class="tableA table-condensed GridViewStyle">
-                    <thead>
-                        <tr class="HeaderStyleA">
-                            <th class="tdCenter">Mobile #</th>
-                            <th class="tdCenter">NPR Date</th>
-                            <th class="tdCenter">User Name</th>
-                            <th class="tdCenter">Base Location</th>
-                            <th class="tdCenter">ONO (from NPR form)</th>
-                            <th class="tdCenter">DNO (from NPR form)</th>
-                            <th class="tdCenter">FR/CS ID</th>
-                            <th class="tdCenter">Actual DNO</th>
-                            <th class="tdCenter">Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="RowStyleA" *ngFor="let row of Solerr; let i = index"
-                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                            <td class="tdCenter">{{ row.mobile }}</td>
-                            <td class="tdCenter">{{ row.nprdate }}</td>
-                            <td class="tdCenter">{{ row.username }}</td>
-                            <td class="tdCenter">{{ row.baseloc }}</td>
-                            <td class="tdCenter">{{ row.ono }}</td>
-                            <td class="tdCenter">{{ row.dno }}</td>
-                            <td class="tdCenter">{{ row.franchiseid }}</td>
-                            <td class="tdCenter">{{ row.actual_dno }}</td>
-                            <td class="tdCenter">{{ row.remarks }}</td>
-                        </tr>
-                    </tbody>
+                  <thead>
+                    <tr class="HeaderStyleA">
+                      <th class="tdCenter">Mobile #</th>
+                      <th class="tdCenter">NPR Date</th>
+                      <th class="tdCenter">User Name</th>
+                      <th class="tdCenter">Base Location</th>
+                      <th class="tdCenter">ONO (from NPR form)</th>
+                      <th class="tdCenter">DNO (from NPR form)</th>
+                      <th class="tdCenter">FR/CS ID</th>
+                      <th class="tdCenter">Actual DNO</th>
+                      <th class="tdCenter">Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="RowStyleA" *ngFor="let row of pagedData; let i = index"
+                        [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                        [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                      <td class="tdCenter">{{ row.mobile }}</td>
+                      <td class="tdCenter">{{ row.nprdate }}</td>
+                      <td class="tdCenter">{{ row.username }}</td>
+                      <td class="tdCenter">{{ row.baseloc }}</td>
+                      <td class="tdCenter">{{ row.ono }}</td>
+                      <td class="tdCenter">{{ row.dno }}</td>
+                      <td class="tdCenter">{{ row.franchiseid }}</td>
+                      <td class="tdCenter">{{ row.actual_dno }}</td>
+                      <td class="tdCenter">{{ row.remarks }}</td>
+                    </tr>
+                  </tbody>
                 </table>
+                <div style="margin-top: -25px;" *ngIf="totalPages > 1 && showPagination"
+                     class="d-flex justify-content-center py-3 flex-wrap gap-1">
+                  <button *ngIf="paginationWindowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+                  <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+                          [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+                    {{ page }}
+                  </button>
+                  <button *ngIf="paginationWindowStart + paginationWindowSize - 1 < totalPages" class="custom-page-btn"
+                          (click)="showNextWindow()">
+                    »
+                  </button>
                 </div>
+              </div>
             </div>
         </div>
     </div>

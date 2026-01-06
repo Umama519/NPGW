@@ -1,102 +1,113 @@
-<style>
-    /* Set font color for the entire table */
-    .p-datatable td {
-        color: #d5cece;
-        /* Default font color for the entire table */
-    }
+<!--<style>
+  /* Set font color for the entire table */
+  .p-datatable td {
+    color: #d5cece;
+    /* Default font color for the entire table */
+  }
 
-    /* Set font color for the header */
-    .p-datatable th {
-        color: #0056b3;
-        /* Change header text color */
-    }
+  /* Set font color for the header */
+  .p-datatable th {
+    color: #0056b3;
+    /* Change header text color */
+  }
 
-    /* Set font color for specific rows */
-    .p-datatable tr:hover {
-        color: white;
-        background-color: #007bff;
-        /* Change background color on hover */
-    }
+  /* Set font color for specific rows */
+  .p-datatable tr:hover {
+    color: white;
+    background-color: #007bff;
+    /* Change background color on hover */
+  }
 
-    /* Specific style for a column (e.g., 'Role Name' column) */
-    .p-datatable td.role-name-column {
-        color: rgb(195, 200, 195);
-        /* Change the color for the 'Role Name' column */
-    }
-</style>
+  /* Specific style for a column (e.g., 'Role Name' column) */
+  .p-datatable td.role-name-column {
+    color: rgb(195, 200, 195);
+    /* Change the color for the 'Role Name' column */
+  }
+</style>-->
 <div class="container">
-    <div class="row">
-        <br />
-    </div>
-    <br>    
-    <div *ngIf="showSuccessPopup">
-        <div [ngClass]="{
+  <div class="row">
+    <br />
+  </div>
+  <br>
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
           'error-message': isErrorPopup,
           'Success-message': !isErrorPopup
         }">
-            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
-            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
-            <span>{{ popupMessage }}</span>
-            <!-- <span>{{ errmessage }}</span> -->
-        </div>
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
     </div>
-    <br />    
-    <div class="row d-flex justify-content-center align-items-center" style="min-height: 100px;">
-        <div class="col-md-12" style="margin-left: 86%">
-            <label style="font-size: large;">Today's Systems Integration Status</label><br>
-            <label style="font-size:medium; margin-left: 10px">Report as on {{ currentDate | date:'dd-MMM-yyyy hh:mm a' }}</label>
-        </div>
+  </div>
+  <br />
+  <div class="row d-flex justify-content-center align-items-center" style="min-height: 100px;">
+    <div class="col-md-12" style="margin-left: 86%">
+      <label style="font-size: large; color: #10486B">Today's Systems Integration Status</label><br>
+      <label style="font-size: medium; color: #10486B; margin-left: 10px">Report as on {{ currentDate | date:'dd-MMM-yyyy hh:mm a' }}</label>
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="Daily.length > 0">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <div style="max-height: 400px;  border: 1px solid #ddd; width: 100%;">
-                    <div
-                        style="display: flex; justify-content: flex-end; font-size: 11px; font-weight: 700; gap: 6px; margin-bottom: 10px;">
-                        <!-- <span style="cursor: pointer; color: #097ef7;">View Log</span> -->
-                        <span style="cursor: pointer; font-weight: 700;">
-                            <i class="fas fa-save fs-6" style="margin-right: 10px;"></i>
-                        </span>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px; " id="table" *ngIf="Daily.length > 0">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div style="max-height: 500px;  border: 1px solid #ddd; width: 100%;">
+          <div style="display: flex; justify-content: flex-end; font-size: 11px; font-weight: 700; gap: 6px; margin-bottom: 10px;">
+            <!-- <span style="cursor: pointer; color: #097ef7;">View Log</span> -->
+            <span style="cursor: pointer; font-weight: 700;">
+              <i class="fas fa-save fs-6" style="margin-right: 10px;"></i>
+            </span>
 
 
-                        <span (click)="export('', 'excel')" style="cursor: pointer; color: #097ef7;">Excel</span>
-                        <span style="cursor: pointer; color: #10486b;">|</span>
-                        <span (click)="export('', 'csv')" style="cursor: pointer; color: #097ef7;">CSV</span>
-                        <span style="cursor: pointer; color: #10486b;">|</span>
-                        <span (click)="export('', 'pdf')" style="cursor: pointer; color: #097ef7;">PDF</span>
+            <span (click)="export('', 'excel')" style="cursor: pointer; color: #097ef7;">Excel</span>
+            <span style="cursor: pointer; color: #10486b;">|</span>
+            <span (click)="export('', 'csv')" style="cursor: pointer; color: #097ef7;">CSV</span>
+            <span style="cursor: pointer; color: #10486b;">|</span>
+            <span (click)="export('', 'pdf')" style="cursor: pointer; color: #097ef7;">PDF</span>
 
 
-                    </div>
-                    <!-- department.component.html -->
-                    <table class="tableA table-condensed GridViewStyle">
-                        <thead>
-                            <tr class="HeaderStyleA">
-                                <th class="tdCenter">Description</th>
-                            <th class="tdLeft">Interface</th>
-                            <th class="tdCenter">Account Type</th>
-                            <th class="tdCenter">Total</th>
-                            <th class="tdCenter">Done</th>
-                            <th class="tdCenter">OS</th>
-                            <th class="tdCenter">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="RowStyleA" *ngFor="let row of Daily; let i = index"
-                            [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                            [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                            <td style="width: 100px;" class="tdCenter">{{ row.adesc }}</td>
-                            <td style="width: 100px;" class="tdRight">{{ row.interfac }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.sendrec }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.total }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.done }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.os }}</td>
-                            <td style="width: 100px;" class="tdCenter">{{ row.date }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+          </div>
+          <!-- department.component.html -->
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Description</th>
+                <th class="tdLeft">Interface</th>
+                <th class="tdCenter">Account Type</th>
+                <th class="tdCenter">Total</th>
+                <th class="tdCenter">Done</th>
+                <th class="tdCenter">OS</th>
+                <th class="tdCenter">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of pagedData; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter">{{ row.adesc }}</td>
+                <td style="width: 100px;" class="tdRight">{{ row.interfac }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.sendrec }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.total }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.done }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.os }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.date }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top: -25px;" *ngIf="totalPages > 1 && showPagination"
+               class="d-flex justify-content-center py-3 flex-wrap gap-1">
+            <button *ngIf="paginationWindowStart > 1" class="custom-page-btn" (click)="showPreviousWindow()">«</button>
+            <button *ngFor="let page of paginationNumbers" class="custom-page-btn"
+                    [ngClass]="{ 'active-page': currentPage === page }" (click)="setPage(page)">
+              {{ page }}
+            </button>
+            <button *ngIf="paginationWindowStart + paginationWindowSize - 1 < totalPages" class="custom-page-btn"
+                    (click)="showNextWindow()">
+              »
+            </button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
