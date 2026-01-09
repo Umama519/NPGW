@@ -419,6 +419,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./REPORTS/mnp-action-report/mnp-action-report.component').then(m => m.MnpActionReportComponent)
       },
+      {
+        path: 'app-public-nprmanuallogreport-aspx',
+        canActivate: [authGuard],
+        loadComponent: () => import('./TRANSACTION/nprmanual-log-report/nprmanual-log-report.component').then(m => m.NPRManualLogReportComponent)
+      },
     ]
   }
 ];

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class PaginationService {
 
   // ✅ Global default values
-  defaultItemsPerPage = 18;       // har component me default
+  defaultItemsPerPage = 15;       // har component me default
   defaultWindowSize = 10;          // page number window size
 
   // Return sliced data for the selected page

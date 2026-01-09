@@ -17,7 +17,7 @@ export interface Integration {
   sendrec: string;
 }
 
-declare var $: any;
+declare var $: any; 
 
 @Component({
   selector: 'app-report-sysintegrationstatus-aspx',

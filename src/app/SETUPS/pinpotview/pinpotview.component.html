@@ -1,12 +1,10 @@
-<style>
-    /* For red rows */
+<style>    
     .row-red {
         background-color: red;
         color: white;
         /* Optional: Font color for better contrast */
     }
 
-    /* For white rows */
     .row-white {
         background-color: white;
         color: black;
@@ -22,9 +20,6 @@
         height: 30;
         display: inline-block;
     }
-
-
-
     .headingCaption .main-heading {
         position: absolute;
         left: 5px;
@@ -94,84 +89,52 @@
     <div class="row line-w" style="margin-left: -4px;">
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Register Name :</label>
-            <input ID="txt_MRegister" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINRegName"
-                name="txt_MRegister" MaxLength="50" style="flex:1;">
+            <label class="labelcss" style="width: 119px;">Register Name :</label>
+            <span class="form-controlA info-value"
+                name="txt_MRegister" MaxLength="50" style="flex:1;">{{selectedPINRegName}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">User Name :</label>
-            <input ID="txt_MUsername" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINUserName"
-                name="txt_MUsername" MaxLength="50" style="flex:1;">
+            <label class="labelcss" style="width: 119px;">User Name :</label>
+            <span ID="txt_MUsername" class="form-controlA info-value"
+                name="txt_MUsername" MaxLength="50" style="flex:1;">{{selectedPINUserName}}</span>
+        </div>
+        <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
+            <label class="labelcss" style="width: 119px;">Register Name :</label>
+            <span ID="txt_BRegister" class="form-controlA info-value" 
+                name="txt_BRegister" MaxLength="50" style="flex:1;">{{selectedBSRegName}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Register Name :</label>
-            <input ID="txt_BRegister" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSRegName"
-                name="txt_BRegister" MaxLength="50" style="flex:1;">
+            <label class="labelcss" style="width: 119px;">User Name :</label>
+            <span ID="txt_BUsername" class="form-controlA info-value"
+                name="txt_BUsername" MaxLength="50" style="flex:1;">{{selectedBSUserName}}</span>
         </div>
-
-        <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">User Name :</label>
-            <input ID="txt_BUsername" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSUserName"
-                name="txt_BUsername" MaxLength="50" style="flex:1;">
-        </div>
-
-    </div>
-
-
-    <!-- ROW 2 -->
-    <!-- <div class="row line-w" style="margin-left: -4px;">
-
-        <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">NIC :</label>
-            <input ID="txt_MNIC" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINNic" name="txt_MNIC"
-                MaxLength="50" style="flex:1;">
-        </div>
-
-        <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Passport :</label>
-            <input ID="txt_MPassport" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINPassport"
-                name="txt_MPassport" MaxLength="50" style="flex:1;">
-        </div>
-
-        <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Other ID :</label>
-            <input ID="txt_MOtherID" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINOtherID"
-                name="txt_MOtherID" MaxLength="50" style="flex:1;">
-        </div>
-
-        <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">NIC :</label>
-            <input ID="txt_BNIC" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSNic" name="txt_BNIC"
-                MaxLength="50" style="flex:1;">
-        </div>
-
-    </div> -->
+  </div>
     <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">CNIC : </label>
-            <input ID="txt_MCNIC" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINCnic"
-                name="txt_MCNIC" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">CNIC : </label>
+            <span ID="txt_MCNIC" class="form-controlA info-value"
+                name="txt_MCNIC" MaxLength="50">{{selectedPINCnic}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">NIC :</label>
-            <input ID="txt_MNIC" disabled class="form-controlA txtPinPot" name="txt_MNIC" [(ngModel)]="selectedPINNic"
-                MaxLength="50">
+            <label class="labelcss" style="width: 200px;">NIC :</label>
+            <span ID="txt_MNIC" class="form-controlA info-value" name="txt_MNIC"
+                MaxLength="50">{{selectedPINNic}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">CNIC :</label>
-            <input ID="txt_BCNIC" disabled class="form-controlA txtPinPot" name="txt_BCNIC" [(ngModel)]="selectedBSCnic"
-                style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">CNIC :</label>
+            <span ID="txt_BCNIC" class="form-controlA info-value" name="txt_BCNIC"
+                style="border-radius: 0px;" MaxLength="50">{{selectedBSCnic}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">NIC :</label>
-            <input ID="txt_BNIC" disabled class="form-controlA txtPinPot" name="txt_BNIC" [(ngModel)]="selectedBSNic"
-                MaxLength="50">
+            <label class="labelcss" style="width: 200px;">NIC :</label>
+            <span ID="txt_BNIC" class="form-controlA info-value" name="txt_BNIC"
+                MaxLength="50">{{selectedBSNic}}</span>
         </div>
     </div>
 
@@ -180,27 +143,27 @@
     </div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Passport :</label>
-            <input ID="txt_MPassport" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINPassport"
-                name="txt_MPassport" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Passport :</label>
+            <span ID="txt_MPassport" class="form-controlA info-value"
+                name="txt_MPassport" MaxLength="50">{{selectedPINPassport}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Other ID :</label>
-            <input ID="txt_MOtherID" disabled class="form-controlA txtPinPot" name="txt_MOtherID"
-                [(ngModel)]="selectedPINOtherID" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Other ID :</label>
+            <span ID="txt_MOtherID" class="form-controlA info-value" name="txt_MOtherID" MaxLength="50">
+                {{selectedPINOtherID}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Passport :</label>
-            <input ID="txt_BPassport" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSPassport"
-                name="txt_BPassport" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Passport :</label>
+            <span ID="txt_BPassport" class="form-controlA info-value"
+                name="txt_BPassport" MaxLength="50">{{selectedPINOtherID}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Other ID :</label>
-            <input ID="txt_BOtherID" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSOtherID"
-                name="txt_BOtherID" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Other ID :</label>
+            <span ID="txt_BOtherID" class="form-controlA info-value"
+                name="txt_BOtherID" MaxLength="50">{{selectedBSOtherID}}</span>
         </div>
     </div>
 
@@ -210,26 +173,26 @@
     <!-- ✅ Row 1 -->
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">ICCID / IMSI :</label>
-            <input ID="txt_MICCID" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINICCID"
-                name="txt_MICCID" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">ICCID / IMSI :</label>
+            <span ID="txt_MICCID" class="form-controlA info-value"
+                name="txt_MICCID" MaxLength="50">{{selectedPINICCID}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Account Type :</label>
-            <input ID="txt_MAccountType" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINAccTyp"
-                name="txt_MAccountType" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Account Type :</label>
+            <span ID="txt_MAccountType" class="form-controlA info-value"
+                name="txt_MAccountType" MaxLength="50">{{selectedPINAccTyp}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Account Type :</label>
-            <input ID="txt_BAccountType" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSAccTyp"
-                name="txt_BAccountType" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Account Type :</label>
+            <span ID="txt_BAccountType" class="form-controlA info-value"
+                name="txt_BAccountType" MaxLength="50">{{selectedBSAccTyp}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Tariff Plan :</label>
-            <input ID="txt_BTariff" disabled class="form-controlA txtPinPot" name="txt_BTariff"
-                [(ngModel)]="selectedBSTarifPln" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Tariff Plan :</label>
+            <span ID="txt_BTariff" class="form-controlA info-value" name="txt_BTariff"
+             MaxLength="50">{{selectedBSTarifPln}}</span>
         </div>
     </div>
     <div style="margin-top: 6px;">
@@ -239,26 +202,26 @@
     <!-- ✅ Row 2 -->
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Tariff Plan :</label>
-            <input ID="txt_MTariff" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINTarifPln"
-                name="txt_MTariff" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Tariff Plan :</label>
+            <span ID="txt_MTariff" class="form-controlA info-value"
+                name="txt_MTariff" MaxLength="50">{{selectedPINTarifPln}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Access Level :</label>
-            <input ID="txt_MAccessLevel" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINAccLvl"
-                name="txt_MAccessLevel" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Access Level :</label>
+            <span ID="txt_MAccessLevel" class="form-controlA info-value"
+                name="txt_MAccessLevel" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINAccLvl}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Access Level :</label>
-            <input ID="txt_BAccessLevel" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSAccLvl"
-                name="txt_BAccessLevel" MaxLength="50">
+            <label class="labelcss" style="width: 200px;">Access Level :</label>
+            <span ID="txt_BAccessLevel" class="form-controlA info-value"
+                name="txt_BAccessLevel" MaxLength="50">{{selectedBSAccLvl}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Service Status :</label>
-            <input ID="txt_BServiceStatus" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSServiceSts"
-                name="txt_BServiceStatus" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Service Status :</label>
+            <span ID="txt_BServiceStatus" class="form-controlA info-value"
+                name="txt_BServiceStatus" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSServiceSts}}</span>
         </div>
     </div>
     <div style="margin-top: 6px;">
@@ -269,27 +232,27 @@
     <!-- ✅ Row 3 -->
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Security Deposit :</label>
-            <input ID="txt_MSecurityDeposit" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINSecDep"
-                name="txt_MSecurityDeposit" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Security Deposit :</label>
+            <span ID="txt_MSecurityDeposit" class="form-controlA info-value"
+                name="txt_MSecurityDeposit" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINSecDep}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Line Rent :</label>
-            <input ID="txt_MLineRent" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINLineRt"
-                name="txt_MLineRent" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Line Rent :</label>
+            <span ID="txt_MLineRent" class="form-controlA info-value"
+                name="txt_MLineRent" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINLineRt}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Line Rent :</label>
-            <input ID="txt_BLineRent" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSLineRt"
-                name="txt_BLineRent" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Line Rent :</label>
+            <span ID="txt_BLineRent" class="form-controlA info-value"
+                name="txt_BLineRent" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSLineRt}}</span>
         </div>
 
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Security Deposit :</label>
-            <input ID="txt_BSecurityDeposit" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSSecDep"
-                name="txt_BSecurityDeposit" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Security Deposit :</label>
+            <span ID="txt_BSecurityDeposit" class="form-controlA info-value"
+                name="txt_BSecurityDeposit" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSSecDep}}</span>
         </div>
     </div>
     <div style="margin-top: 6px;">
@@ -300,28 +263,28 @@
     <!-- ✅ Row 4 -->
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Refund Amount :</label>
-            <input ID="txt_MRefAmt" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINRefundAmt"
-                name="txt_MRefAmt" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Refund Amount :</label>
+            <span ID="txt_MRefAmt" class="form-controlA info-value"
+                name="txt_MRefAmt" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINRefundAmt}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Refund Date :</label>
-            <input ID="txt_MRefDt" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINRefundDt"
-                name="txt_MRefDt" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Refund Date :</label>
+            <span ID="txt_MRefDt" class="form-controlA info-value"
+                name="txt_MRefDt" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINRefundDt}}</span>
         </div>
 
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Bar Template :</label>
-            <input ID="txt_BBarTemp" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSBarTemp"
-                name="txt_BBarTemp" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Bar Template :</label>
+            <span ID="txt_BBarTemp" class="form-controlA info-value"
+                name="txt_BBarTemp" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSBarTemp}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Pass Due :</label>
-            <input ID="txt_BPassDue" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSPassDue"
-                name="txt_BPassDue" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Pass Due :</label>
+            <span ID="txt_BPassDue" class="form-controlA info-value"
+                name="txt_BPassDue" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSPassDue}}</span>
         </div>
     </div>
     <div style="margin-top: 6px;">
@@ -330,51 +293,24 @@
 
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">User ID :</label>
-            <input ID="txt_MUserID" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINUserID"
-                name="txt_MUserID" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">User ID :</label>
+            <span ID="txt_MUserID" class="form-controlA info-value"
+                name="txt_MUserID" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINUserID}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">User Name :</label>
-            <input ID="txt_MUserNam" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINUsername"
-                name="txt_MUserNam" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">User Name :</label>
+            <span ID="txt_MUserNam" class="form-controlA info-value" 
+                name="txt_MUserNam" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINUsername}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Current Billing :</label>
-            <input ID="txt_BCurrentBill" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSCurrBilling"
-                name="txt_BCurrentBill" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Current Billing :</label>
+            <span ID="txt_BCurrentBill" class="form-controlA info-value"
+                name="txt_BCurrentBill" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSCurrBilling}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Unbilled :</label>
-            <input ID="txt_BUnbilled" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSUnbill"
-                name="txt_BUnbilled" style="border-radius:0;flex:1;" MaxLength="50">
-        </div>
-    </div>
-    <div style="margin-top: 6px;">
-
-    </div>
-    <div class="row line-w" style="margin-left: -4px;">
-        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">NPR Initiator :</label>
-            <input ID="txt_MNPRInitiator" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINNPRInt"
-                name="txt_MNPRInitiator" style="border-radius:0;flex:1;" MaxLength="50">
-        </div>
-
-        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">NPR Date :</label>
-            <input ID="txt_MNPRGenrtDt" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINNPRGenDt"
-                name="txt_MNPRGenrtDt" style="border-radius:0;flex:1;" MaxLength="50">
-        </div>
-        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Total Due :</label>
-            <input ID="txt_BTotalDue" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSTotalDue"
-                name="txt_BTotalDue" style="border-radius:0;flex:1;" MaxLength="50">
-        </div>
-
-        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Credit Limit :</label>
-            <input ID="txt_BCreditLimit" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSCreditLmt"
-                name="txt_BCreditLimit" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Unbilled :</label>
+            <span ID="txt_BUnbilled" class="form-controlA info-value" 
+                name="txt_BUnbilled" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSUnbill}}</span>
         </div>
     </div>
     <div style="margin-top: 6px;">
@@ -382,26 +318,26 @@
     </div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Current Status :</label>
-            <input ID="txt_MCurrSts" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINCurrSts"
-                name="txt_MCurrSts" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">NPR Initiator :</label>
+            <span ID="txt_MNPRInitiator" class="form-controlA info-value"
+                name="txt_MNPRInitiator" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINNPRInt}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Message Timestamp :</label>
-            <input ID="txt_MMsgTime" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINMsgTime"
-                name="txt_MMsgTime" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">NPR Date :</label>
+            <span ID="txt_MNPRGenrtDt" class="form-controlA info-value" 
+                name="txt_MNPRGenrtDt" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINNPRGenDt}}</span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Usage :</label>
-            <input ID="txt_BUsage" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSUsage"
-                name="txt_BUsage" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Total Due :</label>
+            <span ID="txt_BTotalDue" class="form-controlA info-value"
+                name="txt_BTotalDue" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSTotalDue}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">ICCID#/IMSI :</label>
-            <input ID="txt_BICCID" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSICCID"
-                name="txt_BICCID" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Credit Limit :</label>
+            <span ID="txt_BCreditLimit" class="form-controlA info-value" 
+                name="txt_BCreditLimit" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSCreditLmt}}</span>
         </div>
     </div>
     <div style="margin-top: 6px;">
@@ -409,20 +345,47 @@
     </div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Assign To :</label>
-            <input ID="txt_MAssignTo" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINAssignTo"
-                name="txt_MAssignTo" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Current Status :</label>
+            <span ID="txt_MCurrSts" class="form-controlA info-value" 
+                name="txt_MCurrSts" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINCurrSts}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Due Date :</label>
-            <input ID="txt_MDueDt" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINDueDt"
-                name="txt_MDueDt" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Message Timestamp :</label>
+            <span ID="txt_MMsgTime" class="form-controlA info-value"
+                name="txt_MMsgTime" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">SIM Status :</label>
-            <input ID="txt_BSIMStatus" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedBSSimSts"
-                name="txt_BSIMStatus" style="border-radius:0;flex:1;" MaxLength="50">
+            <label class="labelcss" style="width: 120px;">Usage :</label>
+            <span ID="txt_BUsage" class="form-controlA info-value" [(
+                name="txt_BUsage" style="border-radius:0;flex:1;" MaxLength="50"></span>
+        </div>
+
+        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
+            <label class="labelcss" style="width: 120px;">ICCID#/IMSI :</label>
+            <span ID="txt_BICCID" class="form-controlA info-value" [(ngModel)]="selectedBSICCID"
+                name="txt_BICCID" style="border-radius:0;flex:1;" MaxLength="50"></span>
+        </div>
+    </div>
+    <div style="margin-top: 6px;">
+
+    </div>
+    <div class="row line-w" style="margin-left: -4px;">
+        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
+            <label class="labelcss" style="width: 120px;">Assign To :</label>
+            <span ID="txt_MAssignTo" class="form-controlA info-value" [(ngModel)]="selectedPINAssignTo"
+                name="txt_MAssignTo" style="border-radius:0;flex:1;" MaxLength="50"></span>
+        </div>
+
+        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
+            <label class="labelcss" style="width: 120px;">Due Date :</label>
+            <span ID="txt_MDueDt" class="form-controlA info-value" [(ngModel)]="selectedPINDueDt"
+                name="txt_MDueDt" style="border-radius:0;flex:1;" MaxLength="50"></span>
+        </div>
+        <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
+            <label class="labelcss" style="width: 120px;">SIM Status :</label>
+            <span ID="txt_BSIMStatus" class="form-controlA info-value" [(ngModel)]="selectedBSSimSts"
+                name="txt_BSIMStatus" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
 
     </div>
@@ -434,7 +397,8 @@
             <label class="labelcss" style="white-space: nowrap; margin: 0;width: 120px; ">Vas :</label>
             <textarea id="txt_BLineRent" disabled [(ngModel)]="selectedBSVas" name="txt_BLineRent"
                 class="form-controlA " rows="1" maxlength="50"
-                style="border-radius:0;flex:1; font-size: 12px;"></textarea>
+                style="border-radius:0;flex:1;font-size: 12px; background-color: #f6f5f5;"></textarea>
+                
         </div>
     </div>
     <div style="margin-top: 5px;">
@@ -446,30 +410,30 @@
     <br>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Last Activity# :</label>
-            <input ID="txt_MLstAct" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINLstAct"
-                name="txt_MLstAct" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Last Activity# :</label>
+            <span ID="txt_MLstAct" class="form-controlA info-value" 
+                name="txt_MLstAct" style="border-radius: 0px;" MaxLength="50">{{selectedPINLstAct}}</span>
 
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Port ID :</label>
-            <input ID="txt_MPortID" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINPortID"
-                name="txt_MPortID" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Port ID :</label>
+            <span ID="txt_MPortID" class="form-controlA info-value"
+                name="txt_MPortID" style="border-radius: 0px;" MaxLength="50">{{selectedPINPortID}}</span>
 
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Donor :</label>
-            <input ID="txt_MDonor" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINDonor"
-                name="txt_MDonor" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Donor :</label>
+            <span ID="txt_MDonor" class="form-controlA info-value" 
+                name="txt_MDonor" style="border-radius: 0px;" MaxLength="50">{{selectedPINDonor}}</span>
 
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Recipient :</label>
-            <input ID="txt_MRecipient" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINRecipient"
-                name="txt_MRecipient" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Recipient :</label>
+            <span ID="txt_MRecipient" class="form-controlA info-value"
+                name="txt_MRecipient" style="border-radius: 0px;" MaxLength="50">{{selectedPINRecipient}}</span>
 
         </div>
 
@@ -481,21 +445,21 @@
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Job Done By :</label>
-            <input ID="txt_MJobDnBy" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINJobDoneBy"
-                name="txt_MJobDnBy" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Job Done By :</label>
+            <span ID="txt_MJobDnBy" class="form-controlA info-value"
+                name="txt_MJobDnBy" style="border-radius: 0px;" MaxLength="50">{{selectedPINJobDoneBy}}</span>
         </div>
 
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Last Date :</label>
-            <input ID="txt_ALstDt" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINLstDt"
-                name="txt_ALstDt" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Last Date :</label>
+            <span ID="txt_ALstDt" class="form-controlA info-value"
+                name="txt_ALstDt" style="border-radius: 0px;" MaxLength="50">{{selectedPINLstDt}}</span>
         </div>
         <div class="col-lg-6 col-sm-6" style="display:flex;align-items:center;gap:6px; ">
 
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Description :</label>
-            <input ID="txt_MDescription" disabled class="form-controlA txtPinPot" [(ngModel)]="selectedPINDesc"
-                name="txt_MDescription" style="border-radius: 0px;" MaxLength="50">
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 148px;">Description :</label>
+            <span ID="txt_MDescription" class="form-controlA info-value"
+                name="txt_MDescription" style="border-radius: 0px;" MaxLength="50">{{selectedPINDesc}}</span>
 
         </div>
 
@@ -505,10 +469,10 @@
     </div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-12 col-sm-12" style="display:flex;align-items:center;gap:6px; ">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Rejection Description:</label>
-            <textarea id="txt_BLineRent" disabled [(ngModel)]="selectedPINRejDesc" name="txt_BLineRent"
-                class="form-controlA " rows="1" maxlength="50"
-                style="border-radius:0;flex:1;font-size: 12px; "></textarea>
+            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 119px;">Rejection Description:</label>
+            <textarea id="txt_BLineRent"  name="txt_BLineRent"
+                class="form-controlA info-value" rows="1" maxlength="50"
+                style="border-radius:0;flex:1;font-size: 12px;background-color: #f6f5f5; " disabled>{{selectedPINRejDesc}}</textarea>
         </div>
     </div>
 
@@ -520,10 +484,10 @@
     <div style="margin-top: 15px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-12 col-sm-12" style="display:flex;align-items:center;gap:6px; ">
-            <label class="labelcss" style="white-space: nowrap; margin: 0; width: 120px;">Comment2 :</label>
-            <textarea id="txt_BLineRent" disabled [(ngModel)]="selectedPINRejDesc" name="txt_BLineRent"
-                class="form-controlA " rows="1" maxlength="50"
-                style="border-radius:0;flex:1;font-size: 12px; "></textarea>
+            <label class="labelcss" style="width: 120px;">Comment2 :</label>
+            <textarea id="txt_BLineRent" name="txt_BLineRent"
+                class="form-controlA info-value" disabled rows="1" maxlength="50"
+                style="border-radius:0;flex:1;font-size: 12px; background-color: #f6f5f5;">{{selectedPINRejDesc}}</textarea>
         </div>
     </div>
     <div class="row line-w" style="margin-left: -4px;">

@@ -59,6 +59,8 @@ export interface ConsoleGet {
   Followup: string
   RouteID: string
   PARTICIPANT_ID: string
+  
+
 }
 export class Console {
   ID: string;
@@ -89,6 +91,7 @@ export interface DetCon {
   commpitiondate: string,
   rejectcode: string,
   xml: string,
+  
 }
 declare var $: any;
 @Component({
@@ -157,10 +160,11 @@ export class ConsoleComponent {
   alarms: Alarm[] = [];
   lastRefresh: Date = new Date();
   savedCurrentPage: number | null = null;
-  savedWindowStart: number | null = null;
   savedFilteredData: any[] = [];
+  savedWindowStart: number | null = null;  
   savedScrollTop: number | null = null;
   Action: any[] = [];
+  
   filteredActions: { descs: string; action: string }[] = [];
   constructor(private el: ElementRef, private loaderService: loaderService, private datepickerService: DatepickerService,
   private router: Router, private excelService: ExcelExportService, private pager: PaginationService) { }
@@ -232,7 +236,7 @@ export class ConsoleComponent {
   msgTypes = [
     { code: 'A', name: 'ALL' },
     { code: 'N', name: 'PMD' },
-    { code: 'E', name: 'LSMS' },
+    { code: 'S', name: 'LSMS' },
     { code: 'D', name: 'CARES' }
   ];
   formData: {
@@ -518,7 +522,7 @@ export class ConsoleComponent {
     let params: any = { 
       ID: this.loginUser || '',
       Admin: this.roleMessage || '',
-      Checkbox: chkb,
+      Checkbox: 'E',
       CheckboxA: this.ErrChk || 'A',
       FromDate: FrmDate || '',
       ToDate: ToDate || '',
@@ -531,13 +535,18 @@ export class ConsoleComponent {
       getdata: ''
     };
     const queryParams = new URLSearchParams(params).toString();
+
     const url = `${environment.apiBaseUrl}/api/ConsoleStatus/filter?${queryParams}`;  
+    debugger
     this.loaderService.show();
+    debugger
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res?.length > 0) {
+          debugger
           this.isvisibe = true;
           this.div_grid = true;
+          debugger
           this.GridData = res;
           this.ExData = [...res];
           this.filteredData = this.savedFilteredData.length ? this.savedFilteredData : res;
@@ -802,4 +811,17 @@ export class ConsoleComponent {
     }, file
     );
   }
+ getFirstWords(text: string, limit: number): string {
+  if (!text) return '';
+  const words = text.split(' ');
+  return words.length > limit
+    ? words.slice(0, limit).join(' ')
+    : text;
+}
+
+toggleRow(row: any) {
+  row.showFull = !row.showFull;
+}
+
+
 }

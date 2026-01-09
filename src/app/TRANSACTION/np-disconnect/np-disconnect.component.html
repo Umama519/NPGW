@@ -69,7 +69,7 @@
                 <label class="form-label_">Mobile No :</label>
                 <div style="display: flex; align-items: center;">
           <input class="form-controlA" [(ngModel)]="model.mobile" MaxLength="11" inputmode="numeric"
-                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Enter mobile number" style="border-radius: 0px; width: 250px;"/>
+                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="border-radius: 0px; width: 250px;"/>
                    <div style="width: 30px;"></div>
                     <button id="btn_Search" class="newbtn" (click)="onSearchClick()">
                         <i class="bi bi-check-circle"></i> Fetch
@@ -81,7 +81,7 @@
                 <i class="bi bi-arrow-clockwise"></i> Reset
             </button>
                 </div>
-            </div>
+            </div> 
         </div>
         </div>
         <br>
@@ -89,75 +89,73 @@
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">ONO Name :</label>
-                <input class="form-controlA" name="ononame" [(ngModel)]="model.onoName" disabled />
+                <span class="info-value form-controlA" name="ononame" [(ngModel)]="model.onoName" ></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">Date :</label>
-                <input class="form-controlA" name="date" [(ngModel)]="model.date" disabled />
+                <span class="info-value form-controlA" name="date" [(ngModel)]="model.date" ></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">Mobile # :</label>
-                <input class="form-controlA" name="modbile" [(ngModel)]="model.modbile" disabled />
+                <span class="info-value form-controlA" name="modbile" [(ngModel)]="model.modbile"></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">NPR Date :</label>
-                <input class="form-controlA" name="nprDate" [(ngModel)]="model.nprDate" disabled />
+                <span class="info-value form-controlA" name="nprDate" [(ngModel)]="model.nprDate"></span>
             </div>
         </div>
-    </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">NIC # :</label>
-                <input class="form-controlA" name="onic" [(ngModel)]="model.onic" disabled />
+                <span class="info-value form-controlA" name="onic" [(ngModel)]="model.onic"></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">Name/Company Name :</label>
-                <input class="form-controlA" name="regName" [(ngModel)]="model.regName" disabled />
-            </div>
-        </div>
-        <div class="col-lg-2 col-sm-2">
-            <div class="form-group">
-                <label class="labelcss">Passport # :</label>              
-                <input class="form-controlA" name="passport" [(ngModel)]="model.passport" disabled />
+                <!-- <input class="info-value form-controlA" name="regName" [(ngModel)]="model.regName" disabled /> -->
+                 <span class="info-value form-controlA" name="regName" [(ngModel)]="model.regName" ></span>
             </div>
         </div>
     </div>
     <br>
     <div class="row line-w" style="margin-left: -4px;">
+        
+        <div class="col-lg-2 col-sm-2">
+            <div class="form-group">
+                <label class="labelcss">Passport # :</label>              
+                <span class="info-value form-controlA" name="passport" [(ngModel)]="model.passport"></span>
+            </div>
+        </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">User Name :</label>
-                <input class="form-controlA" name="user" [(ngModel)]="model.user" disabled />
+                <span class="info-value form-controlA" name="user" [(ngModel)]="model.user"></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">CNIC # :</label>
-                <input class="form-controlA" name="cnic" [(ngModel)]="model.cnic" disabled />
+                <span class="info-value form-controlA" name="cnic" [(ngModel)]="model.cnic"></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">Product Type :</label>
-                <input class="form-controlA" name="productType" [(ngModel)]="model.productType" disabled />
+                <span class="info-value form-controlA" name="productType" [(ngModel)]="model.productType"></span>
             </div>
         </div>
         <div class="col-lg-2 col-sm-2">
             <div class="form-group">
                 <label class="labelcss">Other # :</label>
-                <input class="form-controlA" name="other" [(ngModel)]="model.other" disabled />
+                <span class="info-value form-controlA" name="other" [(ngModel)]="model.other"></span>
             </div>
         </div>
-    </div>
-    <br>
+    </div>            
 </div>

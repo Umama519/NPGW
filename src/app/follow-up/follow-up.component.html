@@ -7,10 +7,6 @@
         margin-bottom: 10px;
     }
 
-    .info-label {
-        font-weight: 300;
-    }
-
     .form-section {
         border: 1px solid #dee2e6;
         padding: 15px;
@@ -26,27 +22,7 @@
     }
 
     .info-label {
-        min-width: 120px;
-        font-family: sans-serif;
-        /* sab labels same width me rahenge */
-
-        color: #003366;
-    }
-
-    .info-value {
-        display: inline-block;
-        padding: 4px 8px;
-        background-color: #f8f9fa;
-        border: 1px solid #ced4da;        
-        color: #495057;
-        font-family: sans-serif; 
-        font-size: 12px;
-        min-width: 150px;
-        height: 24px;
-        line-height: 16px;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-        word-break: break-word;
-        overflow: hidden;
+        min-width: 120px; 
     }
 </style>
 
@@ -58,51 +34,51 @@
     <div class="form-section container-fluid px-2 py-2" style="margin-left: 8px; width: 108%; margin-top: 10px">
         <div class="row mb-2">
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Base Location :</span>
+                <span class="labelcss info-label">Base Location :</span>
                 <span class="info-value form-controlA">{{ selectedRegion }}</span>
             </div>
 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Mobile # :</span>
+                <span class="labelcss info-label">Mobile # :</span>
                 <span class="info-value form-controlA">{{ selectedMobile }}</span>
             </div>
 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">ONO Name :</span>
+                <span class="labelcss info-label">ONO Name :</span>
                 <span class="info-value form-controlA">{{ selectedOno}}</span>
             </div>
 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Date :</span>
-                <span class="info-value form-controlA">{{ selectedActDt}}</span>
+                <span class="labelcss info-label">Date :</span>
+                <span class=" form-controlA">{{ selectedActDt}}</span>
             </div>
         </div>
 
         <div class="row mb-2">
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">IMSI # :</span>
+                <span class="labelcss info-label">IMSI # :</span>
                 <span class="info-value form-controlA">{{ selectedImsi}}</span>
             </div>
 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Connection Type :</span>
+                <span class="labelcss info-label">Connection Type :</span>
                 <span class="info-value form-controlA">{{ selectedAccountType}}</span>
             </div>
 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">NIC/CNIC/Passport :</span>
+                <span class="labelcss info-label">NIC/CNIC/Passport :</span>
                 <span class="info-value form-controlA">{{ selectedCnic}}</span>
             </div>
 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Port ID :</span>
+                <span class="labelcss info-label">Port ID :</span>
                 <span class="info-value form-controlA">{{ selectedPortID }}</span>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">DNO Name :</span>
+                <span class="labelcss info-label">DNO Name :</span>
                 <span class="info-value form-controlA">{{ selectedDonor }}</span>
             </div>
         </div>
@@ -126,29 +102,29 @@
     <div class="form-section" style="margin-left: 8px; width: 108%;">
         <div class="row mb-2">
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Activity:</span>
+                <span class="info-label labelcss">Activity:</span>
                 <span class="info-value form-controlA">{{ selectedActNo }}</span>
             </div>
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Status:</span>
+                <span class="labelcss info-label">Status:</span>
                 <span class="info-value form-controlA">{{ selectedStat }}</span>
             </div> 
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">User From:</span>
+                <span class="labelcss info-label">User From:</span>
                 <span class="info-value form-controlA">{{ selectedUserid}}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Job Done By:</span>
+                <span class="labelcss info-label">Job Done By:</span>
                 <span class="info-value form-controlA">{{ selectedUname }}</span>
             </div>
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Date & Time:</span>
+                <span class="labelcss info-label">Date & Time:</span>
                 <span class="info-value form-controlA">{{ selectedTdate }}</span>
             </div>
             <div class="col-md-3 col-6 d-flex">
-                <span class="info-label">Last Action:</span>
+                <span class="labelcss info-label">Last Action:</span>
                 <span class="info-value form-controlA">{{ selectedLastAction }}</span>
             </div>
         </div>
@@ -164,7 +140,7 @@
         <div class="row mb-3">
             <div class="col-md-3">
                 <label class="labelcss">NPR Due Date & Time:</label>
-                <input type="text" id="txt_NPRDueDT" autocomplete="off" class="form-controlA">
+                <input type="text" id="txt_NPRDueDT" autocomplete="off" class="info-value form-controlA">
             </div>
             <div class="col-md-3">
                 <label class="labelcss">Response:</label>
