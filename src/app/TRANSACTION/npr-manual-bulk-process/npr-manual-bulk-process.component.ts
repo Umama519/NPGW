@@ -2,9 +2,11 @@ import { CommonModule, formatDate } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { environment } from 'environments/environment';
 import { startWith } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { CdkAriaLive } from "../../../../node_modules/@angular/cdk/a11y/index";
+import { environment } from 'environments/environment';
+import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 
 export class NPRManualSetup {
   batch: string;
@@ -36,14 +38,16 @@ export class NPRManualSetup {
 
 @Component({
   selector: 'app-public-nprmanualbulkprocess-aspx',
-    standalone: true,  
-
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, GlobalLovComponent],
   templateUrl: './npr-manual-bulk-process.component.html',
   styleUrl: './npr-manual-bulk-process.component.css'
 })
 export class NprManualBulkProcessComponent {
+  lovDisabled: boolean = false;
+  Batch: any[] = []; 
   selectedFile: File | null = null;
+  selectedBatch: any;
   loginUser: string = '';
   filteredData: any[] = [];
   GridData: any[] = [];
@@ -54,19 +58,30 @@ export class NprManualBulkProcessComponent {
   isErrorPopup: boolean = false;
   showSuccessPopup: boolean = false;
   isSubmitting: boolean = false;
-  generatedSeqWF: any;  
+  generatedSeqWF: any;
   batch: string | null = null;
   showModal: boolean = false;
   batchno: string | null = null;
+  lblBatchNo: any;
+  lblTotalReccords = 0;
+  lblProcessRecords = 0;
+  lblErrorRecords = 0;
+  lblMessegeprocess: any;
+  isProcessData: boolean = false;
+  isgridview: boolean = false;
+  isgridview1: boolean = true;
+  isgridview2: boolean = false;
+  isFetchData: boolean = true;
 
   constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2) { }
-   ngOnInit(): void {    
+  ngOnInit(): void {
     this.loginUser = localStorage.getItem('loginUser') || 'No user';
     this.GetGrid();
     this.GetGrid1();
   }
-  GetGrid() {    
-    const url = `${environment.apiBaseUrl}/api/NPRManualBilk/S?id=${this.loginUser}`;
+  GetGrid() {
+    debugger;
+    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/S?id=${this.loginUser}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
@@ -86,11 +101,20 @@ export class NprManualBulkProcessComponent {
     });
   }
   GetGrid1() {
-    const url = `${environment.apiBaseUrl}/api/Action_LOV_/Batch`;
+    debugger;
+    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/LOV?id=${this.loginUser}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
-          this.GridData1 = res;
+          //this.GridData1 = res;
+          //this.GridData1 = res
+          //  .sort((a, b) => b.batch - a.batch)
+          //  .slice(0, 10);
+          this.GridData1 = res
+            .sort((a, b) => Number(b.batch) - Number(a.batch))
+            .slice(0, 8);
+          this.Batch = res.sort((a, b) => Number(a.batch) - Number(b.batch));
+          this.selectedBatch = res[0].batch;
         } else {
           console.log('No data found');
           this.GridData1 = [];
@@ -103,8 +127,8 @@ export class NprManualBulkProcessComponent {
     });
   }
   GetGrid2(batch: any) {
-    
-    const url = `${environment.apiBaseUrl}/api/NPRManualBilk/BD?userid=${this.loginUser}&batch=${batch}`;
+    debugger;
+    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/BD?userid=${this.loginUser}&batch=${batch}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
@@ -120,18 +144,17 @@ export class NprManualBulkProcessComponent {
       }
     });
   }
-  // onBatch(batch: any) {
-  //   this.GetGrid2(batch);
-  // }
   previousBatch: any = null;
 
   onBatch(batch: any) {
-    
+    debugger;
     if (this.previousBatch === batch) {
+      this.isgridview2 = false;
       this.GridData2 = [];
       this.previousBatch = null;
-    } else {    
+    } else {
       this.GetGrid2(batch);
+      this.isgridview2 = true;
       this.previousBatch = batch;
     }
   }
@@ -145,94 +168,117 @@ export class NprManualBulkProcessComponent {
     }
   }
   onProcess(batch: any) {
-    
+    debugger;
     const setup = new NPRManualSetup();
-    
-      setup.batch = '';
-      setup.total_records = '';
-      setup.processDate = '';
-      setup.loaddate = '';
-      setup.accept = '';
-      setup.reject = '';
-      setup.hold = '';
-      setup.user_id = this.loginUser;
-      setup.mobile = '';
-      setup.rejectHoldCode = '';
-      setup.processStatus = '';
 
-      const mappedData = setup;
-    const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBilk/${batch}`;
+    setup.batch = '';
+    setup.total_records = '';
+    setup.processDate = '';
+    setup.loaddate = '';
+    setup.accept = '';
+    setup.reject = '';
+    setup.hold = '';
+    setup.user_id = this.loginUser;
+    setup.mobile = '';
+    setup.rejectHoldCode = '';
+    setup.processStatus = '';
+
+    const mappedData = setup;
+    const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBulk/${batch}`;
     this.http.put(insertUrl, mappedData).subscribe({
       next: (response: any) => {
         const respStr = response.message;
         this.popupMessage = respStr;
         this.showSuccessPopup = true;
-        this.isErrorPopup = respStr.startsWith('0;');  
-        this.ResetFields();
-        setTimeout(() => {
-          this.showSuccessPopup = false;
-        }, 3000);              
-        },
-        error: (err) => {
-        console.error('Error during insert:', err);
-        this.popupMessage = 'Failed to insert the record. Please try again.';
-        this.isErrorPopup = true;
-        this.showSuccessPopup = true;        
+        this.isErrorPopup = respStr.startsWith('0;');
         this.ResetFields();
         setTimeout(() => {
           this.showSuccessPopup = false;
         }, 3000);
-        }
+      },
+      error: (err) => {
+        console.error('Error during insert:', err);
+        this.popupMessage = 'Failed to insert the record. Please try again.';
+        this.isErrorPopup = true;
+        this.showSuccessPopup = true;
+        this.ResetFields();
+        setTimeout(() => {
+          this.showSuccessPopup = false;
+        }, 3000);
+      }
     });
   }
   uploadFile(fileInput: HTMLInputElement) {
-    
-        if (!this.selectedFile) {
-          this.popupMessage = 'Please Select File.';
-          this.isErrorPopup = true;
-          this.showSuccessPopup = true;
-          this.isSubmitting = false;
-          return;
-        }
-    
-        const FileFormat = document.getElementById("FileFormat") as HTMLElement | null;
-        const tableG = document.getElementById("tableG") as HTMLElement | null;
-    
-        if (tableG) {
-          this.renderer.setStyle(tableG, 'display', 'block');
-        }
-        if (FileFormat) {
-          this.renderer.setStyle(FileFormat, 'display', 'none');
-        }
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(this.selectedFile);
-    
-        reader.onload = (e: any) => {
-          
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-    
-          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    
-          // Extract the data from the first 5 columns of each row
-          let rowData = jsonData.slice(1).map((row: any) => {
-          return {
+    debugger;
+    if (!this.selectedFile) {
+      this.showSuccessPopup = false;
+      setTimeout(() => {
+        this.popupMessage =
+          !this.selectedFile ? 'Please Select File.' : '';
+
+        this.isErrorPopup = true;
+        this.showSuccessPopup = true;
+        return;
+      }, 100);
+      return;
+    }
+    this.lblBatchNo = '';
+    this.lblTotalReccords = 0;
+    this.lblErrorRecords = 0;
+    this.lblProcessRecords = 0;
+    this.lblMessegeprocess = '';
+    this.isProcessData = false;
+
+    const FileFormat = document.getElementById("FileFormat") as HTMLElement | null;
+    const tableG = document.getElementById("tableG") as HTMLElement | null;
+
+    if (tableG) {
+      this.renderer.setStyle(tableG, 'display', 'block');
+    }
+    if (FileFormat) {
+      this.renderer.setStyle(FileFormat, 'display', 'none');
+    }
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(this.selectedFile);
+
+    reader.onload = (e: any) => {
+      debugger;
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      let rowData = jsonData.slice(1).map((row: any) => {
+        return {
           MOBILE_NO: row[0] !== undefined && row[0] !== '' ? row[0] : '',
           HOLD_REJECT_CODE: row[1] !== undefined && row[1] !== '' ? row[1] : ''
-          };
-        });
-
-// Clean invalid rows (optional — agar dono null ho to hatao)
-          rowData = rowData.filter((row: any) => row.MOBILE_NO !== '' || row.HOLD_REJECT_CODE !== '');
-          this.isadd = 'I'
-          this.submit(rowData);
-          fileInput.value = '';
-          this.selectedFile = null;
+        };
+      });
+      rowData = rowData.filter((row: any) => row.MOBILE_NO !== '' || row.HOLD_REJECT_CODE !== '');
+      const mobileList = rowData.map((r: any) =>
+        r.MOBILE_NO.toString().trim()
+      ); const duplicateMobiles = mobileList.filter(
+        (item, index) => mobileList.indexOf(item) !== index
+      );
+      if (duplicateMobiles.length > 0) {
+        this.showSuccessPopup = false;
+        setTimeout(() => {
+          this.popupMessage = 'Duplicate Mobile Number Found In Excel Sheet.';
+          this.isErrorPopup = true;
+          this.showSuccessPopup = true;
+          return;
+        }, 100);
+        return;
+      }
+      this.isadd = 'I'
+      this.submit(rowData);
+      fileInput.value = '';
+      this.selectedFile = null;
     };
   }
   submit(rowData: any) {
-    
+    debugger;
     if (!rowData) {
       // this.showSuccessPopup = false;
       // setTimeout(() => {
@@ -243,29 +289,29 @@ export class NprManualBulkProcessComponent {
       return;
     }
     const setup = new NPRManualSetup();
-    
-      setup.batch = '';
-      setup.total_records = '';
-      setup.processDate = '';
-      setup.loaddate = '';
-      setup.accept = '';
-      setup.reject = '';
-      setup.hold = '';
-      setup.user_id = this.loginUser;
-      setup.mobile = '';
-      setup.rejectHoldCode = '';
-      setup.processStatus = '';
 
-      const mappedData = setup;
+    setup.batch = '';
+    setup.total_records = '';
+    setup.processDate = '';
+    setup.loaddate = '';
+    setup.accept = '';
+    setup.reject = '';
+    setup.hold = '';
+    setup.user_id = this.loginUser;
+    setup.mobile = '';
+    setup.rejectHoldCode = '';
+    setup.processStatus = '';
+
+    const mappedData = setup;
     if (this.isadd === 'I') {
-      
-      const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBilk/M`;
+      debugger;
+      const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBulk/M`;
       this.http.post(insertUrl, mappedData).subscribe({
         next: (response: any) => {
           const respStr = response.message;
           const parts = respStr.split(';');
           if (parts.length > 2) {
-            
+            debugger;
             const status = parts[0].trim();
             const seq = parts[1].trim();
             const message = parts[2].trim();
@@ -273,143 +319,163 @@ export class NprManualBulkProcessComponent {
             this.popupMessage = message;
             // this.GetGrid();
             setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
+              this.showSuccessPopup = false;
+            }, 3000);
             if (status === '1') {
-              
+              debugger;
               const bulkData: NPRManualSetup[] = rowData.map((row: any) => {
-              const setup = new NPRManualSetup();
-              setup.batch = seq;
-              setup.total_records = '';
-              setup.processDate = '';
-              setup.loaddate = '';
-              setup.accept = '';
-              setup.reject = '';
-              setup.hold = '';
-              setup.user_id = this.loginUser;
-              // setup.mobile = row.MOBILE_NO ?? null;
-              setup.mobile = (row.MOBILE_NO ? '0' + String(row.MOBILE_NO) : null) as string;
-              setup.rejectHoldCode = row.HOLD_REJECT_CODE ?? null;
-              setup.processStatus = '';
-              return setup;
-            });
-              const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBilk/D`;
+                const setup = new NPRManualSetup();
+                setup.batch = seq;
+                setup.total_records = '';
+                setup.processDate = '';
+                setup.loaddate = '';
+                setup.accept = '';
+                setup.reject = '';
+                setup.hold = '';
+                setup.user_id = this.loginUser;
+                // setup.mobile = row.MOBILE_NO ?? null;
+                setup.mobile = (row.MOBILE_NO ? '0' + String(row.MOBILE_NO) : null) as string;
+                setup.rejectHoldCode = row.HOLD_REJECT_CODE ?? null;
+                setup.processStatus = '';
+                return setup;
+              });
+              for (let i = 0; i < bulkData.length; i++) {
+                const mobile = bulkData[i].mobile?.toString();
+                if (mobile && mobile.length > 13) {
+                  bulkData[i].mobile = mobile.substring(0, 13);
+                  this.lblErrorRecords += 1;
+                }
+              }
+              const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBulk/D`;
               this.http.post(insertUrl, bulkData).subscribe({
                 next: (response: any) => {
-                const respStr = response.message;
-                this.popupMessage = respStr;
-                this.showSuccessPopup = true;
-                this.isErrorPopup = respStr.startsWith('0;');                
-                this.ResetFields();
-                setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);             
-              },
-              error: (err) => {
-                console.error('Error during insert:', err);
-                this.popupMessage = 'Failed to insert the record. Please try again.';
-                this.isErrorPopup = true;
-                this.showSuccessPopup = true;
-                setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
-              }
+                  const respStr = response.message;
+                  this.lblBatchNo = bulkData[0].batch;
+                  this.lblTotalReccords = bulkData.length;
+                  this.lblProcessRecords = this.lblTotalReccords - this.lblErrorRecords;
+                  this.lblMessegeprocess = "Data Successfully Uploaded."
+                  this.isProcessData = true;
+                  this.popupMessage = respStr;
+                  this.showSuccessPopup = true;
+                  this.isgridview = true;
+                  this.isErrorPopup = respStr.startsWith('0;');
+                  this.ResetFields();
+                  setTimeout(() => {
+                    this.showSuccessPopup = false;
+                  }, 3000);
+                },
+                error: (err) => {
+                  console.error('Error during insert:', err);
+                  this.popupMessage = 'Failed to insert the record. Please try again.';
+                  this.isErrorPopup = true;
+                  this.showSuccessPopup = true;
+                  setTimeout(() => {
+                    this.showSuccessPopup = false;
+                  }, 3000);
+                }
               });
             } else {
               this.showSuccessPopup = true;
               this.isErrorPopup = true;
               setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
+                this.showSuccessPopup = false;
+              }, 3000);
             }
             this.ResetFields();
             setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
-          }          
+              this.showSuccessPopup = false;
+            }, 3000);
+          }
         },
         error: (err) => {
           console.error('Error during insert:', err);
           this.popupMessage = 'Failed to insert the record. Please try again.';
-          this.isErrorPopup = true; // Error popup
-          this.showSuccessPopup = true; // Show popup
+          this.isErrorPopup = true;
+          this.showSuccessPopup = true;
           this.isSubmitting = false;
         }
       });
     }
   }
   confirmDelete(batch: string) {
-    console.log("Confirm delete called for Batch No:", batch); // Add logging
+    console.log("Confirm delete called for Batch No:", batch);
     this.batch = batch;
-    this.showModal = true; // Show the confirmation modal
+    this.showModal = true;
   }
   closeModal() {
     this.showModal = false;
   }
   deleteRecord() {
-      
-      this.isSubmitting = true;
-      this.showSuccessPopup = false;
-      this.isErrorPopup = false;
+    debugger;
+    this.isSubmitting = true;
+    this.showSuccessPopup = false;
+    this.isErrorPopup = false;
 
-      const body = {
-        batch: '',
-        total_records: '',
-        processDate: '',
-        loaddate: '',
-        accept: '',
-        reject: '',
-        hold: '',
-        user_id: this.loginUser,
-        mobile: '',
-        rejectHoldCode: '',
-        processStatus: ''
-      };
+    const body = {
+      batch: '',
+      total_records: '',
+      processDate: '',
+      loaddate: '',
+      accept: '',
+      reject: '',
+      hold: '',
+      user_id: this.loginUser,
+      mobile: '',
+      rejectHoldCode: '',
+      processStatus: ''
+    };
 
-      const url = `${environment.apiBaseUrl}/api/NPRManualBilk/${this.batch}`
-      const options = {
-          headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-          body: body
-        };
-      this.http.delete(url, options).subscribe(
-          (response: any) => {
-            
-            const resMessage = response.message;            
-            let msgR = resMessage.split(';').slice(1).join(','); // slice(1) to remo
-            msgR = msgR.replace('}', '').trim();
-            msgR = msgR.replace('"', '').trim();
-            
-            this.popupMessage = msgR;
-            // this.filteredData = this.filteredData.filter((row) => row.hdate !== hdate);            
-            // Show the popup
-            this.showSuccessPopup = true;
-            this.showModal = false;     
-            // this.ResetFields();
-            this.GetGrid();
-            this.GetGrid1();
-            this.GetGrid2(this.batch);
-            setTimeout(() => {
-              this.showSuccessPopup = false;
-            }, 3000);
-            // this.AddFields();
-          },
-          (error) => {
-            // Handle errors
-            alert(`Error deleting record: ${error.message}`);
-            console.error('Error Details:', error);
-            setTimeout(() => {
+    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/${this.batch}`
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      body: body
+    };
+    this.http.delete(url, options).subscribe(
+      (response: any) => {
+        debugger;
+        const resMessage = response.message;
+        let msgR = resMessage.split(';').slice(1).join(','); // slice(1) to remo
+        msgR = msgR.replace('}', '').trim();
+        msgR = msgR.replace('"', '').trim();
+        debugger;
+        this.popupMessage = msgR;
+        // this.filteredData = this.filteredData.filter((row) => row.hdate !== hdate);            
+        // Show the popup
+        this.showSuccessPopup = true;
+        this.showModal = false;
+        // this.ResetFields();
+        this.GetGrid();
+        this.GetGrid1();
+        this.GetGrid2(this.batch);
+        setTimeout(() => {
           this.showSuccessPopup = false;
         }, 3000);
-        }
-      );
+        //this.AddFields();
+      },
+      (error) => {
+        alert(`Error deleting record: ${error.message}`);
+        console.error('Error Details:', error);
+        setTimeout(() => {
+          this.showSuccessPopup = false;
+        }, 3000);
+      }
+    );
   }
-   ResetFields() {
+  ResetFields() {
     this.GetGrid();
     this.GetGrid1();
     this.GridData2 = [];
-  } 
-  onProcess1() {  
-    
+  }
+  onProcess1() {
     this.batchno = this.batch;
+  }
+  onFetch() {
+    const batch = this.selectedBatch;//(document.getElementById('ddl_Batch') as HTMLInputElement).value;
+    this.batch = batch;
+    this.isgridview2 = true;
+    this.GetGrid2(this.batch);
+  }
+  onRefresh() {
+    window.location.reload();
   }
 }

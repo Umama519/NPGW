@@ -4,6 +4,8 @@ import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { startWith } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { environment } from 'environments/environment';
+import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 
 export class NPRHoldSetup {
   batch: string;
@@ -31,12 +33,15 @@ export class NPRHoldSetup {
 
 @Component({
   selector: 'app-public-nprbulkholdresponse-aspx',
-  standalone: true,  
-  imports: [FormsModule, CommonModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule, GlobalLovComponent],
   templateUrl: './npr-hold-bulk-process.component.html',
   styleUrl: './npr-hold-bulk-process.component.css'
 })
 export class NprHoldBulkProcessComponent {
+  lovDisabled: boolean = false;
+  Batch: any[] = [];
+  selectedBatch: any;
   selectedFile: File | null = null;
   loginUser: string = '';
   filteredData: any[] = [];
@@ -48,69 +53,85 @@ export class NprHoldBulkProcessComponent {
   isErrorPopup: boolean = false;
   showSuccessPopup: boolean = false;
   isSubmitting: boolean = false;
-  generatedSeqWF: any;  
+  generatedSeqWF: any;
   batch: string | null = null;
   showModal: boolean = false;
+  lblBatchNo: any;
+  lblTotalReccords = 0;
+  lblProcessRecords = 0;
+  lblErrorRecords = 0;
+  lblMessegeprocess: any;
+  isProcessData: boolean = false;
+  isgridview: boolean = false;
+  isgridview1: boolean = true;
+  isgridview2: boolean = false;
+  isFetchData: boolean = true;
+
 
   constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2) { }
-   ngOnInit(): void {    
+  ngOnInit(): void {
     this.loginUser = localStorage.getItem('loginUser') || 'No user';
     this.GetGrid();
     this.GetGrid1();
   }
   GetGrid() {
-    
-    const url = `http://localhost:5000/api/NPRHoldBulk/S?id=${this.loginUser}`;
+    debugger;
+    const url = `${environment.apiBaseUrl}/api/NPRHoldBulk/S?id=${this.loginUser}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
           this.GridData = res;
           // this.filteredData = res;
         } else {
-        //  console.log('No data found');
+          console.log('No data found');
           this.GridData = [];
           // this.filteredData = [];
         }
       },
       error: (err) => {
-      //  console.error('Error fetching data:', err);
+        console.error('Error fetching data:', err);
         this.GridData = [];
         // this.filteredData = [];
       }
     });
   }
   GetGrid1() {
-    
-    const url = `http://localhost:5000/api/Action_LOV_/BatchHold`;
+    debugger;
+    const url = `${environment.apiBaseUrl}/api/NPRHoldBulk/LOV?id=${this.loginUser}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
-          this.GridData1 = res;
+          //this.GridData1 = res;
+          this.GridData1 = res
+            .sort((a, b) => Number(b.batch) - Number(a.batch))
+            .slice(0, 8);
+          this.Batch = res.sort((a, b) => Number(a.batch) - Number(b.batch));
+          this.selectedBatch = res[0].batch;
         } else {
-        //  console.log('No data found');
+          console.log('No data found');
           this.GridData1 = [];
         }
       },
       error: (err) => {
-      //  console.error('Error fetching data:', err);
+        console.error('Error fetching data:', err);
         this.GridData1 = [];
       }
     });
   }
   GetGrid2(batch: any) {
-    
-    const url = `http://localhost:5000/api/NPRHoldBulk/BD?userid=${this.loginUser}&batch=${batch}`;
+    debugger;
+    const url = `${environment.apiBaseUrl}/api/NPRHoldBulk/BD?userid=${this.loginUser}&batch=${batch}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
           this.GridData2 = res;
         } else {
-       //   console.log('No data found');
+          console.log('No data found');
           this.GridData2 = [];
         }
       },
       error: (err) => {
-     //   console.error('Error fetching data:', err);
+        console.error('Error fetching data:', err);
         this.GridData2 = [];
       }
     });
@@ -121,12 +142,14 @@ export class NprHoldBulkProcessComponent {
   previousBatch: any = null;
 
   onBatch(batch: any) {
-    
+    debugger;
     if (this.previousBatch === batch) {
       this.GridData2 = [];
+      this.isgridview2 = false;
       this.previousBatch = null;
-    } else {    
+    } else {
       this.GetGrid2(batch);
+      this.isgridview2 = true;
       this.previousBatch = batch;
     }
   }
@@ -134,97 +157,122 @@ export class NprHoldBulkProcessComponent {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-   //   console.log('File selected:', this.selectedFile);
+      console.log('File selected:', this.selectedFile);
     } else {
-   //   console.log('No file selected');
+      console.log('No file selected');
     }
   }
   onProcess(batch: any) {
-    
+    debugger;
     const setup = new NPRHoldSetup();
-    
-      setup.batch = '';
-      setup.total_records = '';
-      setup.processDate = '';
-      setup.loaddate = '';
-      setup.holds = '';
-      setup.user_id = this.loginUser;
-      setup.mobile = '';
-      setup.holdCode = '';
-      setup.processStatus = '';
 
-      const mappedData = setup;
-    const insertUrl = `http://localhost:5000/api/NPRHoldBulk/${batch}`;
+    setup.batch = '';
+    setup.total_records = '';
+    setup.processDate = '';
+    setup.loaddate = '';
+    setup.holds = '';
+    setup.user_id = this.loginUser;
+    setup.mobile = '';
+    setup.holdCode = '';
+    setup.processStatus = '';
+
+    const mappedData = setup;
+    const insertUrl = `${environment.apiBaseUrl}/api/NPRHoldBulk/${batch}`;
     this.http.put(insertUrl, mappedData).subscribe({
       next: (response: any) => {
         const respStr = response.message;
         this.popupMessage = respStr;
         this.showSuccessPopup = true;
-        this.isErrorPopup = respStr.startsWith('0;');  
-        this.ResetFields();
-        setTimeout(() => {
-          this.showSuccessPopup = false;
-        }, 3000);              
-        },
-        error: (err) => {
-     //   console.error('Error during insert:', err);
-        this.popupMessage = 'Failed to insert the record. Please try again.';
-        this.isErrorPopup = true;
-        this.showSuccessPopup = true;        
+        this.isErrorPopup = respStr.startsWith('0;');
         this.ResetFields();
         setTimeout(() => {
           this.showSuccessPopup = false;
         }, 3000);
-        }
+      },
+      error: (err) => {
+        console.error('Error during insert:', err);
+        this.popupMessage = 'Failed to insert the record. Please try again.';
+        this.isErrorPopup = true;
+        this.showSuccessPopup = true;
+        this.ResetFields();
+        setTimeout(() => {
+          this.showSuccessPopup = false;
+        }, 3000);
+      }
     });
   }
   uploadFile(fileInput: HTMLInputElement) {
-    
-        if (!this.selectedFile) {
-          this.popupMessage = 'Please Select File.';
-          this.isErrorPopup = true;
-          this.showSuccessPopup = true;
-          this.isSubmitting = false;
-          return;
-        }
-    
-        const FileFormat = document.getElementById("FileFormat") as HTMLElement | null;
-        const tableG = document.getElementById("tableG") as HTMLElement | null;
-    
-        if (tableG) {
-          this.renderer.setStyle(tableG, 'display', 'block');
-        }
-        if (FileFormat) {
-          this.renderer.setStyle(FileFormat, 'display', 'none');
-        }
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(this.selectedFile);
-    
-        reader.onload = (e: any) => {
-          
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-    
-          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    
-          // Extract the data from the first 5 columns of each row
-          let rowData = jsonData.slice(1).map((row: any) => {
-          return {
+    debugger;
+    if (!this.selectedFile) {
+      this.showSuccessPopup = false;
+      setTimeout(() => {
+        this.popupMessage =
+          !this.selectedFile ? 'Please Select File' : '';
+
+        this.isErrorPopup = true;
+        this.showSuccessPopup = true;
+        return;
+      }, 100);
+      return;
+    }
+    this.lblBatchNo = '';
+    this.lblTotalReccords = 0;
+    this.lblErrorRecords = 0;
+    this.lblProcessRecords = 0;
+    this.lblMessegeprocess = '';
+    this.isProcessData = false;
+
+    const FileFormat = document.getElementById("FileFormat") as HTMLElement | null;
+    const tableG = document.getElementById("tableG") as HTMLElement | null;
+
+    if (tableG) {
+      this.renderer.setStyle(tableG, 'display', 'block');
+    }
+    if (FileFormat) {
+      this.renderer.setStyle(FileFormat, 'display', 'none');
+    }
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(this.selectedFile);
+
+    reader.onload = (e: any) => {
+      debugger;
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      let rowData = jsonData.slice(1).map((row: any) => {
+        return {
           MOBILE_NO: row[0] !== undefined && row[0] !== '' ? row[0] : '',
           HOLD_CODE: row[1] !== undefined && row[1] !== '' ? row[1] : ''
-          };
-        });
+        };
+      });
 
-          rowData = rowData.filter((row: any) => row.MOBILE_NO !== '' || row.HOLD_CODE !== '');
-          this.isadd = 'I'
-          this.submit(rowData);
-          fileInput.value = '';
-          this.selectedFile = null;
+      rowData = rowData.filter((row: any) => row.MOBILE_NO !== '' || row.HOLD_CODE !== '');
+      const mobileList = rowData.map((r: any) =>
+        r.MOBILE_NO.toString().trim()
+      ); const duplicateMobiles = mobileList.filter(
+        (item, index) => mobileList.indexOf(item) !== index
+      );
+      if (duplicateMobiles.length > 0) {
+        this.showSuccessPopup = false;
+        setTimeout(() => {
+          this.popupMessage = 'Duplicate Mobile Number Found In Excel Sheet.';
+          this.isErrorPopup = true;
+          this.showSuccessPopup = true;
+          return;
+        }, 100);
+        return;
+      }
+      this.isadd = 'I'
+      this.submit(rowData);
+      fileInput.value = '';
+      this.selectedFile = null;
     };
   }
   submit(rowData: any) {
-    
+    debugger;
     if (!rowData) {
       // this.showSuccessPopup = false;
       // setTimeout(() => {
@@ -235,27 +283,27 @@ export class NprHoldBulkProcessComponent {
       return;
     }
     const setup = new NPRHoldSetup();
-    
-      setup.batch = '';
-      setup.total_records = '';
-      setup.processDate = '';
-      setup.loaddate = '';
-      setup.holds = '';
-      setup.user_id = this.loginUser;
-      setup.mobile = '';
-      setup.holdCode = '';
-      setup.processStatus = '';
 
-      const mappedData = setup;
+    setup.batch = '';
+    setup.total_records = '';
+    setup.processDate = '';
+    setup.loaddate = '';
+    setup.holds = '';
+    setup.user_id = this.loginUser;
+    setup.mobile = '';
+    setup.holdCode = '';
+    setup.processStatus = '';
+
+    const mappedData = setup;
     if (this.isadd === 'I') {
-      
-      const insertUrl = `http://localhost:5000/api/NPRHoldBulk/M`;
+      debugger;
+      const insertUrl = `${environment.apiBaseUrl}/api/NPRHoldBulk/M`;
       this.http.post(insertUrl, mappedData).subscribe({
         next: (response: any) => {
           const respStr = response.message;
           const parts = respStr.split(';');
           if (parts.length > 2) {
-            
+            debugger;
             const status = parts[0].trim();
             const seq = parts[1].trim();
             const message = parts[2].trim();
@@ -263,61 +311,74 @@ export class NprHoldBulkProcessComponent {
             this.popupMessage = message;
             // this.GetGrid();
             setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
+              this.showSuccessPopup = false;
+            }, 3000);
             if (status === '1') {
-              
+              debugger;
               const bulkData: NPRHoldSetup[] = rowData.map((row: any) => {
-              const setup = new NPRHoldSetup();
-              setup.batch = seq;
-              setup.total_records = '';
-              setup.processDate = '';
-              setup.loaddate = '';
-              setup.holds = '';
-              setup.user_id = this.loginUser;
-              // setup.mobile = row.MOBILE_NO ?? null;
-              setup.mobile = (row.MOBILE_NO ? '0' + String(row.MOBILE_NO) : null) as string;
-              setup.holdCode = row.HOLD_CODE ?? null;
-              setup.processStatus = '';
-              return setup;
-            });
-              const insertUrl = `http://localhost:5000/api/NPRHoldBulk/D`;
+                const setup = new NPRHoldSetup();
+                setup.batch = seq;
+                setup.total_records = '';
+                setup.processDate = '';
+                setup.loaddate = '';
+                setup.holds = '';
+                setup.user_id = this.loginUser;
+                // setup.mobile = row.MOBILE_NO ?? null;
+                setup.mobile = (row.MOBILE_NO ? '0' + String(row.MOBILE_NO) : null) as string;
+                setup.holdCode = row.HOLD_CODE ?? null;
+                setup.processStatus = '';
+                return setup;
+              });
+              for (let i = 0; i < bulkData.length; i++) {
+                const mobile = bulkData[i].mobile?.toString();
+                if (mobile && mobile.length > 13) {
+                  bulkData[i].mobile = mobile.substring(0, 13);
+                  this.lblErrorRecords += 1;
+                }
+              }
+              const insertUrl = `${environment.apiBaseUrl}/api/NPRHoldBulk/D`;
               this.http.post(insertUrl, bulkData).subscribe({
                 next: (response: any) => {
-                const respStr = response.message;
-                this.popupMessage = respStr;
-                this.showSuccessPopup = true;
-                this.isErrorPopup = respStr.startsWith('0;');                
-                this.ResetFields();
-                setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);             
-              },
-              error: (err) => {
-              //  console.error('Error during insert:', err);
-                this.popupMessage = 'Failed to insert the record. Please try again.';
-                this.isErrorPopup = true;
-                this.showSuccessPopup = true;
-                setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
-              }
+                  const respStr = response.message;
+                  this.lblBatchNo = bulkData[0].batch;
+                  this.lblTotalReccords = bulkData.length;
+                  this.lblProcessRecords = this.lblTotalReccords - this.lblErrorRecords;
+                  this.lblMessegeprocess = "Data Successfully inserted."
+                  this.isProcessData = true;
+                  this.popupMessage = respStr;
+                  this.showSuccessPopup = true;
+                  this.isgridview = true;
+                  this.isErrorPopup = respStr.startsWith('0;');
+                  this.ResetFields();
+                  setTimeout(() => {
+                    this.showSuccessPopup = false;
+                  }, 3000);
+                },
+                error: (err) => {
+                  console.error('Error during insert:', err);
+                  this.popupMessage = 'Failed to insert the record. Please try again.';
+                  this.isErrorPopup = true;
+                  this.showSuccessPopup = true;
+                  setTimeout(() => {
+                    this.showSuccessPopup = false;
+                  }, 3000);
+                }
               });
             } else {
               this.showSuccessPopup = true;
               this.isErrorPopup = true;
               setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
+                this.showSuccessPopup = false;
+              }, 3000);
             }
             this.ResetFields();
             setTimeout(() => {
-                  this.showSuccessPopup = false;
-                }, 3000);  
-          }          
+              this.showSuccessPopup = false;
+            }, 3000);
+          }
         },
         error: (err) => {
-        //  console.error('Error during insert:', err);
+          console.error('Error during insert:', err);
           this.popupMessage = 'Failed to insert the record. Please try again.';
           this.isErrorPopup = true; // Error popup
           this.showSuccessPopup = true; // Show popup
@@ -327,7 +388,7 @@ export class NprHoldBulkProcessComponent {
     }
   }
   confirmDelete(batch: string) {
-  //  console.log("Confirm delete called for Batch No:", batch); // Add logging
+    console.log("Confirm delete called for Batch No:", batch); // Add logging
     this.batch = batch;
     this.showModal = true; // Show the confirmation modal
   }
@@ -335,64 +396,73 @@ export class NprHoldBulkProcessComponent {
     this.showModal = false;
   }
   deleteRecord() {
-      
-      this.isSubmitting = true;
-      this.showSuccessPopup = false;
-      this.isErrorPopup = false;
+    debugger;
+    this.isSubmitting = true;
+    this.showSuccessPopup = false;
+    this.isErrorPopup = false;
 
-      const body = {
-        batch: '',
-        total_records: '',
-        processDate: '',
-        loaddate: '',
-        holds: '',
-        user_id: this.loginUser,
-        mobile: '',
-        holdCode: '',
-        processStatus: ''
-      };
+    const body = {
+      batch: '',
+      total_records: '',
+      processDate: '',
+      loaddate: '',
+      holds: '',
+      user_id: this.loginUser,
+      mobile: '',
+      holdCode: '',
+      processStatus: ''
+    };
 
-      const url = `http://localhost:5000/api/NPRHoldBulk/${this.batch}`
-      const options = {
-          headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-          body: body
-        };
-      this.http.delete(url, options).subscribe(
-          (response: any) => {
-            
-            const resMessage = response.message;            
-            let msgR = resMessage.split(';').slice(1).join(','); // slice(1) to remo
-            msgR = msgR.replace('}', '').trim();
-            msgR = msgR.replace('"', '').trim();
-            
-            this.popupMessage = msgR;
-            // this.filteredData = this.filteredData.filter((row) => row.hdate !== hdate);            
-            // Show the popup
-            this.showSuccessPopup = true;
-            this.showModal = false;     
-            // this.ResetFields();
-            this.GetGrid();
-            this.GetGrid1();
-            this.GetGrid2(this.batch);
-            setTimeout(() => {
-              this.showSuccessPopup = false;
-            }, 3000);
-            // this.AddFields();
-          },
-          (error) => {
-            // Handle errors
-            alert(`Error deleting record: ${error.message}`);
-           // console.error('Error Details:', error);
-            setTimeout(() => {
+    const url = `${environment.apiBaseUrl}/api/NPRHoldBulk/${this.batch}`
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      body: body
+    };
+    this.http.delete(url, options).subscribe(
+      (response: any) => {
+        debugger;
+        const resMessage = response.message;
+        let msgR = resMessage.split(';').slice(1).join(','); // slice(1) to remo
+        msgR = msgR.replace('}', '').trim();
+        msgR = msgR.replace('"', '').trim();
+        debugger;
+        this.popupMessage = msgR;
+        // this.filteredData = this.filteredData.filter((row) => row.hdate !== hdate);            
+        // Show the popup
+        this.showSuccessPopup = true;
+        this.showModal = false;
+        // this.ResetFields();
+        this.GetGrid();
+        this.GetGrid1();
+        this.GetGrid2(this.batch);
+        setTimeout(() => {
           this.showSuccessPopup = false;
         }, 3000);
-          }
-        );
-    }  
-
-   ResetFields() {
+        // this.AddFields();
+      },
+      (error) => {
+        // Handle errors
+        alert(`Error deleting record: ${error.message}`);
+        console.error('Error Details:', error);
+        setTimeout(() => {
+          this.showSuccessPopup = false;
+        }, 3000);
+      }
+    );
+  }
+  ResetFields() {
     this.GetGrid();
     this.GetGrid1();
     this.GridData2 = [];
-  } 
+  }
+  onFetch() {
+    debugger;
+    const batch = this.selectedBatch;//(document.getElementById('ddl_Batch') as HTMLInputElement).value;
+    this.batch = batch;
+    this.isgridview2 = true;
+    this.GetGrid2(this.batch);
+  }
+  onRefresh() {
+    window.location.reload();
+  }
 }

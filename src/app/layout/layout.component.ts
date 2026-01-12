@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -117,12 +117,12 @@ export class LayoutComponent {
     });
   }
   onMouseEnter(item: any): void {
-    item.isOpen = true;
+    // item.isOpen = true;
     item.keepOpen = true; // dropdown stay
-    this.hoveredHeader = item.title;
+    // this.hoveredHeader = item.title;
   }
   onMouseLeave(item: any): void {
-    item.keepOpen = false;
+    // item.keepOpen = false;
     setTimeout(() => {
       if (!item.keepOpen) {
         item.isOpen = false;
@@ -130,9 +130,26 @@ export class LayoutComponent {
       }
     }, 200);
   }
+  @HostListener('document:click', ['$event'])
+  onWindowClick(event: Event) {
+    const target = event.target as HTMLElement;    
+    if (!target.closest('.menu-header')) {
+      this.bsItems.forEach((item: any) => {
+        item.isOpen = false;
+      });
+    }
+  }
+
   onHeaderClick(event: Event, item: any) {
     event.preventDefault();
+    this.bsItems.forEach((x: any) => {
+      if (x !== item) {
+        x.isOpen = false;
+      }
+    });
     item.isOpen = !item.isOpen;
+
+    this.hoveredHeader = item.title;
     if (item.url_link) {
       if (item.url_link === 'Public/FollowUp.aspx') {
         const selectedActivity = localStorage.getItem('selectedActivity');

@@ -1,297 +1,373 @@
 <style>
-    .main-container {
-  padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f6fa;
-}
+  .main-container {
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    /*background-color: #f5f6fa;*/
+  }
 
-.upload-section, .batch-summary, .batch-detail {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 25px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
+  .upload-section, .batch-summary, .batch-detail {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
 
-h2, h3 {
-  margin-bottom: 15px;
-  color: #2c3e50;
-}
+  h2, h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+  }
 
-.upload-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  .upload-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-.upload-box input[type="file"] {
-  border: 1px solid #ccc;
-  padding: 6px;
-  border-radius: 6px;
-}
+    .upload-box input[type="file"] {
+      border: 1px solid #ccc;
+      padding: 6px;
+      border-radius: 6px;
+    }
 
-.upload-box button {
-  background-color: #10486b;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+    .upload-box button {
+      background-color: #10486b;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-.upload-box button:hover {
-  background-color: #10486b;
-}
+      .upload-box button:hover {
+        background-color: #10486b;
+      }
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-.data-table th {
-  background-color: #10486b;
-  color: white;
-  padding: 10px;
-  text-align: left;
-}
+    .data-table th {
+      background-color: #10486b;
+      color: white;
+      padding: 10px;
+      text-align: left;
+    }
 
-.data-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid #ddd;
-}
+    .data-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #ddd;
+    }
 
-.data-table tr:hover {
-  background-color: #f0f8ff;
-}
+    .data-table tr:hover {
+      background-color: #f0f8ff;
+    }
 
-.file-format {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 6px;
-}
+  .file-format {
+    /*border: 1px solid #ccc;*/
+    padding: 10px;
+    border-radius: 6px;
+  }
 
-.file-format h4 {
-  margin: 0 0 10px 0;
-  font-size: 16px;
-  color: #333;
-  border-bottom: 1px solid #ccc;
-  display: inline-block;
-  padding-bottom: 3px;
-}
+    .file-format h4 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+      display: inline-block;
+      padding-bottom: 3px;
+    }
 
-.format-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  .format-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-.format-table th, .format-table td {
-  border: 1px solid #999;
-  padding: 6px 10px;
-  text-align: left;
-}
+    .format-table th, .format-table td {
+      border: 1px solid #999;
+      padding: 6px 10px;
+      text-align: left;
+    }
 
-.format-table th {
-  background-color: #e0e0e0;
-}
+    .format-table th {
+      background-color: #e0e0e0;
+    }
 </style>
 <div class="main-container">
-  <div class="row">
-        <br />
-    </div>
   <div *ngIf="showSuccessPopup">
-        <div [ngClass]="{
+    <div [ngClass]="{
           'error-message': isErrorPopup,
           'Success-message': !isErrorPopup
         }">
-            <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
-            <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
-            <span>{{ popupMessage }}</span>
-            <!-- <span>{{ errmessage }}</span> -->
-        </div>
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
     </div>
-    <div class="row" style="margin-top: 10px;"></div>
-  <div class="row">
-        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
-            <!-- <h6>Select File Path :</h6> -->
-            <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
-            Select File Path :</label>
-            <input type="file" id="fileInput"  #fileInput (change)="onFileSelected($event)" style="margin-left: 4px;"/>
-            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="uploadFile(fileInput)">
-                <i class="bi bi-check-circle"></i> Upload
-            </button>    
-        </div>
+  </div>
+  <br />
+  <!-- <div class="row" style="margin-top: 10px;"></div>-->
+  <div class="row line-w" style="margin-left: -6px;">
+    <div class="col-lg-3 col-sm-3">
+      <label style="color: #10486b; font-weight: bold;">Path :</label>
+      <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" class="form-control form-control-sm" />
     </div>
-    <br>
-    <div style="width: 110%;" class="file-format">
-      <h4>Excel File Format</h4>
-      <table class="format-table">
-        <thead>
-          <tr>
-            <th>MOBILE NUMBER</th>
-            <th>REJECTION / HOLD CODE / BLANK FOR ACCEPT</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>3XXXXXXXXX</td>
-            <td>H01A</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col-lg-2 col-sm-2">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="uploadFile(fileInput)">
+        <i class="bi bi-file-earmark-arrow-up"></i> Upload
+      </button>
     </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <div>
-                        <table class="tableA table-condensed GridViewStyle">
-                            <thead>
-                                <tr class="HeaderStyleA">
-                                    <th class="tdCenter">Batch #</th>
-                                    <th class="back">Load Date</th>
-                                    <th class="back">Accept</th>
-                                    <th class="back">Reject</th>
-                                    <th class="back">Hold</th>
-                                    <th class="back">Total Records</th>
-                                    <th class="back">Process Records</th>
-                                    <th class="back">Delete</th>
-                                    <th class="back">Process</th>
-                                </tr>
-                            </thead>
-                            <tbody>  
-                                <tr class="RowStyleA" *ngFor="let row of GridData; let i = index"
-                                    [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                                    [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                                    <td style="width: 100px;" class="tdCenter"> {{row.batch}} </td>
-                                    <td style="width: 150px;" class="tdCenter"> {{row.loaddate}} </td>
-                                    <td style="width: 100px;" class="tdCenter"> {{row.accept}} </td>
-                                    <td style="width: 100px;" class="tdCenter"> {{row.reject}} </td>
-                                    <td style="width: 100px;" class="tdCenter"> {{row.hold}} </td>
-                                    <td style="width: 150px;" class="tdCenter"> {{row.total_records}} </td>
-                                    <td style="width: 150px;" class="tdCenter"> {{row.processDate}} </td>
-                                    <td style="width: 150px;">
-                                      <a (click)="confirmDelete(row.batch)">
-                                        <svg class="custom-crossA" viewBox="0 0 100 100">
-                                            <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15"
-                                                stroke-linecap="round" />
-                                        </svg>
-                                      </a>
-                                    </td>
-                                    <td style="width: 100px;" class="tdCenter">
-                                        <button ID="btn_process" (click)="onProcess(row.batch)" style="margin-left: 7px; margin-top: 1px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
-                                          <i class="bi bi-check-circle"></i> Process
-                                        </button>   
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" aria-hidden="true"
-                        *ngIf="showModal">
-                        <div class="modal-dialogA" role="document">
-                            <div class="modal-contentA">
-                                <div class="modal-headerA">
-                                    <h5 class="modal-titleA" style="margin-top: -4%; font-size: 17px">Confirm Deletion
-                                    </h5>
-                                </div>
-                                <div class="modal-bodyA">
-                                    <p>Are you sure you want to delete this record?</p>
-                                </div>
-                                <div class="modal-footerA">
-                                    <button type="button" style="border-radius: 0px;" class="btn btn-secondary"
-                                        (click)="closeModal()">No</button>
-                                    <button type="button" style="border-radius: 0px;" class="btn btn-danger"
-                                        (click)="deleteRecord()">
-                                        Yes, Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+    <div class="col-lg-1 col-sm-1">
+      <label style="color: #10486b; font-weight: bold;">Batch # :</label>
+      <app-global-lov [items]="Batch" displayField="batch" valueField="batch" [(ngModel)]="selectedBatch"
+                      [disabled]="lovDisabled">
+      </app-global-lov>
+    </div>
+    <div class="col-lg-3 col-sm-3">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="onFetch()">
+        <i class="bi bi-search"></i> Search
+      </button>
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="onRefresh()">
+        <i class="bi bi-arrow-repeat"></i> Refresh
+      </button>
+    </div>
+  </div>
+  <br>
+  <!--<div class="row">
+    <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">-->
+      <!-- <h6>Select File Path :</h6> -->
+      <!--<label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        Select File Path :
+      </label>
+      <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" style="margin-left: 4px;" />
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="uploadFile(fileInput)">
+        <i class="bi bi-check-circle"></i> Upload
+      </button>
+    </div>
+  </div>
+  <br>-->
+  <div style="width: 110%;" class="file-format">
+    <h4>Excel File Format</h4>
+    <table class="format-table">
+      <thead>
+        <tr>
+          <th>MOBILE NUMBER</th>
+          <th>REJECTION / HOLD CODE / BLANK FOR ACCEPT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>3XXXXXXXXX</td>
+          <td>H01A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -6px;" *ngIf="isgridview">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Batch #</th>
+                <th class="back">Load Date</th>
+                <!--<th class="back">Accept</th>
+              <th class="back">Reject</th>
+              <th class="back">Hold</th>-->
+                <th class="back">Total Records</th>
+                <th class="back">Process Records</th>
+                <th class="back">Delete</th>
+                <th class="back">Process</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of GridData; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter"> {{row.batch}} </td>
+                <td style="width: 150px;" class="tdCenter"> {{row.loaddate}} </td>
+                <!--<td style="width: 100px;" class="tdCenter"> {{row.accept}} </td>
+              <td style="width: 100px;" class="tdCenter"> {{row.reject}} </td>
+              <td style="width: 100px;" class="tdCenter"> {{row.hold}} </td>-->
+                <td style="width: 150px;" class="tdCenter"> {{row.total_records}} </td>
+                <td style="width: 150px;" class="tdCenter"> {{row.processDate}} </td>
+                <td style="width: 150px;">
+                  <a (click)="confirmDelete(row.batch)">
+                    <svg class="custom-crossA" viewBox="0 0 100 100">
+                      <path d="M10,10 L90,90 M90,10 L10,90" stroke="red" stroke-width="15"
+                            stroke-linecap="round" />
+                    </svg>
+                  </a>
+                </td>
+                <td style="width: 100px;" class="tdCenter">
+                  <button ID="btn_process" (click)="onProcess(row.batch)" style="margin-left: 7px; margin-top: 1px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
+                    <i class="bi bi-check-circle"></i> Process
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="modalA" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" aria-hidden="true"
+               *ngIf="showModal">
+            <div class="modal-dialogA" role="document">
+              <div class="modal-contentA">
+                <div class="modal-headerA">
+                  <h5 class="modal-titleA" style="margin-top: -4%; font-size: 17px">
+                    Confirm Deletion
+                  </h5>
                 </div>
-            </div>
-        </div>
-        <br>
-     <div class="row">
-        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">            
-            <button ID="btn_add" class="newbtn" style="margin-left: 7px;">
-                <i class="bi bi-check-circle"></i> Process Data
-            </button>    
-        </div>
-    </div>
-    <br>
-    <div class="page-header headingCaption">
-        Batch Summary
-    </div>
-    <br>
-    <!-- *ngIf="isgridview" -->
-    <div class="row line-w" style="margin-left: -4px;" >
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <div>
-                        <table class="tableA table-condensed GridViewStyle">
-                            <thead>
-                                <tr class="HeaderStyleA">
-                                    <th class="tdCenter">Batch #</th>
-                                    <th class="back">Batch Date</th>
-                                    <th class="back">Total Records</th>
-                                    <th class="back">Processed</th>
-                                    <th class="back">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>  
-                                <tr class="RowStyleA" *ngFor="let row of GridData1; let i = index"
-                                    [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                                    [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                                    <td style="width: 100px;" class="tdCenter"> {{row.batchNo}} </td>
-                                    <td style="width: 100px;" class="tdCenter"> {{row.batchdate}} </td>
-                                    <td style="width: 100px;" class="tdCenter"> {{row.totalrecords}} </td>
-                                    <td style="width: 100px;" class="tdCenter"> {{row.processed}} </td>
-                                    <td style="width: 100px;" class="tdCenter">
-                                        <button ID="btn_batch" (click)="onBatch(row.batchNo)" style="margin-left: 7px; margin-top: 1px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
-                                          <i class="bi bi-check-circle"></i> Batch Detail
-                                        </button>   
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="modal-bodyA">
+                  <p>Are you sure you want to delete this record?</p>
                 </div>
-            </div>
-        </div>
-    <br>
-    <div class="page-header headingCaption">
-        Batch Detail
-    </div>
-    <br>
-    <div class="row line-w" style="margin-left: -4px;">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <div>
-                        <table class="tableA table-condensed GridViewStyle">
-                            <thead>
-                                <tr class="HeaderStyleA">
-                                    <th class="tdCenter">Batch#</th>
-                                    <th class="back">Mobile#</th>
-                                    <th class="back">Reject/Hold Code</th>
-                                    <th class="back">Process Status</th>
-                                    <th class="back">User ID</th>
-                                </tr>
-                            </thead>
-                            <tbody>  
-                                <tr class="RowStyleA" *ngFor="let row of GridData2; let i = index"
-                                    [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
-                                    [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
-                                    <td style="width: 100px;" class="tdCenter">{{ row.batch }}</td>
-                                    <td style="width: 100px;" class="tdCenter">{{ row.mobile }}</td>
-                                    <td style="width: 100px;" class="tdCenter">{{ row.rejectHoldCode }}</td>
-                                    <td style="width: 100px;" class="tdCenter">{{ row.processStatus }}</td>
-                                    <td style="width: 100px;" class="tdCenter">{{ row.user_id }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="modal-footerA">
+                  <button type="button" style="border-radius: 0px;" class="btn btn-secondary"
+                          (click)="closeModal()">
+                    No
+                  </button>
+                  <button type="button" style="border-radius: 0px;" class="btn btn-danger"
+                          (click)="deleteRecord()">
+                    Yes, Delete
+                  </button>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <!-- <div class="row">
+      <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
+          <button ID="btn_add" class="newbtn" style="margin-left: 7px;">
+              <i class="bi bi-check-circle"></i> Process Data
+          </button>
+      </div>
+  </div> -->
+  <div class="row" *ngIf="isProcessData" style="margin-top: 10px;">
+    <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+      <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        Batch #: {{lblBatchNo}}
+      </label>
+    </div>
+    <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+      <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        Total Record(s): {{lblTotalReccords}}
+      </label>
+    </div>
+    <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+      <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        Inserted Record(s): {{lblProcessRecords}}
+      </label>
+    </div>
+    <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+      <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        Invalid Record(s): {{lblErrorRecords}}
+      </label>
+    </div>
+    <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+      <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        {{lblMessegeprocess}}
+      </label>
+    </div>
+  </div>
+  <br>
+  <!--<div class="row" *ngIf="isFetchData" style="margin-top: 10px;">
+    <div class="col-lg-3 col-sm-3" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">-->
+      <!-- <h6>Select File Path :</h6> -->
+      <!--<label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+        Batch # :
+      </label>
+      <select class="form-controlGridDropDown"
+              style="border-radius: 0px;" ID="ddl_Batch">
+        <option *ngFor="let row of GridData1" [value]="row.batch">
+          {{ row.batch }}
+        </option>
+      </select>
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="onFetch()">
+        <i class="bi bi-check-circle"></i> Fetch
+      </button>
+    </div>
+  </div>
+  <br>-->
+  <div class="page-header headingCaption">
+    Batch Summary
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview1">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Batch #</th>
+                <th class="back">Total Records</th>
+                <th class="back">Processed</th>
+                <th class="back">User ID</th>
+                <th class="back">Batch Date</th>
+                <th class="back">Process Date</th>
+                <th class="back">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of GridData1; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter"> {{row.batch}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.total_records}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.processDate}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.user_id}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.loaddate}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.processDate}} </td>
+                <td style="width: 100px;" class="tdCenter">
+                  <button ID="btn_batch" (click)="onBatch(row.batch)" style="margin-left: 7px; margin-top: 1px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
+                    <i class="bi bi-check-circle"></i> Batch Detail
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="page-header headingCaption">
+    Batch Detail
+  </div>
+  <br>
+  <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview2">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Batch#</th>
+                <th class="back">Mobile#</th>
+                <th class="back">Reject/Hold Code</th>
+                <th class="back">Process Status</th>
+                <th class="back">User ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of GridData2; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter">{{ row.batch }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.mobile }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.holdCode }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.processStatus }}</td>
+                <td style="width: 100px;" class="tdCenter">{{ row.user_id }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

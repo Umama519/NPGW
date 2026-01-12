@@ -59,7 +59,7 @@ export interface ConsoleGet {
   Followup: string
   RouteID: string
   PARTICIPANT_ID: string
-  
+
 
 }
 export class Console {
@@ -91,7 +91,7 @@ export interface DetCon {
   commpitiondate: string,
   rejectcode: string,
   xml: string,
-  
+
 }
 declare var $: any;
 @Component({
@@ -123,7 +123,9 @@ export class ConsoleComponent {
   ddl_Donor: string = '';
   isvisibe: boolean = true;
   loginUser: string = '';
-  ErrChk: string | null = null; // ab null assign ho sakta hai
+   ErrChk: string | null = null; // ab null assign ho sakta hai
+  
+
   Message: string = '';
   searchMobile: string = '';
   PortID: string = '';
@@ -161,13 +163,14 @@ export class ConsoleComponent {
   lastRefresh: Date = new Date();
   savedCurrentPage: number | null = null;
   savedFilteredData: any[] = [];
-  savedWindowStart: number | null = null;  
+  savedWindowStart: number | null = null;
   savedScrollTop: number | null = null;
   Action: any[] = [];
-  
+
+
   filteredActions: { descs: string; action: string }[] = [];
   constructor(private el: ElementRef, private loaderService: loaderService, private datepickerService: DatepickerService,
-  private router: Router, private excelService: ExcelExportService, private pager: PaginationService) { }
+    private router: Router, private excelService: ExcelExportService, private pager: PaginationService) { }
   con: Console = new Console();
   @ViewChild('popupContainer', { read: ViewContainerRef }) popupContainer!: ViewContainerRef;
   popupRef?: ComponentRef<CaresErrorComponent>;
@@ -175,7 +178,7 @@ export class ConsoleComponent {
   ngOnInit() {
     this.div_grid = false;
     const loginUser: string = localStorage.getItem('loginUser') || '';
-    
+
     if (!loginUser) {
       this.isvisibe = false;
       return;
@@ -183,7 +186,7 @@ export class ConsoleComponent {
     const resetMode: string | null = localStorage.getItem('ConsoleResetMode');
     if (resetMode === 'Y') {
       this.isvisibe = false;
-      this.div_grid = false;      
+      this.div_grid = false;
       this.loadAlarms();
       localStorage.removeItem('ConsoleResetMode');
     }
@@ -211,6 +214,7 @@ export class ConsoleComponent {
     this.ActionLov();
     this.checkbox();
     this.loadAlarms();
+
     // this.GetGrid(); 
     setInterval(() => this.loadAlarms(), 60000);
     this.windowSize = this.pager.defaultWindowSize;  // 👈 FIX
@@ -221,12 +225,12 @@ export class ConsoleComponent {
         this.alarms = data.map(alarm => ({
           ...alarm,
           almdue: new Date(alarm.almdue) // convert string to Date
-        }));    
-        this.lastRefresh = new Date();        
+        }));
+        this.lastRefresh = new Date();
         setInterval(() => {
           this.lastRefresh = new Date();
         }, 60000);
-      },      
+      },
     });
   }
   ngAfterViewInit(): void {
@@ -235,10 +239,11 @@ export class ConsoleComponent {
   }
   msgTypes = [
     { code: 'A', name: 'ALL' },
-    { code: 'N', name: 'PMD' },
-    { code: 'S', name: 'LSMS' },
-    { code: 'D', name: 'CARES' }
+    { code: 'N', name: 'NPC' },
+    { code: 'S', name: 'SWITCH' },
+    { code: 'D', name: 'CRM' }
   ];
+
   formData: {
     fromDate: string;
     toDate: string;
@@ -304,7 +309,7 @@ export class ConsoleComponent {
           if (res && res.length > 0) {
             const activityData = res[0];
             const urlM = `${environment.apiBaseUrl}/api/ReMessage/${activityData.activityNo}?Action=M`;
-            const urlD = `${environment.apiBaseUrl}/api/ReMessage/${activityData.activityNo}?Action=D`;            
+            const urlD = `${environment.apiBaseUrl}/api/ReMessage/${activityData.activityNo}?Action=D`;
             this.http.get<any[]>(urlM).subscribe(dataM => {
               if (dataM && dataM.length > 0) {
                 localStorage.setItem('rejcdR', dataM[0].rejcd ?? '');
@@ -328,7 +333,7 @@ export class ConsoleComponent {
                   localStorage.setItem('objValueList', JSON.stringify(dataD.map(x => x.objValue)));
                   localStorage.setItem('val', dataD[0].val ?? '');
                   localStorage.setItem('msgID', dataD[0].msgID ?? '');
-                }                
+                }
                 this.router.navigateByUrl('/app-re-message');
               });
             });
@@ -349,7 +354,7 @@ export class ConsoleComponent {
         'creditamount', 'discountamount', 'provtax', 'portingcharges', 'totalpaid',
         'franchisE_CODE', 'erR_MSG', 'activitY11326', 'operatorID'
       ];
-      keysToRemove.forEach(key => localStorage.removeItem(key));      
+      keysToRemove.forEach(key => localStorage.removeItem(key));
       this.http.get<any[]>(url).subscribe({
         next: (res: any[]) => {
           if (res && res.length > 0) {
@@ -358,7 +363,7 @@ export class ConsoleComponent {
               if (value !== undefined && value !== null) {
                 localStorage.setItem(key, value.toString());
               }
-            });          
+            });
             this.popupContainer.clear();
             this.popupRef = this.popupContainer.createComponent(CaresErrorComponent);
             this.popupRef.instance.portin = portin;
@@ -366,11 +371,11 @@ export class ConsoleComponent {
               this.popupRef?.destroy();
             });
           }
-        },        
-      });      
+        },
+      });
       this.popupContainer.clear();
-      this.popupRef = this.popupContainer.createComponent(CaresErrorComponent);      
-      this.popupRef.instance.portin = portin;      
+      this.popupRef = this.popupContainer.createComponent(CaresErrorComponent);
+      this.popupRef.instance.portin = portin;
       this.popupRef.instance.closePopup.subscribe(() => {
         this.popupRef?.destroy();
       });
@@ -479,7 +484,7 @@ export class ConsoleComponent {
           this.isvisibe = true;
           this.div_grid = true;
           this.GridData = res;
-          this.filteredData = res;   
+          this.filteredData = res;
           this.setPage(1);
         } else {
           this.filteredData = [];
@@ -492,14 +497,14 @@ export class ConsoleComponent {
         this.loaderService.hide();
       }
     });
-  }  
+  }
   GetGrid() {
     this.showSuccessPopup = false;
     this.isErrorPopup = false;
     const chkbElement = this.el.nativeElement.querySelector('#chk');
     let chkb = chkbElement && chkbElement.checked ? 'Y' : 'N';
     const FrmDate = (document.getElementById('FromDate') as HTMLInputElement).value;
-    const ToDate = (document.getElementById('ToDate') as HTMLInputElement).value;    
+    const ToDate = (document.getElementById('ToDate') as HTMLInputElement).value;
     // if (chkb === 'N') {
     //   const noSelection =
     //     (!FrmDate || FrmDate.trim() === '') &&
@@ -519,10 +524,10 @@ export class ConsoleComponent {
     //     return;
     //   }
     // }
-    let params: any = { 
+    let params: any = {
       ID: this.loginUser || '',
       Admin: this.roleMessage || '',
-      Checkbox: 'E',
+      Checkbox: 'E', //chkb
       CheckboxA: this.ErrChk || 'A',
       FromDate: FrmDate || '',
       ToDate: ToDate || '',
@@ -536,7 +541,7 @@ export class ConsoleComponent {
     };
     const queryParams = new URLSearchParams(params).toString();
 
-    const url = `${environment.apiBaseUrl}/api/ConsoleStatus/filter?${queryParams}`;  
+    const url = `${environment.apiBaseUrl}/api/ConsoleStatus/filter?${queryParams}`;
     debugger
     this.loaderService.show();
     debugger
@@ -556,17 +561,17 @@ export class ConsoleComponent {
           this.showPagination = true;
           this.setPage(this.currentPage);
         } else {
-               setTimeout(() => {
-          this.popupMessage = 'No Record Found  ';
-          this.isErrorPopup = true;
-          this.showSuccessPopup = true;
-        }, 100);
+          setTimeout(() => {
+            this.popupMessage = 'No Record Found  ';
+            this.isErrorPopup = true;
+            this.showSuccessPopup = true;
+          }, 100);
           this.filteredData = [];
           this.GridData = [];
           this.showPagination = false;
           this.div_grid = false;
           this.isvisibe = false;
-          
+
         }
         this.loaderService.hide();
       },
@@ -578,14 +583,14 @@ export class ConsoleComponent {
     });
   }
   setPage(page: number) {
-    this.currentPage = page;       
-    this.expandedRows = {};    
+    this.currentPage = page;
+    this.expandedRows = {};
     const sourceData = this.filteredData?.length ? this.filteredData : this.GridData;
-    this.pagedData = this.pager.getPagedData(sourceData, page, this.itemsPerPage);   
+    this.pagedData = this.pager.getPagedData(sourceData, page, this.itemsPerPage);
     localStorage.setItem('ConsolePagedData', JSON.stringify(this.pagedData));
     localStorage.setItem('ConsoleGridData', JSON.stringify(this.GridData));
     localStorage.setItem('ConsoleCurrentPage', this.currentPage.toString());
-    
+
   }
   get totalPages() {
     const count = this.filteredData?.length ? this.filteredData.length : this.GridData.length;
@@ -625,26 +630,26 @@ export class ConsoleComponent {
   showPreviousWindow() {
     this.windowStart = this.pager.prevWindow(this.windowStart, this.windowSize);
   }
- SaveToExl() {
-  debugger
-  // 🔒 Table state preserve
-  const currentPage = this.currentPage;
-  const windowStart = this.windowStart;
-  const filteredCopy = [...this.filteredData];
+  SaveToExl() {
+    debugger
+    // 🔒 Table state preserve
+    const currentPage = this.currentPage;
+    const windowStart = this.windowStart;
+    const filteredCopy = [...this.filteredData];
 
-  if (!this.GridData || this.GridData.length === 0) {
-    return;
+    if (!this.GridData || this.GridData.length === 0) {
+      return;
+    }
+
+    // ✅ Excel export
+    this.export([...this.GridData], 'excel');
+
+    // 🔁 Restore table state (IMPORTANT)
+    this.filteredData = filteredCopy;
+    this.currentPage = currentPage;
+    this.windowStart = windowStart;
+    this.setPage(this.currentPage);
   }
-
-  // ✅ Excel export
-  this.export([...this.GridData], 'excel');
-
-  // 🔁 Restore table state (IMPORTANT)
-  this.filteredData = filteredCopy;
-  this.currentPage = currentPage;
-  this.windowStart = windowStart;
-  this.setPage(this.currentPage);
-}
 
   Reset() {
     localStorage.removeItem('ConsolePagedData');
@@ -710,7 +715,7 @@ export class ConsoleComponent {
   }
   Plus(index: number, row: any): void {
     const cell = row.mobile;
-    const mnp = row.mnp;     
+    const mnp = row.mnp;
     const url = `${environment.apiBaseUrl}/api/ConsoleStatus/details?cell=${cell}&mnp=${mnp}`;
     if (this.expandedRows[index]) {
       this.expandedRows[index] = false;
@@ -723,9 +728,9 @@ export class ConsoleComponent {
         if (res && res.length > 0) {
           this.ConDet = res;
         } else {
-          this.ConDet = [];        
+          this.ConDet = [];
         }
-      },      
+      },
     });
   }
   openXmlPopup(xml: string): void {
@@ -762,10 +767,16 @@ export class ConsoleComponent {
   checkbox() {
     const check = document.getElementById("chk") as HTMLInputElement;
     this.Visible = check?.checked || false;
+    if (this.Visible) {
+      this.ErrChk = 'A';  
+    }
+
     const ddl_Error = this.el.nativeElement.querySelector('#ddl_Error');
     if (ddl_Error) {
       ddl_Error.style.display = 'block';  // hide the element
     }
+
+
   }
   Operator_Lov() {
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Participent`;
@@ -773,25 +784,25 @@ export class ConsoleComponent {
       next: (data) => {
         this.participantNames = data.map(x => ({ name: x.name }));
         if (this.participantNames.length > 0) {
-        this.formData.recipient = this.participantNames[0].name; 
-        this.formData.donor = this.participantNames[0].name; 
-      }
-      },      
+          this.formData.recipient = this.participantNames[0].name;
+          this.formData.donor = this.participantNames[0].name;
+        }
+      },
     });
   }
-  ActionLov() { 
-  
+  ActionLov() {
+
     const role = localStorage.getItem('roleMessage')
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Action?roleCode=${role}`;
     // const url = `${environment.apiBaseUrl}/api/Action_LOV_/ActionR`;
     this.http.get<any[]>(url).subscribe({
-      next: (data) => {        
+      next: (data) => {
         this.Action = data.map(x => ({
           descs: x.descs ?? '',        // Display value
           action: x.action ?? ''         // ValueField ke liye
         }));
         this.filteredActions = [...this.Action];  // Initially show all
-      },      
+      },
     });
   }
   export(res: any, file: any) {
@@ -811,17 +822,17 @@ export class ConsoleComponent {
     }, file
     );
   }
- getFirstWords(text: string, limit: number): string {
-  if (!text) return '';
-  const words = text.split(' ');
-  return words.length > limit
-    ? words.slice(0, limit).join(' ')
-    : text;
-}
+  getFirstWords(text: string, limit: number): string {
+    if (!text) return '';
+    const words = text.split(' ');
+    return words.length > limit
+      ? words.slice(0, limit).join(' ')
+      : text;
+  }
 
-toggleRow(row: any) {
-  row.showFull = !row.showFull;
-}
+  toggleRow(row: any) {
+    row.showFull = !row.showFull;
+  }
 
 
 }

@@ -29,7 +29,7 @@
         <!-- Dynamic Menu -->
         <li class="nav-item mx-1" style="cursor: pointer;" *ngFor="let item of bsItems"
           (mouseenter)="onMouseEnter(item)" (mouseleave)="onMouseLeave(item)">
-          <a class="nav-link g1-parent" (click)="onHeaderClick($event,item)"
+          <a class="nav-link g1-parent menu-header"(click)="onHeaderClick($event,item)"
             [class.active]="hoveredHeader===item.title || item.isOpen">
             {{item.title}}
           </a>
