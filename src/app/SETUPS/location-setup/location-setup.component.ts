@@ -210,7 +210,7 @@ export class LocationSetupComponent {
 
   AddButton(): void {
     this.lovenabled();
-    debugger;
+
     const btn_add = this.el.nativeElement.querySelector('#btn_add');
     const txt_Description = this.el.nativeElement.querySelector('#txt_Description');
     const txt_Title = this.el.nativeElement.querySelector('#txt_Title');
@@ -290,9 +290,7 @@ export class LocationSetupComponent {
 
   }
   searchButton() {
-    debugger;
     //const inputD = this.el.nativeElement.querySelector('#txt_DepartmentID').value;
-
     const txt_LocID = this.el.nativeElement.querySelector('#txt_LocID').value;
     const url = `${environment.apiBaseUrl}/api/LocationSetip/${txt_LocID}`;
 
@@ -320,8 +318,7 @@ export class LocationSetupComponent {
     }, 2000)
   }
   LocData: LocationSetup = new LocationSetup();
-  submitButton() {
-    debugger;
+  submitButton() {    
     const btn_Search = this.el.nativeElement.querySelector('#btn_Search');
     // if (btn_Search) {
     //   this.renderer.removeAttribute(btn_Search, 'disabled')
@@ -392,11 +389,8 @@ export class LocationSetupComponent {
         }
       });
     } else if (this.isadd === 'I') {
-      // Insert New Record
-      debugger;
-
+      // Insert New Record      
       const insertUrl = `${environment.apiBaseUrl}/api/LocationSetip`;
-
       this.http.post(insertUrl, this.LocData).subscribe({
         next: (response: any) => {
           const msg = response.message || JSON.stringify(response);
@@ -468,8 +462,7 @@ export class LocationSetupComponent {
     }
   }
 
-  deleteRecord(dyncd: string) {
-    debugger;
+  deleteRecord(dyncd: string) {    
     this.showAddButton = true;
     this.showSubmitButton = false;
     this.isSubmitting = true;

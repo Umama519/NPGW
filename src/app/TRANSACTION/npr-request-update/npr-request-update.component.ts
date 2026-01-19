@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from 'environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 interface CustomerType {
   code: string;
@@ -16,6 +16,7 @@ interface CustomerType {
   styleUrl: './npr-request-update.component.css'
 })
 export class NpRequestupdateComponent implements OnInit {
+  constructor(private router: Router){}
   showWaiverFields = false;
   lblWaiverCode = 'Waiver Code';
   public isTariffDisabled: boolean = true;
@@ -1166,7 +1167,7 @@ export class NpRequestupdateComponent implements OnInit {
     }
   }
   reset() {
-    window.location.href = "/app-public-porting-aspx";
+    this.router.navigateByUrl ('/app-public-porting-aspx');
   }
   validateBeforeSubmit(): { ok: boolean; msg?: string } {
     const m = this.model;

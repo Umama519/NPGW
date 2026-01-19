@@ -67,32 +67,34 @@
 
   .file-format {
     /*border: 1px solid #ccc;*/
-    padding: 10px;
-    border-radius: 6px;
+    padding: 4px;
+    border-radius: 2px;
   }
 
     .file-format h4 {
       margin: 0 0 10px 0;
-      font-size: 16px;
+      font-size: 12px;
       color: #333;
       border-bottom: 1px solid #ccc;
       display: inline-block;
-      padding-bottom: 3px;
+      padding-bottom: 1px;
     }
 
   .format-table {
-    width: 100%;
+    width: 30%;
     border-collapse: collapse;
   }
 
     .format-table th, .format-table td {
-      border: 1px solid #999;
-      padding: 6px 10px;
+      /*border: 1px solid #999;*/
+      padding: 0px 3px;
       text-align: left;
     }
 
     .format-table th {
-      background-color: #e0e0e0;
+      /*background-color: #e0e0e0;*/
+      border-bottom: 2px solid #ccc;
+      font-weight: 400;
     }
 </style>
 <div class="main-container">
@@ -114,7 +116,7 @@
       <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" class="form-control form-control-sm" />
     </div>
     <div class="col-lg-2 col-sm-2">
-      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="uploadFile(fileInput)">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 17px" (click)="uploadFile(fileInput)">
         <i class="bi bi-file-earmark-arrow-up"></i> Upload
       </button>
     </div>
@@ -124,12 +126,15 @@
                       [disabled]="lovDisabled">
       </app-global-lov>
     </div>
-    <div class="col-lg-3 col-sm-3">
+    <div class="col-lg-4 col-sm-4">
       <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="onFetch()">
         <i class="bi bi-search"></i> Search
       </button>
-      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="onRefresh()">
+      <button ID="btn_add" style="margin-left: 3px;" class="newbtn" (click)="onRefresh()">
         <i class="bi bi-arrow-repeat"></i> Refresh
+      </button>
+      <button class="newbtn" style="margin-left: 3px;" (click)="onExcel()" *ngIf="isgridview2">
+        <i class="bi bi-file-earmark-excel me-1"></i> Save To Excel
       </button>
     </div>
     <!--<div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">-->
@@ -184,7 +189,7 @@
     </table>
   </div>
   <br>
-  <div class="row line-w" style="margin-left: -6px;" *ngIf="isgridview">
+  <div class="row line-w" style="margin-left: -6px;" *ngIf="isgridview && GridData.length > 0">
     <div class="col-md-12">
       <div class="table-responsive">
         <div>
@@ -342,7 +347,7 @@
   <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview2">
     <div class="col-md-12">
       <div class="table-responsive">
-        <div>
+        <div style="max-height: 90px; width: 100%;">
           <table class="tableA table-condensed GridViewStyle">
             <thead>
               <tr class="HeaderStyleA">
@@ -368,5 +373,8 @@
         </div>
       </div>
     </div>
+    <!--<button (click)="onExcel()" style="margin-left: -4px; margin-top: -10px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
+      <i class="bi bi-file-earmark-excel me-1"></i> Save To Excel
+    </button>-->
   </div>
 </div>

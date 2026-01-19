@@ -103,7 +103,6 @@ export class IwPortingHistoryReportComponent {
   ];
 
   Operator_Lov() {
-    debugger;
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
@@ -145,7 +144,6 @@ export class IwPortingHistoryReportComponent {
           this.processData();
           this.IWPorting = this.dataset;
           this.div_excel = true;
-          debugger;
           setTimeout(() => {
             // this.createPieChart1();
             // this.createPieChart2();
@@ -192,7 +190,6 @@ export class IwPortingHistoryReportComponent {
     });
   }
   Fetch() {
-    debugger;
     this.HTotal = 0;
     this.warid = 0;
     this.ufone = 0;
@@ -224,7 +221,6 @@ export class IwPortingHistoryReportComponent {
     }, 0);
   }
   processData() {
-    debugger;
     this.HTotal = 0;
     this.warid = 0;
     this.ufone = 0;
@@ -316,7 +312,6 @@ export class IwPortingHistoryReportComponent {
   chartRef3: Chart | null = null;
   chartRef4: Chart | null = null;
   createPieChart1() {
-    debugger;
     if (this.chartRef1) {
       this.chartRef1.destroy();
     }

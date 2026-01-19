@@ -4,22 +4,17 @@ import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { startWith } from 'rxjs';
 import * as XLSX from 'xlsx';
-import { CdkAriaLive } from "../../../../node_modules/@angular/cdk/a11y/index";
-import { environment } from 'environments/environment';
 import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
 import { ExcelExportService } from 'app/services/excel-export.service';
+import { environment } from 'environments/environment';
 
 export class NPRManualSetup {
   batch: string;
   total_records: string;
   processDate: string;
   loaddate: string;
-  accept: string;
-  reject: string;
-  hold: string;
   user_id: string;
   mobile: string;
-  rejectHoldCode: string;
   processStatus: string;
 
   constructor() {
@@ -27,24 +22,18 @@ export class NPRManualSetup {
     this.total_records = '';
     this.processDate = '';
     this.loaddate = '';
-    this.accept = '';
-    this.reject = '';
-    this.hold = '';
     this.user_id = '';
     this.mobile = '';
-    this.rejectHoldCode = '';
     this.processStatus = '';
   }
 }
-
 @Component({
-  selector: 'app-public-nprmanualbulkprocess-aspx',
-  imports: [CommonModule, FormsModule, GlobalLovComponent],
-  standalone: true,
-  templateUrl: './npr-manual-bulk-process.component.html',
-  styleUrl: './npr-manual-bulk-process.component.css'
+  selector: 'app-public-nprbulkresendsolicitederror-aspx',
+  imports: [FormsModule, CommonModule, GlobalLovComponent],
+  templateUrl: './npr-resend-bulk-response.component.html',
+  styleUrl: './npr-resend-bulk-response.component.css'
 })
-export class NprManualBulkProcessComponent {
+export class NprResendBulkResponseComponent {
   lovDisabled: boolean = false;
   Batch: any[] = [];
   selectedFile: File | null = null;
@@ -82,7 +71,7 @@ export class NprManualBulkProcessComponent {
   }
   GetGrid() {
     debugger;
-    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/S?id=${this.loginUser}`;
+    const url = `${environment.apiBaseUrl}/api/NPRResendBulk/S?id=${this.loginUser}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
@@ -103,13 +92,10 @@ export class NprManualBulkProcessComponent {
   }
   GetGrid1() {
     debugger;
-    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/LOV?id=${this.loginUser}`;
+    const url = `${environment.apiBaseUrl}/api/NPRResendBulk/LOV?id=${this.loginUser}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
-          //this.GridData1 = res
-          //  .sort((a, b) => b.batch - a.batch)
-          //  .slice(0, 10);
           this.GridData1 = res
             .sort((a, b) => Number(b.batch) - Number(a.batch))
             .slice(0, 6);
@@ -128,7 +114,7 @@ export class NprManualBulkProcessComponent {
   }
   GetGrid2(batch: any) {
     debugger;
-    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/BD?userid=${this.loginUser}&batch=${batch}`;
+    const url = `${environment.apiBaseUrl}/api/NPRResendBulk/BD?userid=${this.loginUser}&batch=${batch}`;
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res && res.length > 0) {
@@ -144,6 +130,9 @@ export class NprManualBulkProcessComponent {
       }
     });
   }
+  // onBatch(batch: any) {
+  //   this.GetGrid2(batch);
+  // }
   previousBatch: any = null;
 
   onBatch(batch: any) {
@@ -175,23 +164,19 @@ export class NprManualBulkProcessComponent {
     setup.total_records = '';
     setup.processDate = '';
     setup.loaddate = '';
-    setup.accept = '';
-    setup.reject = '';
-    setup.hold = '';
     setup.user_id = this.loginUser;
     setup.mobile = '';
-    setup.rejectHoldCode = '';
     setup.processStatus = '';
 
     const mappedData = setup;
-    const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBulk/${batch}`;
+    const insertUrl = `${environment.apiBaseUrl}/api/NPRResendBulk/${batch}`;
     this.http.put(insertUrl, mappedData).subscribe({
       next: (response: any) => {
         const respStr = response.message;
         this.popupMessage = respStr;
-        this.showSuccessPopup = true;;
+        this.showSuccessPopup = true;
         //this.isgridview = false;
-        this.isProcessData = false;
+        this.isProcessData = false
         this.isErrorPopup = respStr.startsWith('0;');
         this.ResetFields();
         setTimeout(() => {
@@ -216,7 +201,7 @@ export class NprManualBulkProcessComponent {
       this.showSuccessPopup = false;
       setTimeout(() => {
         this.popupMessage =
-          !this.selectedFile ? 'Please Select File.' : '';
+          !this.selectedFile ? 'Please Select File' : '';
 
         this.isErrorPopup = true;
         this.showSuccessPopup = true;
@@ -251,28 +236,15 @@ export class NprManualBulkProcessComponent {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
+      // Extract the data from the first 5 columns of each row
       let rowData = jsonData.slice(1).map((row: any) => {
         return {
-          MOBILE_NO: row[0] !== undefined && row[0] !== '' ? row[0] : '',
-          HOLD_REJECT_CODE: row[1] !== undefined && row[1] !== '' ? row[1] : ''
+          MOBILE_NO: row[0] !== undefined && row[0] !== '' ? row[0] : ''
         };
       });
-      rowData = rowData.filter((row: any) => row.MOBILE_NO !== '' || row.HOLD_REJECT_CODE !== '');
-      const mobileList = rowData.map((r: any) =>
-        r.MOBILE_NO.toString().trim()
-      ); const duplicateMobiles = mobileList.filter(
-        (item, index) => mobileList.indexOf(item) !== index
-      );
-      if (duplicateMobiles.length > 0) {
-        this.showSuccessPopup = false;
-        setTimeout(() => {
-          this.popupMessage = 'Duplicate Mobile Number Found In Excel Sheet.';
-          this.isErrorPopup = true;
-          this.showSuccessPopup = true;
-          return;
-        }, 100);
-        return;
-      }
+
+      // Clean invalid rows (optional — agar dono null ho to hatao)
+      rowData = rowData.filter((row: any) => row.MOBILE_NO !== '');
       this.isadd = 'I'
       this.submit(rowData);
       fileInput.value = '';
@@ -296,18 +268,14 @@ export class NprManualBulkProcessComponent {
     setup.total_records = '';
     setup.processDate = '';
     setup.loaddate = '';
-    setup.accept = '';
-    setup.reject = '';
-    setup.hold = '';
     setup.user_id = this.loginUser;
     setup.mobile = '';
-    setup.rejectHoldCode = '';
     setup.processStatus = '';
 
     const mappedData = setup;
     if (this.isadd === 'I') {
       debugger;
-      const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBulk/M`;
+      const insertUrl = `${environment.apiBaseUrl}/api/NPRResendBulk/M`;
       this.http.post(insertUrl, mappedData).subscribe({
         next: (response: any) => {
           const respStr = response.message;
@@ -331,13 +299,9 @@ export class NprManualBulkProcessComponent {
                 setup.total_records = '';
                 setup.processDate = '';
                 setup.loaddate = '';
-                setup.accept = '';
-                setup.reject = '';
-                setup.hold = '';
                 setup.user_id = this.loginUser;
                 // setup.mobile = row.MOBILE_NO ?? null;
                 setup.mobile = (row.MOBILE_NO ? '0' + String(row.MOBILE_NO) : null) as string;
-                setup.rejectHoldCode = row.HOLD_REJECT_CODE ?? null;
                 setup.processStatus = '';
                 return setup;
               });
@@ -348,14 +312,14 @@ export class NprManualBulkProcessComponent {
                   this.lblErrorRecords += 1;
                 }
               }
-              const insertUrl = `${environment.apiBaseUrl}/api/NPRManualBulk/D`;
+              const insertUrl = `${environment.apiBaseUrl}/api/NPRResendBulk/D`;
               this.http.post(insertUrl, bulkData).subscribe({
                 next: (response: any) => {
                   const respStr = response.message;
                   this.lblBatchNo = bulkData[0].batch;
                   this.lblTotalReccords = bulkData.length;
                   this.lblProcessRecords = this.lblTotalReccords - this.lblErrorRecords;
-                  this.lblMessegeprocess = "Data Successfully Uploaded."
+                  this.lblMessegeprocess = "Data Successfully inserted."
                   this.isProcessData = true;
                   this.popupMessage = respStr;
                   this.showSuccessPopup = true;
@@ -392,17 +356,17 @@ export class NprManualBulkProcessComponent {
         error: (err) => {
           console.error('Error during insert:', err);
           this.popupMessage = 'Failed to insert the record. Please try again.';
-          this.isErrorPopup = true;
-          this.showSuccessPopup = true;
+          this.isErrorPopup = true; // Error popup
+          this.showSuccessPopup = true; // Show popup
           this.isSubmitting = false;
         }
       });
     }
   }
   confirmDelete(batch: string) {
-    console.log("Confirm delete called for Batch No:", batch);
+    console.log("Confirm delete called for Batch No:", batch); // Add logging
     this.batch = batch;
-    this.showModal = true;
+    this.showModal = true; // Show the confirmation modal
   }
   closeModal() {
     this.showModal = false;
@@ -418,16 +382,12 @@ export class NprManualBulkProcessComponent {
       total_records: '',
       processDate: '',
       loaddate: '',
-      accept: '',
-      reject: '',
-      hold: '',
       user_id: this.loginUser,
       mobile: '',
-      rejectHoldCode: '',
       processStatus: ''
     };
 
-    const url = `${environment.apiBaseUrl}/api/NPRManualBulk/${this.batch}`
+    const url = `${environment.apiBaseUrl}/api/NPRResendBulk/${this.batch}`
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       body: body
@@ -442,6 +402,7 @@ export class NprManualBulkProcessComponent {
         debugger;
         this.popupMessage = msgR;
         // this.filteredData = this.filteredData.filter((row) => row.hdate !== hdate);            
+        // Show the popup
         this.showSuccessPopup = true;
         this.showModal = false;
         // this.ResetFields();
@@ -451,9 +412,10 @@ export class NprManualBulkProcessComponent {
         setTimeout(() => {
           this.showSuccessPopup = false;
         }, 3000);
-        //this.AddFields();
+        // this.AddFields();
       },
       (error) => {
+        // Handle errors
         alert(`Error deleting record: ${error.message}`);
         console.error('Error Details:', error);
         setTimeout(() => {
@@ -468,9 +430,11 @@ export class NprManualBulkProcessComponent {
     this.GridData2 = [];
   }
   onProcess1() {
+    debugger;
     this.batchno = this.batch;
   }
   onFetch() {
+    debugger;
     const batch = this.selectedBatch;//(document.getElementById('ddl_Batch') as HTMLInputElement).value;
     this.batch = batch;
     this.isgridview2 = true;

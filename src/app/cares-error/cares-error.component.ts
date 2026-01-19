@@ -139,12 +139,7 @@ export class CaresErrorComponent {
     }, 2000)
   }
   submitbutton() {
-    debugger
-          
     const insertUrl = `${environment.apiBaseUrl}/api/CaresSubmissionFirst`;
-    
-
-    // 🔹 Local storage / input values ko caresError object me map karo
     this.caresError = {
       msisdn: this.msisdn ?? '',
       imsi: this.imsi ?? '',
@@ -182,8 +177,7 @@ export class CaresErrorComponent {
     };
 
     this.http.post(insertUrl, this.caresError).subscribe({
-      next: (res: any) => {
-        debugger;
+      next: (res: any) => {      
         const ab = JSON.stringify(res);
         const msgR = ab.split(';').slice(1).join(',').replace('}', '').replace('"', '').trim();
         this.popupMessage = msgR;

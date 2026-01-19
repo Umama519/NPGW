@@ -36,7 +36,6 @@ export class ChangePasswordComponent implements AfterViewInit {
   @ViewChild('confirmPass') confirmPass!: ElementRef;
 
   ngOnInit() {
-    debugger;
     this.ChangeUser = localStorage.getItem('loginUser') || '';
   }
 
@@ -147,7 +146,6 @@ export class ChangePasswordComponent implements AfterViewInit {
   }
 
   ChangePassword(): void {
-    debugger;
     const passwordPattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -171,7 +169,6 @@ export class ChangePasswordComponent implements AfterViewInit {
       this.errmessage = 'New password and confirm password do not match.';
       return;
     }
-    debugger;
     const url = `${environment.apiBaseUrl}/api/ChangePassword`;
     const requestBody = {
       Username: this.ChangeUser,

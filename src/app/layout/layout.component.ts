@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from 'environments/environment';
 import { TranslationService } from '../../translation.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { loaderService } from 'app/SETUPS/Service/loaderService';
 
 export interface QuickLinkAdd {
   title: string;    // p_MENUTITLE
@@ -39,7 +40,7 @@ export class LayoutComponent {
   showSuccessPopup: boolean = false;
   private http = inject(HttpClient);
   private router = inject(Router);
-  constructor(private translationService: TranslationService, private sanitizer: DomSanitizer) { }
+  constructor(private translationService: TranslationService, private sanitizer: DomSanitizer,private loaderService: loaderService) { }
   languages = [
     { code: 'en', name: 'English' }, { code: 'es', name: 'Spanish' },
     { code: 'ur', name: 'Urdu' }, { code: 'fr', name: 'French' },
@@ -142,9 +143,11 @@ export class LayoutComponent {
 
   onHeaderClick(event: Event, item: any) {
     event.preventDefault();
+    this.loaderService.show();
     this.bsItems.forEach((x: any) => {
       if (x !== item) {
         x.isOpen = false;
+        
       }
     });
     item.isOpen = !item.isOpen;
@@ -161,6 +164,7 @@ export class LayoutComponent {
               this.popupMessage = "First Select Activity Number";
               this.isErrorPopup = true;
               this.showSuccessPopup = true;
+              this.loaderService.hide();
             }, 100);
             return;
           }
@@ -184,16 +188,17 @@ export class LayoutComponent {
         this.router.navigate([routePath]).then(() => this.closeAllDropdowns());
       }
     }
+    this.loaderService.hide();
   }
   onChildClick(event: Event, child: any, parentItem: any) {
-    event.preventDefault();
+    event.preventDefault();    
     this.object = child.obj ?? '';
     localStorage.setItem('breadcrumb', this.object);
 
     const routePath = this.mapTitleToRoute(child.url_link, child.obj);
     if (routePath) {
-      this.router.navigate([routePath]).then(() => this.closeAllDropdowns());
-    }
+      this.router.navigate([routePath]).then(() => this.closeAllDropdowns());      
+    }    
   }
   onSubChild(event: Event, subChild: any, parentItem: any, child: any): void {
     event.preventDefault();
@@ -209,7 +214,7 @@ export class LayoutComponent {
     }
   }
   mapTitleToRoute(urlLink: string, obj: string): string {
-    debugger
+    
     if (!urlLink) return '';
     this.object = obj;
     localStorage.setItem('breadcrumb', this.object);

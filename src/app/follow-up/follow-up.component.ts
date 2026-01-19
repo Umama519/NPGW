@@ -174,7 +174,6 @@ onReasonChange(selectedReasonValue: any) {
   }
   // ✅ Submit function — only first char of resp + input values
   Submit() {
-    debugger
     const selectedActNo = localStorage.getItem('selectedActivity');
     const selectedUserid = this.loginUser;
 

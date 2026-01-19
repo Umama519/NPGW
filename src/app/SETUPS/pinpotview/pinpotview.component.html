@@ -1,20 +1,15 @@
 <style>    
     .row-red {
         background-color: red;
-        color: white;
-        /* Optional: Font color for better contrast */
+        color: white;        
     }
-
     .row-white {
         background-color: white;
-        color: black;
-        /* Optional: Font color for better contrast */
+        color: black;        
     }
-
     .text-primary:hover {
         color: darkblue !important;
     }
-
     .custom-cross {
         width: 12px;
         height: 30;
@@ -22,21 +17,17 @@
     }
     .headingCaption .main-heading {
         position: absolute;
-        left: 5px;
-        /* Move to the left side */
+        left: 5px;    
         color: #10486b;
     }
-
     .headingCaption .separator {
         margin: 0 125px;
         font-size: 18px;
         color: #666;
     }
-
     .headingCaption .sub-heading {
         color: #10486b;
     }
-
     .txtPinPot {
         border-radius: 0px;
         flex: 1;
@@ -54,46 +45,31 @@
             </div>
             <div style="width: 50px;"></div>
             <button id="btn_Submit" class="newbtn" (click)="Fetch()">
-                <i class="bi bi-check-circle"></i> Fetch
-            </button>
+                <i class="bi bi-check-circle"></i> Fetch </button>
             <button id="btn_Reset" class="newbtn" style="margin-left: 5px;" (click)="ResetButton()">
-                <i class="bi bi-arrow-clockwise"></i> Reset
-            </button>
+                <i class="bi bi-arrow-clockwise"></i> Reset </button>
         </div>
     </div>
     <div *ngIf="showSuccessPopup">
-        <div [ngClass]="{
-          'error-message': isErrorPopup,
-          'Success-message': !isErrorPopup
-        }">
+        <div [ngClass]="{'error-message': isErrorPopup, 'Success-message': !isErrorPopup }">
             <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
             <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
-            <span>{{ popupMessage }}</span>
-            <span>{{ errmessage }}</span>
+            <span>{{ popupMessage }}</span> <span>{{ errmessage }}</span>
         </div>
     </div>
-    <div style="margin-top: 5px;">
-
-    </div>
+    <div style="margin-top: 5px;"></div>
     <div class="page-header headingCaption">
         <span class="main-heading" style="margin-left: 35px;">MNP PIN / POT Information</span>
         <span class="" style="margin-left: 662px;"></span>
         <span class=" headingCaptionA page-header"> BS Customer Information</span>
     </div>
-
-
-    <div style="margin-top: 15px;">
-
-    </div>
-    <!-- ROW 1 -->
+    <div style="margin-top: 15px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 119px;">Register Name :</label>
             <span class="form-controlA info-value"
                 name="txt_MRegister" MaxLength="50" style="flex:1;">{{selectedPINRegName}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 119px;">User Name :</label>
             <span ID="txt_MUsername" class="form-controlA info-value"
@@ -104,7 +80,6 @@
             <span ID="txt_BRegister" class="form-controlA info-value" 
                 name="txt_BRegister" MaxLength="50" style="flex:1;">{{selectedBSRegName}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 119px;">User Name :</label>
             <span ID="txt_BUsername" class="form-controlA info-value"
@@ -118,66 +93,52 @@
             <span ID="txt_MCNIC" class="form-controlA info-value"
                 name="txt_MCNIC" MaxLength="50">{{selectedPINCnic}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">NIC :</label>
             <span ID="txt_MNIC" class="form-controlA info-value" name="txt_MNIC"
                 MaxLength="50">{{selectedPINNic}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">CNIC :</label>
             <span ID="txt_BCNIC" class="form-controlA info-value" name="txt_BCNIC"
                 style="border-radius: 0px;" MaxLength="50">{{selectedBSCnic}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">NIC :</label>
             <span ID="txt_BNIC" class="form-controlA info-value" name="txt_BNIC"
                 MaxLength="50">{{selectedBSNic}}</span>
         </div>
     </div>
-
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Passport :</label>
             <span ID="txt_MPassport" class="form-controlA info-value"
                 name="txt_MPassport" MaxLength="50">{{selectedPINPassport}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Other ID :</label>
             <span ID="txt_MOtherID" class="form-controlA info-value" name="txt_MOtherID" MaxLength="50">
                 {{selectedPINOtherID}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Passport :</label>
             <span ID="txt_BPassport" class="form-controlA info-value"
                 name="txt_BPassport" MaxLength="50">{{selectedPINOtherID}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Other ID :</label>
             <span ID="txt_BOtherID" class="form-controlA info-value"
                 name="txt_BOtherID" MaxLength="50">{{selectedBSOtherID}}</span>
         </div>
     </div>
-
-    <div style="margin-top: 6px;">
-
-    </div>
-    <!-- ✅ Row 1 -->
+    <div style="margin-top: 6px;"></div>    
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">ICCID / IMSI :</label>
             <span ID="txt_MICCID" class="form-controlA info-value"
                 name="txt_MICCID" MaxLength="50">{{selectedPINICCID}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Account Type :</label>
             <span ID="txt_MAccountType" class="form-controlA info-value"
@@ -188,18 +149,13 @@
             <span ID="txt_BAccountType" class="form-controlA info-value"
                 name="txt_BAccountType" MaxLength="50">{{selectedBSAccTyp}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Tariff Plan :</label>
             <span ID="txt_BTariff" class="form-controlA info-value" name="txt_BTariff"
              MaxLength="50">{{selectedBSTarifPln}}</span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
-
-    <!-- ✅ Row 2 -->
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Tariff Plan :</label>
@@ -211,32 +167,24 @@
             <span ID="txt_MAccessLevel" class="form-controlA info-value"
                 name="txt_MAccessLevel" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINAccLvl}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display: flex; align-items: center; gap: 6px;">
             <label class="labelcss" style="width: 200px;">Access Level :</label>
             <span ID="txt_BAccessLevel" class="form-controlA info-value"
                 name="txt_BAccessLevel" MaxLength="50">{{selectedBSAccLvl}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Service Status :</label>
             <span ID="txt_BServiceStatus" class="form-controlA info-value"
                 name="txt_BServiceStatus" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSServiceSts}}</span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
-
-
-    <!-- ✅ Row 3 -->
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Security Deposit :</label>
             <span ID="txt_MSecurityDeposit" class="form-controlA info-value"
                 name="txt_MSecurityDeposit" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINSecDep}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Line Rent :</label>
             <span ID="txt_MLineRent" class="form-controlA info-value"
@@ -247,50 +195,36 @@
             <span ID="txt_BLineRent" class="form-controlA info-value"
                 name="txt_BLineRent" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSLineRt}}</span>
         </div>
-
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Security Deposit :</label>
             <span ID="txt_BSecurityDeposit" class="form-controlA info-value"
                 name="txt_BSecurityDeposit" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSSecDep}}</span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
-
-
-    <!-- ✅ Row 4 -->
+    <div style="margin-top: 6px;"></div>    
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Refund Amount :</label>
             <span ID="txt_MRefAmt" class="form-controlA info-value"
                 name="txt_MRefAmt" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINRefundAmt}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Refund Date :</label>
             <span ID="txt_MRefDt" class="form-controlA info-value"
                 name="txt_MRefDt" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINRefundDt}}</span>
         </div>
-
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Bar Template :</label>
             <span ID="txt_BBarTemp" class="form-controlA info-value"
                 name="txt_BBarTemp" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSBarTemp}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Pass Due :</label>
             <span ID="txt_BPassDue" class="form-controlA info-value"
                 name="txt_BPassDue" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSPassDue}}</span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
-
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">User ID :</label>
@@ -313,16 +247,13 @@
                 name="txt_BUnbilled" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSUnbill}}</span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">NPR Initiator :</label>
             <span ID="txt_MNPRInitiator" class="form-controlA info-value"
                 name="txt_MNPRInitiator" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINNPRInt}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">NPR Date :</label>
             <span ID="txt_MNPRGenrtDt" class="form-controlA info-value" 
@@ -333,25 +264,21 @@
             <span ID="txt_BTotalDue" class="form-controlA info-value"
                 name="txt_BTotalDue" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSTotalDue}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Credit Limit :</label>
             <span ID="txt_BCreditLimit" class="form-controlA info-value" 
                 name="txt_BCreditLimit" style="border-radius:0;flex:1;" MaxLength="50">{{selectedBSCreditLmt}}</span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Current Status :</label>
             <span ID="txt_MCurrSts" class="form-controlA info-value" 
                 name="txt_MCurrSts" style="border-radius:0;flex:1;" MaxLength="50">{{selectedPINCurrSts}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
-            <label class="labelcss" style="width: 120px;">Message Timestamp :</label>
+            <label class="labelcss" style="width: 120px;">MessageTimestamp:</label>
             <span ID="txt_MMsgTime" class="form-controlA info-value"
                 name="txt_MMsgTime" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
@@ -360,23 +287,19 @@
             <span ID="txt_BUsage" class="form-controlA info-value" [(
                 name="txt_BUsage" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">ICCID#/IMSI :</label>
             <span ID="txt_BICCID" class="form-controlA info-value" [(ngModel)]="selectedBSICCID"
                 name="txt_BICCID" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Assign To :</label>
             <span ID="txt_MAssignTo" class="form-controlA info-value" [(ngModel)]="selectedPINAssignTo"
                 name="txt_MAssignTo" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px;">
             <label class="labelcss" style="width: 120px;">Due Date :</label>
             <span ID="txt_MDueDt" class="form-controlA info-value" [(ngModel)]="selectedPINDueDt"
@@ -387,23 +310,17 @@
             <span ID="txt_BSIMStatus" class="form-controlA info-value" [(ngModel)]="selectedBSSimSts"
                 name="txt_BSIMStatus" style="border-radius:0;flex:1;" MaxLength="50"></span>
         </div>
-
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: 695px;">
         <div class="col-lg-6 col-sm-6" style="display:flex;align-items:center;gap:6px; ">
             <label class="labelcss" style="white-space: nowrap; margin: 0;width: 120px; ">Vas :</label>
             <textarea id="txt_BLineRent" disabled [(ngModel)]="selectedBSVas" name="txt_BLineRent"
                 class="form-controlA " rows="1" maxlength="50"
-                style="border-radius:0;flex:1;font-size: 12px; background-color: #f6f5f5;"></textarea>
-                
+                style="border-radius:0;flex:1;font-size: 12px; background-color: #f6f5f5;"></textarea>        
         </div>
     </div>
-    <div style="margin-top: 5px;">
-
-    </div>
+    <div style="margin-top: 5px;"></div>
     <div class="page-header headingCaption">
         Activity Information
     </div>
@@ -413,60 +330,45 @@
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Last Activity# :</label>
             <span ID="txt_MLstAct" class="form-controlA info-value" 
                 name="txt_MLstAct" style="border-radius: 0px;" MaxLength="50">{{selectedPINLstAct}}</span>
-
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Port ID :</label>
             <span ID="txt_MPortID" class="form-controlA info-value"
                 name="txt_MPortID" style="border-radius: 0px;" MaxLength="50">{{selectedPINPortID}}</span>
-
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Donor :</label>
             <span ID="txt_MDonor" class="form-controlA info-value" 
                 name="txt_MDonor" style="border-radius: 0px;" MaxLength="50">{{selectedPINDonor}}</span>
-
         </div>
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
 
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Recipient :</label>
             <span ID="txt_MRecipient" class="form-controlA info-value"
                 name="txt_MRecipient" style="border-radius: 0px;" MaxLength="50">{{selectedPINRecipient}}</span>
-
         </div>
-
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
-
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Job Done By :</label>
             <span ID="txt_MJobDnBy" class="form-controlA info-value"
                 name="txt_MJobDnBy" style="border-radius: 0px;" MaxLength="50">{{selectedPINJobDoneBy}}</span>
         </div>
-
         <div class="col-lg-3 col-sm-3" style="display:flex;align-items:center;gap:6px; ">
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 200px;">Last Date :</label>
             <span ID="txt_ALstDt" class="form-controlA info-value"
                 name="txt_ALstDt" style="border-radius: 0px;" MaxLength="50">{{selectedPINLstDt}}</span>
         </div>
         <div class="col-lg-6 col-sm-6" style="display:flex;align-items:center;gap:6px; ">
-
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 148px;">Description :</label>
             <span ID="txt_MDescription" class="form-controlA info-value"
                 name="txt_MDescription" style="border-radius: 0px;" MaxLength="50">{{selectedPINDesc}}</span>
-
         </div>
-
     </div>
-    <div style="margin-top: 6px;">
-
-    </div>
+    <div style="margin-top: 6px;"> </div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-12 col-sm-12" style="display:flex;align-items:center;gap:6px; ">
             <label class="labelcss" style="white-space: nowrap; margin: 0; width: 119px;">Rejection Description:</label>
@@ -475,12 +377,10 @@
                 style="border-radius:0;flex:1;font-size: 12px;background-color: #f6f5f5; " disabled>{{selectedPINRejDesc}}</textarea>
         </div>
     </div>
-
     <div style="margin-top: 5px;"></div>
     <div class="page-header headingCaption">
         NP Activited Status
     </div>
-
     <div style="margin-top: 15px;"></div>
     <div class="row line-w" style="margin-left: -4px;">
         <div class="col-lg-12 col-sm-12" style="display:flex;align-items:center;gap:6px; ">

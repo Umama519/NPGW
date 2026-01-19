@@ -171,7 +171,7 @@ export class ConsoleComponent {
   filteredActions: { descs: string; action: string }[] = [];
   constructor(private el: ElementRef, private loaderService: loaderService, private datepickerService: DatepickerService,
     private router: Router, private excelService: ExcelExportService, private pager: PaginationService) { }
-  con: Console = new Console();
+  con: Console = new Console(); 
   @ViewChild('popupContainer', { read: ViewContainerRef }) popupContainer!: ViewContainerRef;
   popupRef?: ComponentRef<CaresErrorComponent>;
   @ViewChild('recipientFilterSection') recipientFilterSection!: ElementRef;
@@ -210,7 +210,6 @@ export class ConsoleComponent {
     this.Message = localStorage.getItem('roleMessage') || 'No user';
     this.roleMessage = this.Message.charAt(0);
     this.Operator_Lov();
-    debugger
     this.ActionLov();
     this.checkbox();
     this.loadAlarms();
@@ -242,6 +241,7 @@ export class ConsoleComponent {
     { code: 'N', name: 'NPC' },
     { code: 'S', name: 'SWITCH' },
     { code: 'D', name: 'CRM' }
+
   ];
 
   formData: {
@@ -272,7 +272,7 @@ export class ConsoleComponent {
             const activityData = res[0];
             const urlM = `${environment.apiBaseUrl}/api/LSMSReMessage/${activityData.activityNo}?Action=M`;
             const urlD = `${environment.apiBaseUrl}/api/LSMSReMessage/${activityData.activityNo}?Action=D`;
-            debugger
+            
             this.http.get<any[]>(urlM).subscribe(dataM => {
               if (dataM && dataM.length > 0) {
                 localStorage.setItem('rejcd', dataM[0].rejcd ?? '');
@@ -307,11 +307,13 @@ export class ConsoleComponent {
       this.http.get<any[]>(url).subscribe({
         next: (res: any[]) => {
           if (res && res.length > 0) {
+            debugger
             const activityData = res[0];
             const urlM = `${environment.apiBaseUrl}/api/ReMessage/${activityData.activityNo}?Action=M`;
             const urlD = `${environment.apiBaseUrl}/api/ReMessage/${activityData.activityNo}?Action=D`;
             this.http.get<any[]>(urlM).subscribe(dataM => {
               if (dataM && dataM.length > 0) {
+                
                 localStorage.setItem('rejcdR', dataM[0].rejcd ?? '');
                 localStorage.setItem('msG_NO', dataM[0].msG_NO ?? '');
                 localStorage.setItem('msgtype', dataM[0].msgtype ?? '');
@@ -327,12 +329,15 @@ export class ConsoleComponent {
                 localStorage.setItem('buishrs', dataM[0].buishrs ?? '');
                 localStorage.setItem('duedate', dataM[0].duedate ?? '');
               }
+            
               this.http.get<any[]>(urlD).subscribe(dataD => {
                 if (dataD && dataD.length > 0) {
+                  debugger
                   localStorage.setItem('objectNameList', JSON.stringify(dataD.map(x => x.objectName)));
-                  localStorage.setItem('objValueList', JSON.stringify(dataD.map(x => x.objValue)));
+                  localStorage.setItem('objValueList', JSON.stringify(dataD.map(x => x.objValue)));                  
                   localStorage.setItem('val', dataD[0].val ?? '');
                   localStorage.setItem('msgID', dataD[0].msgID ?? '');
+                  localStorage.setItem('Value', JSON.stringify(dataD.map(x => x.val)));
                 }
                 this.router.navigateByUrl('/app-re-message');
               });
@@ -368,7 +373,7 @@ export class ConsoleComponent {
             this.popupRef = this.popupContainer.createComponent(CaresErrorComponent);
             this.popupRef.instance.portin = portin;
             this.popupRef.instance.closePopup.subscribe(() => {
-              this.popupRef?.destroy();
+            this.popupRef?.destroy();
             });
           }
         },
@@ -435,6 +440,7 @@ export class ConsoleComponent {
     localStorage.setItem('selectedMobile', row.mobile);
     localStorage.setItem('selectedPortID', row.port_ID);
     localStorage.setItem('selectedDonor', row.donor);
+    localStorage.setItem('selectedRecipient', row.recipient);
     localStorage.setItem('selectedAccountType', row.account_Type);
     localStorage.setItem('selectedCnic', row.new_NIC);
     localStorage.setItem('selectedRegion', row.region);
@@ -447,7 +453,7 @@ export class ConsoleComponent {
     localStorage.setItem('selectedAction', row.action);
     localStorage.setItem('selectedMnp', row.mnp);
     localStorage.setItem('selectedNPRNO', row.npr_NO);
-    debugger
+    
     const selectedItem = this.filteredActions.find(x => x.action === row.action);
     if (selectedItem) {
       this.selectedDescs = selectedItem.action;  // ✅ ngModel me valueField set karo    
@@ -540,18 +546,13 @@ export class ConsoleComponent {
       getdata: ''
     };
     const queryParams = new URLSearchParams(params).toString();
-
     const url = `${environment.apiBaseUrl}/api/ConsoleStatus/filter?${queryParams}`;
-    debugger
     this.loaderService.show();
-    debugger
     this.http.get<any[]>(url).subscribe({
       next: (res: any[]) => {
         if (res?.length > 0) {
-          debugger
           this.isvisibe = true;
           this.div_grid = true;
-          debugger
           this.GridData = res;
           this.ExData = [...res];
           this.filteredData = this.savedFilteredData.length ? this.savedFilteredData : res;
@@ -631,8 +632,6 @@ export class ConsoleComponent {
     this.windowStart = this.pager.prevWindow(this.windowStart, this.windowSize);
   }
   SaveToExl() {
-    debugger
-    // 🔒 Table state preserve
     const currentPage = this.currentPage;
     const windowStart = this.windowStart;
     const filteredCopy = [...this.filteredData];

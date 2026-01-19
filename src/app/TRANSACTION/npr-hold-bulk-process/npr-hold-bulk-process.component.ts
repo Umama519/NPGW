@@ -6,6 +6,7 @@ import { startWith } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { environment } from 'environments/environment';
 import { GlobalLovComponent } from 'app/global-lov/global-lov.component';
+import { ExcelExportService } from 'app/services/excel-export.service';
 
 export class NPRHoldSetup {
   batch: string;
@@ -33,8 +34,8 @@ export class NPRHoldSetup {
 
 @Component({
   selector: 'app-public-nprbulkholdresponse-aspx',
-  standalone: true,
   imports: [FormsModule, CommonModule, GlobalLovComponent],
+  standalone: true,
   templateUrl: './npr-hold-bulk-process.component.html',
   styleUrl: './npr-hold-bulk-process.component.css'
 })
@@ -62,13 +63,13 @@ export class NprHoldBulkProcessComponent {
   lblErrorRecords = 0;
   lblMessegeprocess: any;
   isProcessData: boolean = false;
-  isgridview: boolean = false;
+  isgridview: boolean = true;
   isgridview1: boolean = true;
   isgridview2: boolean = false;
   isFetchData: boolean = true;
 
 
-  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2) { }
+  constructor(private http: HttpClient, private el: ElementRef, private renderer: Renderer2, private excelService: ExcelExportService) { }
   ngOnInit(): void {
     this.loginUser = localStorage.getItem('loginUser') || 'No user';
     this.GetGrid();
@@ -104,7 +105,7 @@ export class NprHoldBulkProcessComponent {
           //this.GridData1 = res;
           this.GridData1 = res
             .sort((a, b) => Number(b.batch) - Number(a.batch))
-            .slice(0, 8);
+            .slice(0, 6);
           this.Batch = res.sort((a, b) => Number(a.batch) - Number(b.batch));
           this.selectedBatch = res[0].batch;
         } else {
@@ -183,6 +184,7 @@ export class NprHoldBulkProcessComponent {
         const respStr = response.message;
         this.popupMessage = respStr;
         this.showSuccessPopup = true;
+        this.isProcessData = false;
         this.isErrorPopup = respStr.startsWith('0;');
         this.ResetFields();
         setTimeout(() => {
@@ -464,5 +466,20 @@ export class NprHoldBulkProcessComponent {
   }
   onRefresh() {
     window.location.reload();
+  }
+  onExcel() {
+    this.export(this.GridData2, 'excel')
+  }
+  export(res: any, file: any) {
+    debugger;
+    this.excelService.exportToFile(
+      res, 'Bulk NPR Manual Response', {
+      batch: 'Batch #',
+      mobile: 'Mobile',
+      rejectHoldCode: 'Reject & Hold Code',
+      processStatus: 'Process Status',
+      user_id: 'User ID'
+    }, file
+    );
   }
 }

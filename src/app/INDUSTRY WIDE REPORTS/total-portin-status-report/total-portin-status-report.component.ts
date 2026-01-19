@@ -68,7 +68,7 @@ export class TotalPortinStatusReportComponent {
   ];
 
   Operator_Lov() {
-    debugger;
+    
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/RejectCode`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
@@ -90,7 +90,6 @@ export class TotalPortinStatusReportComponent {
   }
 
   Operator_Lov1() {
-    debugger;
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/Operator`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
@@ -113,7 +112,6 @@ export class TotalPortinStatusReportComponent {
   }
 
   Fetch() {
-    debugger;
     const txt_FromDate = this.el.nativeElement.querySelector('#txt_FromDate').value;
     const txt_ToDate = this.el.nativeElement.querySelector('#txt_ToDate').value;
     // const ddl_Recepient = this.el.nativeElement.querySelector('#ddl_Recepient').value;

@@ -70,7 +70,6 @@ export class PortingStatusReportComponent {
     { code: 'F', name: 'File' }
   ];
   Operator_Lov() {
-    debugger;
     const url = `${environment.apiBaseUrl}/api/Action_LOV_/RejectCode`;
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
@@ -114,7 +113,7 @@ export class PortingStatusReportComponent {
   }
 
   Fetch() {
-    debugger;
+    
     const txt_FromDate = this.el.nativeElement.querySelector('#txt_FromDate').value;
     const txt_ToDate = this.el.nativeElement.querySelector('#txt_ToDate').value;
     // const rhb_Screen = this.el.nativeElement.querySelector('#rhb_Screen').checked ? 'S' : 'F';

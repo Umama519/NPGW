@@ -80,7 +80,7 @@
     }
 
   .format-table {
-    width: 30%;
+    width: 23.6%;
     border-collapse: collapse;
   }
 
@@ -94,7 +94,7 @@
       /*background-color: #e0e0e0;*/
       border-bottom: 2px solid #ccc;
       font-weight: 400;
-    } 
+    }
 </style>
 <div class="main-container">
   <div *ngIf="showSuccessPopup">
@@ -108,8 +108,18 @@
       <!-- <span>{{ errmessage }}</span> -->
     </div>
   </div>
+  <!--<div class="row">
+        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">-->
+  <!-- <h6>Select File Path :</h6> -->
+  <!--<label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+          Select File Path :</label>
+          <input type="file" id="fileInput"  #fileInput (change)="onFileSelected($event)" style="margin-left: 4px;"/>
+          <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="uploadFile(fileInput)">
+              <i class="bi bi-check-circle"></i> Upload
+          </button>
+      </div>
+  </div>-->
   <br />
-  <!-- <div class="row" style="margin-top: 10px;"></div>-->
   <div class="row line-w" style="margin-left: -6px;">
     <div class="col-lg-3 col-sm-3">
       <label style="color: #10486b; font-weight: bold;">Path :</label>
@@ -127,50 +137,35 @@
       </app-global-lov>
     </div>
     <div class="col-lg-4 col-sm-4">
-      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 17px" (click)="onFetch()">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="onFetch()">
         <i class="bi bi-search"></i> Search
       </button>
-      <button ID="btn_add" class="newbtn" style="margin-left: 3px;" (click)="onRefresh()">
+      <button ID="btn_add" style="margin-left: 3px;" class="newbtn" (click)="onRefresh()">
         <i class="bi bi-arrow-repeat"></i> Refresh
       </button>
-      <button ID="btn_add" class="newbtn" style="margin-left: 3px;" (click)="onExcel()" *ngIf="isgridview2">
+      <button class="newbtn" style="margin-left: 3px;" (click)="onExcel()" *ngIf="isgridview2">
         <i class="bi bi-file-earmark-excel me-1"></i> Save To Excel
       </button>
     </div>
   </div>
   <br>
-  <!--<div class="row">
-    <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">-->
-  <!-- <h6>Select File Path :</h6> -->
-  <!--<label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
-        Select File Path :
-      </label>
-      <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" style="margin-left: 4px;" />
-      <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="uploadFile(fileInput)">
-        <i class="bi bi-check-circle"></i> Upload
-      </button>
-    </div>
-  </div>
-  <br>-->
-  <div style="width: 110%;" class="file-format">
+  <div style="width: 109%;" class="file-format">
     <h4>Excel File Format</h4>
     <table class="format-table">
       <thead>
         <tr>
           <th>MOBILE NUMBER</th>
-          <th>REJECTION / HOLD CODE / BLANK FOR ACCEPT</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>3XXXXXXXXX</td>
-          <td>H01A</td>
         </tr>
       </tbody>
     </table>
   </div>
   <br>
-  <div class="row line-w" style="margin-left: -6px;" *ngIf="isgridview && GridData.length > 0">
+  <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview && GridData.length > 0">
     <div class="col-md-12">
       <div class="table-responsive">
         <div>
@@ -179,9 +174,6 @@
               <tr class="HeaderStyleA">
                 <th class="tdCenter">Batch #</th>
                 <th class="back">Load Date</th>
-                <!--<th class="back">Accept</th>
-                <th class="back">Reject</th>
-                <th class="back">Hold</th>-->
                 <th class="back">Total Records</th>
                 <th class="back">Process Records</th>
                 <th class="back">Delete</th>
@@ -194,9 +186,6 @@
                   [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
                 <td style="width: 100px;" class="tdCenter"> {{row.batch}} </td>
                 <td style="width: 150px;" class="tdCenter"> {{row.loaddate}} </td>
-                <!--<td style="width: 100px;" class="tdCenter"> {{row.accept}} </td>
-                <td style="width: 100px;" class="tdCenter"> {{row.reject}} </td>
-                <td style="width: 100px;" class="tdCenter"> {{row.hold}} </td>-->
                 <td style="width: 150px;" class="tdCenter"> {{row.total_records}} </td>
                 <td style="width: 150px;" class="tdCenter"> {{row.processDate}} </td>
                 <td style="width: 150px;">
@@ -246,11 +235,18 @@
   </div>
   <!-- <div class="row">
       <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
-          <button ID="btn_add" class="newbtn" style="margin-left: 7px;">
+          <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="onProcess1()">
               <i class="bi bi-check-circle"></i> Process Data
           </button>
       </div>
-  </div> -->
+  </div>
+  <div class="row">
+      <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
+          <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+            {{generatedSeqWF}}</label>
+      </div>
+  </div>
+  <br> -->
   <div class="row" *ngIf="isProcessData" style="margin-top: 10px;">
     <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
       <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
@@ -278,7 +274,8 @@
       </label>
     </div>
   </div>
-  <!--<div class="row" *ngIf="isFetchData" style="margin-top: 10px;">
+  <!--<br>
+  <div class="row" *ngIf="isFetchData" style="margin-top: 10px;">
     <div class="col-lg-3 col-sm-3" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">-->
   <!-- <h6>Select File Path :</h6> -->
   <!--<label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
@@ -300,6 +297,7 @@
     Batch Summary
   </div>
   <br>
+  <!-- *ngIf="isgridview" -->
   <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview1">
     <div class="col-md-12">
       <div class="table-responsive">
@@ -308,11 +306,9 @@
             <thead>
               <tr class="HeaderStyleA">
                 <th class="tdCenter">Batch #</th>
+                <th class="back">Batch Date</th>
                 <th class="back">Total Records</th>
                 <th class="back">Processed</th>
-                <th class="back">User ID</th>
-                <th class="back">Batch Date</th>
-                <th class="back">Process Date</th>
                 <th class="back">Delete</th>
               </tr>
             </thead>
@@ -321,11 +317,9 @@
                   [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
                   [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
                 <td style="width: 100px;" class="tdCenter"> {{row.batch}} </td>
-                <td style="width: 100px;" class="tdCenter"> {{row.total_records}} </td>
-                <td style="width: 100px;" class="tdCenter"> {{row.processDate}} </td>
-                <td style="width: 100px;" class="tdCenter"> {{row.user_id}} </td>
                 <td style="width: 100px;" class="tdCenter"> {{row.loaddate}} </td>
-                <td style="width: 100px;" class="tdCenter"> {{row.processDate}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.total_records}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.processStatus}} </td>
                 <td style="width: 100px;" class="tdCenter">
                   <button ID="btn_batch" (click)="onBatch(row.batch)" style="margin-left: 7px; margin-top: 1px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
                     <i class="bi bi-check-circle"></i> Batch Detail
@@ -345,13 +339,12 @@
   <div class="row line-w" style="margin-left: -4px;" *ngIf="isgridview2">
     <div class="col-md-12">
       <div class="table-responsive">
-        <div style="max-height: 70px; width: 100%;">
+        <div style="max-height: 90px; width: 100%;">
           <table class="tableA table-condensed GridViewStyle">
             <thead>
               <tr class="HeaderStyleA">
                 <th class="tdCenter">Batch#</th>
                 <th class="back">Mobile#</th>
-                <th class="back">Reject/Hold Code</th>
                 <th class="back">Process Status</th>
                 <th class="back">User ID</th>
               </tr>
@@ -362,7 +355,6 @@
                   [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
                 <td style="width: 100px;" class="tdCenter">{{ row.batch }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.mobile }}</td>
-                <td style="width: 100px;" class="tdCenter">{{ row.holdCode }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.processStatus }}</td>
                 <td style="width: 100px;" class="tdCenter">{{ row.user_id }}</td>
               </tr>
@@ -372,7 +364,4 @@
       </div>
     </div>
   </div>
-  <!--<button (click)="onExcel()" style="margin-left: 7px; margin-top: 0px; margin-bottom: 1px; background-color: #10486b; color: #ffffff;">
-    <i class="bi bi-file-earmark-excel me-1"></i> Save To Excel
-  </button>-->
 </div>

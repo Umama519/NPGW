@@ -1,0 +1,322 @@
+<p>npr-current-bulk-status works!</p>
+<style>
+  .main-container {
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    /*background-color: #f5f6fa;*/
+  }
+
+  .upload-section, .batch-summary, .batch-detail {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  h2, h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+  }
+
+  .upload-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+    .upload-box input[type="file"] {
+      border: 1px solid #ccc;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .upload-box button {
+      background-color: #10486b;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+      .upload-box button:hover {
+        background-color: #10486b;
+      }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+    .data-table th {
+      background-color: #10486b;
+      color: white;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .data-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .data-table tr:hover {
+      background-color: #f0f8ff;
+    }
+
+  .file-format {
+    /*border: 1px solid #ccc;*/
+    padding: 4px;
+    border-radius: 2px;
+  }
+
+    .file-format h4 {
+      margin: 0 0 10px 0;
+      font-size: 12px;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+      display: inline-block;
+      padding-bottom: 1px;
+    }
+
+  .format-table {
+    width: 23.6%;
+    border-collapse: collapse;
+  }
+
+    .format-table th, .format-table td {
+      /*border: 1px solid #999;*/
+      padding: 0px 3px;
+      text-align: left;
+    }
+
+    .format-table th {
+      /*background-color: #e0e0e0;*/
+      border-bottom: 2px solid #ccc;
+      font-weight: 400;
+    }
+</style>
+<div class="main-container">
+  <div *ngIf="showSuccessPopup">
+    <div [ngClass]="{
+          'error-message': isErrorPopup,
+          'Success-message': !isErrorPopup
+        }">
+      <i *ngIf="isErrorPopup" style="font-size: 20px;" class="bi bi-exclamation-triangle-fill "></i>
+      <i *ngIf="!isErrorPopup" style="font-size: 20px;" class="bi bi-check2-circle" alt="Success"></i>
+      <span>{{ popupMessage }}</span>
+      <!-- <span>{{ errmessage }}</span> -->
+    </div>
+  </div>
+  <div class="row line-w" style="margin-left: -6px;">
+    <div class="col-lg-3 col-sm-3">
+      <label style="color: #10486b; font-weight: bold;">Path :</label>
+      <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" class="form-control form-control-sm" />
+    </div>
+    <div class="col-lg-6 col-sm-6">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 17px" (click)="uploadFile(fileInput)">
+        <i class="bi bi-file-earmark-arrow-up"></i> Upload
+      </button>
+      <button ID="btn_add" class="newbtn" style="margin-left: 3px;" (click)="onRefresh()">
+        <i class="bi bi-arrow-repeat"></i> Refresh
+      </button>
+      <button class="newbtn" style="margin-left: 3px;" (click)="onExcel()" *ngIf="isGrid">
+        <i class="bi bi-file-earmark-excel me-1"></i> Save To Excel
+      </button>
+      <button class="newbtn" style="margin-left: 3px;" (click)="onProcess1()" *ngIf="isProcessData">
+        <i class="bi bi-check-circle"></i> Process Data
+      </button>
+    </div>
+      <!--<div class="col-lg-1 col-sm-1">
+      <label style="color: #10486b; font-weight: bold;">Batch # :</label>
+      <app-global-lov [items]="Batch" displayField="batch" valueField="batch" [(ngModel)]="selectedBatch"
+                      [disabled]="lovDisabled">
+      </app-global-lov>
+    </div>-->
+      <!--<div class="col-lg-3 col-sm-3">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px; margin-top: 15px" (click)="onFetch()">
+        <i class="bi bi-search"></i> Search
+      </button>
+    </div>-->
+      <!--<div class="row">
+        <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">-->
+      <!-- <h6>Select File Path :</h6> -->
+      <!--<label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+            Select File Path :</label>
+            <input type="file" id="fileInput"  #fileInput (change)="onFileSelected($event)" style="margin-left: 4px;"/>
+            <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="uploadFile(fileInput)">
+                <i class="bi bi-check-circle"></i> Upload
+            </button>
+        </div>
+    </div>-->
+    </div>
+    <br>
+    <div style="width: 109%;" class="file-format">
+      <h4>Excel File Format</h4>
+      <table class="format-table">
+        <thead>
+          <tr>
+            <th>MOBILE NUMBER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>3XXXXXXXXX</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <!-- *ngIf="isgridview" -->
+    <!--<div class="row line-w" style="margin-left: -4px;">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <div>
+          <table class="tableA table-condensed GridViewStyle">
+            <thead>
+              <tr class="HeaderStyleA">
+                <th class="tdCenter">Mobile</th>
+                <th class="back">Remarks</th>
+                <th class="back">User ID</th>
+                <th class="back">User Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of GridData1; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                <td style="width: 100px;" class="tdCenter"> {{row.mobile_no}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.user_name}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.userid}} </td>
+                <td style="width: 100px;" class="tdCenter"> {{row.due_date}} </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>-->
+    <div class="row" *ngIf="isProcessData" style="margin-top: 10px;">
+      <div class="col-lg-3 col-sm-3" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 5px;">
+        <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+          Total Record(s): {{lblTotalReccords}}
+        </label>
+      </div>
+      <div class="col-lg-3 col-sm-3" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+        <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+          Inserted Record(s): {{lblProcessRecords}}
+        </label>
+      </div>
+      <div class="col-lg-3 col-sm-3" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+        <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+          Invalid Record(s): {{lblErrorRecords}}
+        </label>
+      </div>
+      <div class="col-lg-2 col-sm-2" style="display: flex; flex-wrap: nowrap; align-items: center; margin-left: 4px;">
+        <label class="me-2 mb-0" style="font-weight: bolder; color: #10486b; font-size: 13px; white-space: nowrap;">
+          {{lblMessegeprocess}}
+        </label>
+      </div>
+    </div>
+    <br>
+    <!--<div class="row" *ngIf="isProcessData">
+    <div class="col-lg-12 col-sm-12" style="display: flex; flex-wrap: nowrap; align-items: center;">
+      <button ID="btn_add" class="newbtn" style="margin-left: 7px;" (click)="onProcess1()">
+        <i class="bi bi-check-circle"></i> Process Data
+      </button>
+    </div>
+  </div>-->
+    <br />
+    <div class="row line-w" style="margin-left: -4px;" *ngIf="isGrid">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <div style="max-height: 250px; width: 200%;">
+            <table class="tableA table-condensed GridViewStyle" *ngIf="GridData.length > 0">
+              <!--<thead>
+              <tr class="HeaderStyleA">
+                <th *ngFor="let header of GridHeaders" class="tdCenter">
+                  {{ header | titlecase }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="RowStyleA" *ngFor="let row of GridData; let i = index"
+                  [style.background-color]="i % 2 === 0 ? '#ffffff' : 'rgb(244, 242, 242)'"
+                  [style.color]="i % 2 === 0 ? '#000' : '#969a9d'">
+                <td *ngFor="let header of GridHeaders" class="tdCenter">
+                  {{ row[header] }}
+                </td>
+              </tr>
+            </tbody>-->
+              <thead>
+                <tr class="HeaderStyleA">
+                  <th class="back">Mobile</th>
+                  <th class="back">Register Name</th>
+                  <th class="back">User Name</th>
+                  <th class="back">CNIC</th>
+                  <th class="back">NIC</th>
+                  <th class="back">Pasport</th>
+                  <th class="back">Other ID</th>
+                  <th class="back">Iccid</th>
+                  <th class="back">Account Type</th>
+                  <th class="back">Tariff Plan</th>
+                  <th class="back">Access Level</th>
+                  <th class="back">Secuirty Deposit</th>
+                  <th class="back">Line Rent</th>
+                  <th class="back">Refund Amount</th>
+                  <th class="back">Refund Date</th>
+                  <th class="back">User ID</th>
+                  <th class="back">User Name</th>
+                  <th class="back">Inititor</th>
+                  <th class="back">Last Date</th>
+                  <th class="back">Current Status</th>
+                  <th class="back">Message Timestamp</th>
+                  <th class="back">Assign To</th>
+                  <th class="back">Due Date</th>
+                  <th class="back">Donor</th>
+                  <th class="back">Recipient</th>
+                  <th class="back">Reject Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="RowStyleA" *ngFor="let row of GridData; let i = index"
+                    [style.background-color]="i % 2 === 0 ? '#fffff' : 'rgb(244, 242, 242)'"
+                    [style.color]="i % 2 === 0 ? '#fffff' : '#969a9d'">
+                  <td style="width: 100px;" class="tdCenter">{{ row.mobile_no }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.register_name }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.user_name }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.cnic }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.nic }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.passport }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.otherid }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.iccid }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.account_type }}</td>
+                  <td style="width: 200px; " class="tdCenter">{{ row.tariff_plan }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.access_level }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.secuirty_deposit }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.line_rent }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.refundamount }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.refunddate }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.userid }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.username }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.inititor }}</td>
+                  <td style="width: 150px;" class="tdCenter">{{ row.last_actiondate }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.current_status }}</td>
+                  <td style="width: 150px;" class="tdCenter">{{ row.message_timestamp }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.assign_to }}</td>
+                  <td style="width: 150px;" class="tdCenter">{{ row.due_date }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.donor }}</td>
+                  <td style="width: 100px;" class="tdCenter">{{ row.recipient }}</td>
+                  <td style="width: 250px;" class="tdCenter">{{ row.rej_desc }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!--<div *ngIf="GridData.length === 0" style="color: gray; margin-top: 10px;">
+            No data found
+          </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

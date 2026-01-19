@@ -122,12 +122,7 @@ export const routes: Routes = [
         path: 'app-public-rolesetup-aspx',
         canActivate: [authGuard],
         loadComponent: () => import('./SETUPS/user-role-access-setup/user-role-access-setup.component').then(m => m.UserRoleAccessSetupComponent)
-      },
-      {
-        path: 'app-public-errorcodesetup-aspx',
-        canActivate: [authGuard],
-        loadComponent: () => import('./SETUPS/error-codes-setup/error-code-setup.component').then(m => m.ErrorCodeSetupComponent)
-      },
+      },      
       {
         path: 'app-public-numbering-plan-setup-aspx',
         canActivate: [authGuard],
@@ -218,11 +213,7 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./SETUPS/action-response-definition/action-response-definition.component').then(m => m.ActionResponseDefinitionComponent)
       },
-      {
-        path: 'app-daily-console-status',
-        canActivate: [authGuard],
-        loadComponent: () => import('./SETUPS/daily-console-status/daily-console-status.component').then(m => m.DailyConsoleStatusComponent)
-      },
+      
       //Reports
       {
         path: 'app-public-nprmanualbulkprocess-aspx',
